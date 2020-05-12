@@ -38,6 +38,9 @@ x$write_metadata()
 To upload to the API:
 
 ```{r}
+
+ieugwasr::get_access_token()
+
 x$datainfo$id <- x$metadata$id <- x$ebi_id <- runif(1, 100000, 999999) %>% round %>% as.character %>% paste0("ebitest-", .)
 x$upload_delete(x$ebi_id)
 x$upload_metadata()
