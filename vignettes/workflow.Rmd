@@ -17,3 +17,31 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(EbiDataImport)
 ```
+
+
+To obtain a dataset for a specific EBI ID:
+
+
+```{r}
+
+ebi_id <- "GCST005522"
+x <- ObtainEBIDataset$new(
+	ebi_id = ebi_id, 
+	ftp_path=get_ftp_path(ebi_id)
+)
+x$download_dataset()
+x$format_dataset()
+x$organise_metadata()
+x$write_metadata()
+```
+
+To upload to the API:
+
+```{r}
+x$datainfo$id <- x$metadata$id <- x$ebi_id <- runif(1, 100000, 999999) %>% round %>% as.character %>% paste0("ebitest-", .)
+x$upload_delete(x$ebi_id)
+x$upload_metadata()
+x$upload_check()
+x$upload_gwas()
+x$upload_delete(x$ebi_id)
+```
