@@ -39,7 +39,6 @@ To upload to the API:
 
 ```{r}
 
-ieugwasr::get_access_token()
 
 x$datainfo$id <- x$metadata$id <- x$ebi_id <- runif(1, 100000, 999999) %>% round %>% as.character %>% paste0("ebitest-", .)
 x$upload_delete(x$ebi_id)
@@ -47,4 +46,33 @@ x$upload_metadata()
 x$upload_check()
 x$upload_gwas()
 x$upload_delete(x$ebi_id)
+```
+
+To get a list of datasets that need to be imported:
+
+```{r}
+newdats <- determine_new_datasets()
+```
+
+
+
+```{r, eval=FALSE}
+
+# Authorise
+ieugwasr::get_access_token()
+
+# Define ID
+ebi_id <- newdats$ebi_id[1]
+ebi_id <- "GCST004421"
+x <- ObtainEBIDataset$new(
+	ebi_id = ebi_id, 
+	ftp_path=get_ftp_path(ebi_id)
+)
+x$download_dataset()
+x$format_dataset()
+x$organise_metadata()
+x$write_metadata()
+x$upload_metadata()
+x$upload_check()
+x$upload_gwas()
 ```

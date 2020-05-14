@@ -194,11 +194,7 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 	upload_check = function(id = self$ebi_id, access_token=ieugwasr::check_access_token())
 	{
 		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
-		httr::GET(
-			paste0(options()$igd_api, "edit/check/", id),
-			headers,
-			httr::timeout(300)
-		)
+		ieugwasr::editcheck(id)
 	},
 
 	upload_delete = function(id = self$ebi_id, access_token=ieugwasr::check_access_token())

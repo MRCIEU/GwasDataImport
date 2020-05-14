@@ -17,6 +17,7 @@ Required:
     R6
 Imports: 
     glue,
+    tidyr,
     dplyr,
     jsonlite,
     data.table,
