@@ -2,7 +2,7 @@
 % Please edit documentation in R/determine.r
 \name{determine_new_datasets}
 \alias{determine_new_datasets}
-\title{<brief desc>}
+\title{determine_new_datasets}
 \usage{
 determine_new_datasets(
   ebi_ftp_url = options()$ebi_ftp_url,

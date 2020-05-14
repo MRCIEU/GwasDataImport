@@ -2,7 +2,7 @@
 % Please edit documentation in R/determine.r
 \name{ebi_datasets}
 \alias{ebi_datasets}
-\title{<brief desc>}
+\title{ebi_datasets}
 \usage{
 ebi_datasets(ebi_ftp_url = options()$ebi_ftp_url)
 }

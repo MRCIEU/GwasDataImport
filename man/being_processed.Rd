@@ -2,7 +2,7 @@
 % Please edit documentation in R/determine.r
 \name{being_processed}
 \alias{being_processed}
-\title{<brief desc>}
+\title{being_processed}
 \usage{
 being_processed(dat)
 }

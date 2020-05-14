@@ -2,7 +2,7 @@
 % Please edit documentation in R/determine.r
 \name{listftp}
 \alias{listftp}
-\title{<brief desc>}
+\title{listftp}
 \usage{
 listftp(url = options()$ebi_ftp_url, recursive = TRUE)
 }

@@ -1,4 +1,4 @@
-#' <brief desc>
+#' listftp
 #'
 #' <full description>
 #'
@@ -24,7 +24,7 @@ listftp <- function(url=options()$ebi_ftp_url, recursive=TRUE)
 }
 
 
-#' <brief desc>
+#' determine_new_datasets
 #'
 #' <full description>
 #'
@@ -60,7 +60,7 @@ determine_new_datasets <- function(ebi_ftp_url=options()$ebi_ftp_url, blacklist=
 }
 
 
-#' <brief desc>
+#' being_processed
 #'
 #' <full description>
 #'
@@ -83,7 +83,7 @@ being_processed <- function(dat)
 	return(dat)	
 }
 
-#' <brief desc>
+#' ebi_datasets
 #'
 #' <full description>
 #'
