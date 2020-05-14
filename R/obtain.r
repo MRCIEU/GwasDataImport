@@ -1,3 +1,6 @@
+#' Obtain EBI Dataset class
+#'
+#' @export
 ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 
 	ebi_id = NULL,
@@ -13,6 +16,13 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 	datainfo = NULL,
 	datainfo_file = NULL,
 
+	#' @description
+	#' Initialise
+	#' @param ebi_id e.g. GCST004426
+	#' @param wd=tempdir() <what param does>
+	#' @param ftp_path=NULL <what param does>
+	#'
+	#' @return new ObtainEBIDataset object
 	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL)
 	{
 		self$ebi_id <- ebi_id
@@ -20,18 +30,28 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		self$ftp_path <- ftp_path
 	},
 
+	#' @description
+	#' delete working directory
 	delete_wd = function()
 	{
 		message("Deleting download directory")
 		unlink(self$wd, recursive=TRUE)
 	},
 
+	#' @description
+	#' set working directory (creates)
+	#' @param wd working directory
 	set_wd = function(wd)
 	{
 		self$wd <- wd
 		dir.create(self$wd, recursive=TRUE)
 	},
 
+	#' @description
+	#' Download
+	#' @param ftp_path=self$ftp_path <what param does>
+	#' @param ftp_url=options()$ebi_ftp_url <what param does>
+	#' @param outdir=self$wd <what param does>
 	download_dataset = function(ftp_path=self$ftp_path, ftp_url=options()$ebi_ftp_url, outdir=self$wd)
 	{
 		b <- basename(ftp_path)
@@ -42,6 +62,10 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		self$dl <- dl
 	},
 
+	#' @description
+	#' format dataset
+	#'
+	#' @param dl=self$dl <what param does>
 	format_dataset = function(dl=self$dl)
 	{
 		keep_cols <- c("hm_rsid", "hm_chrom", "hm_pos", "hm_effect_allele", "hm_other_allele", "hm_effect_allele_frequency", "hm_beta", "standard_error", "p_value")
@@ -77,6 +101,17 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		self$or_flag <- or_flag
 	},
 
+	#' @description
+	#' Download and parse metadata
+	#' @param ebi_id=self$ebi_id <what param does>
+	#' @param or_flag=self$or_flag <what param does>
+	#' @param igd_id=NULL <what param does>
+	#' @param units=NULL <what param does>
+	#' @param sex="NA" <what param does>
+	#' @param category="NA" <what param does>
+	#' @param subcategory="NA" <what param does>
+	#' @param build="HG19/GRCh37" <what param does>
+	#' @param group_name="public" <what param does>
 	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=NULL, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public")
 	{
 		l <- list()
