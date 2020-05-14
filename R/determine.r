@@ -78,7 +78,7 @@ being_processed <- function(dat)
 		{
 			dat$need[i] <- FALSE
 		}
-		message(i, " of ", nrow(dat), ": ", dat$ebi_id[i], ": ", dat$need[i])
+		message(i, " of ", nrow(dat), ": ", dat$ebi_id[i], "; need: ", dat$need[i])
 	}
 	return(dat)	
 }

@@ -20,7 +20,7 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		self$ftp_path <- ftp_path
 	},
 
-	finalize = function()
+	delete_wd = function()
 	{
 		message("Deleting download directory")
 		unlink(self$wd, recursive=TRUE)
@@ -191,13 +191,18 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		)
 	},
 
-	upload_check = function(id = self$ebi_id, access_token=ieugwasr::check_access_token())
+	upload_check = function(id=self$metadata$id, access_token=ieugwasr::check_access_token())
 	{
 		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
+		# httr::GET(
+		# 	paste0(options()$igd_api, "edit/check/", id),
+		# 	headers,
+		# 	httr::timeout(300)
+		# ) %>% httr::content()
 		ieugwasr::editcheck(id)
 	},
 
-	upload_delete = function(id = self$ebi_id, access_token=ieugwasr::check_access_token())
+	upload_delete = function(id=self$metadata$id, access_token=ieugwasr::check_access_token())
 	{
 		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
 		httr::DELETE(
