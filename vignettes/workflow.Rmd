@@ -24,7 +24,7 @@ To obtain a dataset for a specific EBI ID:
 
 ```{r}
 ebi_id <- "GCST005522"
-x <- ObtainEBIDataset$new(
+x <- ObtainEbiDataset$new(
 	ebi_id = ebi_id, 
 	ftp_path=get_ftp_path(ebi_id)
 )
@@ -62,7 +62,7 @@ ieugwasr::get_access_token()
 # Define ID
 ebi_id <- newdats$ebi_id[1]
 ebi_id <- "GCST004426"
-x <- ObtainEBIDataset$new(
+x <- ObtainEbiDataset$new(
 	ebi_id = ebi_id, 
 	ftp_path=get_ftp_path(ebi_id)
 )
@@ -81,11 +81,12 @@ Workflow for all datasets
 ```{r}
 newdats <- determine_new_datasets()
 newdats <- being_processed(newdats) %>% subset(., need)
+ignore <- list()
 for(i in 1:nrow(newdats))
 {
 	ebi_id <- newdats$ebi_id[i]
 	message(ebi_id)
-	x <- ObtainEBIDataset$new(
+	x <- ObtainEbiDataset$new(
 		ebi_id = ebi_id, 
 		ftp_path = newdats$path[i]
 	)
@@ -97,6 +98,76 @@ for(i in 1:nrow(newdats))
 	x$upload_check()
 	x$upload_gwas()
 	x$delete_wd()
+	rm(x)
 }
+
+
+ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
+newdats <- determine_new_datasets(blacklist=ignore_list)
+newdats <- being_processed(newdats) %>% subset(., need)
+ignore <- list()
+for(i in 1:nrow(newdats))
+{
+	message(newdats$ebi_id[i])
+	x <- ObtainEbiDataset$new(
+		ebi_id = newdats$ebi_id[i], 
+		ftp_path = newdats$path[i]
+	)
+	o <- x$pipeline()
+	if(! "NULL" %in% class(o))
+	{
+		ignore[[newdats$ebi_id[i]]] <- o
+	}
+	rm(x)
+}
+
 ```
+
+
+
+
+
+## Lookup build
+
+
+
+```{r}
+o <- ieugwasr::tophits(2)
+chr <- o$chr
+pos <- o$position
+from <- determine_build(o$rsid, o$chr, o$position, build=c(37,38))
+
+
+gdat <- data.table::fread("~/Downloads/20686565-GCST000755-EFO_0004612.h.tsv.gz")
+from <- determine_build(gdat$hm_rsid, gdat$hm_chrom, gdat$hm_pos)
+
+
+dat <- dplyr::tibble(rsid=dat$hm_rsid, chr=dat$hm_chrom, pos=dat$hm_pos)
+
+gdat <- subset(gdat, !(is.na(hm_chrom) | is.na(hm_rsid) | is.na(hm_pos)))
+d19 <- liftover_gwas(gdat$hm_rsid, gdat$hm_chrom, gdat$hm_pos)
+
+
+# library(liftOver)
+
+
+
+
+x <- ObtainEbiDataset$new("GCST000755", ftp_path=get_ftp_path("GCST000755"))
+x$download_dataset()
+x$format_dataset()
+
+
+
+# cur = makeCurrentGwascat()
+
+# path = system.file(package="liftOver", "extdata", "hg38ToHg19.over.chain")
+
+
+# ebi_id <- "GCST000755"
+
+
+
+```
+
 

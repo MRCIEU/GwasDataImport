@@ -1,9 +1,10 @@
 #' Obtain EBI Dataset class
 #'
 #' @export
-ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
+ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 
 	ebi_id = NULL,
+	igd_id = NULL,
 	wd = NULL,
 	dl = NULL,
 	gwas_out = NULL,
@@ -21,11 +22,13 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 	#' @param ebi_id e.g. GCST004426
 	#' @param wd=tempdir() <what param does>
 	#' @param ftp_path=NULL <what param does>
+	#' @param igd_id Defaults to "ebi-a-<ebi_id>"
 	#'
-	#' @return new ObtainEBIDataset object
-	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL)
+	#' @return new ObtainEbiDataset object
+	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL, igd_id=paste0("ebi-a-", ebi_id))
 	{
 		self$ebi_id <- ebi_id
+		self$igd_id <- igd_id
 		self$set_wd(wd)
 		self$ftp_path <- ftp_path
 	},
@@ -85,9 +88,20 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		}
 
 		out <- a %>% 
-			dplyr::select(keep_cols) %>%
+			dplyr::select(tidyselect::all_of(keep_cols)) %>%
 			subset(., !is.na(hm_chrom) & !is.na(hm_pos) & !is.na(hm_effect_allele) & !is.na(hm_beta) & !is.na(standard_error))
 
+		stopifnot(nrow(out) > 0)
+
+		message("Determining build")
+		d19 <- liftover_gwas(out$hm_rsid, out$hm_chrom, out$hm_pos)
+		if(!is.null(d19))
+		{
+			out <- merge(out, d19, by.x="hm_rsid", by.y="rsid")
+			out$hm_chrom <- out$chr
+			out$hm_pos <- out$pos
+			out <- dplyr::select(out, tidyselect::all_of(keep_cols))
+		}
 		stopifnot(nrow(out) > 0)
 
 		gwas_out <- paste0(dl, ".format.gz")
@@ -112,17 +126,12 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 	#' @param subcategory="NA" <what param does>
 	#' @param build="HG19/GRCh37" <what param does>
 	#' @param group_name="public" <what param does>
-	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=NULL, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public")
+	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=self$igd_id, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public")
 	{
 		l <- list()
 		j <- jsonlite::read_json(paste0(options()$ebi_api, ebi_id))
 
-		if(is.null(igd_id))
-		{
-			l[["id"]] <- paste0("ebi-a-", j[["accessionId"]])
-		} else {
-			l[["id"]] <- igd_id
-		}
+		l[["id"]] <- igd_id
 		l[["trait"]] <- j[["diseaseTrait"]][["trait"]]
 		l[["note"]] <- ""
 		if(or_flag) l[["note"]] <- paste0(l[["note"]], "beta+se converted from OR+CI; ")
@@ -226,7 +235,7 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		)
 	},
 
-	upload_check = function(id=self$metadata$id, access_token=ieugwasr::check_access_token())
+	upload_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
 		# httr::GET(
@@ -237,7 +246,7 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 		ieugwasr::editcheck(id)
 	},
 
-	upload_delete = function(id=self$metadata$id, access_token=ieugwasr::check_access_token())
+	upload_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
 		httr::DELETE(
@@ -256,8 +265,71 @@ ObtainEBIDataset <- R6::R6Class("ObtainEBIDataset", list(
 			paste0(options()$igd_api, "edit/upload"),
 			headers,
 			body = y,
-			httr::timeout(300)
+			httr::timeout(600)
 		)
-	}
+	},
 
+	pipeline = function()
+	{
+		message("Downloading")		
+		o <- try(self$download_dataset())
+		if('try-error' %in% class(o))
+		{
+			message("Download failed")
+			self$delete_wd()
+			return(NULL)
+		}
+
+		message("Formatting")
+		o <- try(self$format_dataset())
+		if('try-error' %in% class(o))
+		{
+			message("Formatting failed")
+			message("Add ", self$ebi_id, " to ignore list")
+			self$delete_wd()
+			return(self$ebi_id)
+		}
+
+		message("Getting metadata")
+		o <- try(self$organise_metadata())
+		if('try-error' %in% class(o))
+		{
+			message("Formatting failed")
+			self$delete_wd()
+			return(NULL)
+		}
+
+		message("Upload metadata")
+		o <- try(self$upload_metadata())
+		if('try-error' %in% class(o))
+		{
+			message("GWAS upload failed")
+			self$delete_wd()
+			return(NULL)
+		} else if(o$status_code != 200) {
+			message("GWAS upload failed")
+			print(httr::content(o))
+			self$delete_wd()
+			return(NULL)
+		}
+
+		message("Upload metadata")
+		o <- try(self$upload_gwas())
+		if('try-error' %in% class(o))
+		{
+			message("GWAS upload failed")
+			self$delete_wd()
+			self$upload_delete()
+			return(NULL)
+		} else if(o$status_code != 201) {
+			message("GWAS upload failed")
+			print(httr::content(o))
+			self$delete_wd()
+			self$upload_delete()
+			return(NULL)
+		}
+
+		message("Completed successfully")
+		x$delete_wd()
+	}
 ))
