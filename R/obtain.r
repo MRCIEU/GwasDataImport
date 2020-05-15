@@ -5,6 +5,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 
 	ebi_id = NULL,
 	igd_id = NULL,
+	traitname = NULL,
 	wd = NULL,
 	dl = NULL,
 	gwas_out = NULL,
@@ -25,12 +26,13 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	#' @param igd_id Defaults to "ebi-a-<ebi_id>"
 	#'
 	#' @return new ObtainEbiDataset object
-	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL, igd_id=paste0("ebi-a-", ebi_id))
+	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL, igd_id=paste0("ebi-a-", ebi_id), traitname=NULL)
 	{
 		self$ebi_id <- ebi_id
 		self$igd_id <- igd_id
 		self$set_wd(wd)
 		self$ftp_path <- ftp_path
+		self$traitname <- traitname
 	},
 
 	#' @description
@@ -126,13 +128,18 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	#' @param subcategory="NA" <what param does>
 	#' @param build="HG19/GRCh37" <what param does>
 	#' @param group_name="public" <what param does>
-	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=self$igd_id, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public")
+	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=self$igd_id, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public", traitname=self$traitname)
 	{
 		l <- list()
 		j <- jsonlite::read_json(paste0(options()$ebi_api, ebi_id))
 
 		l[["id"]] <- igd_id
-		l[["trait"]] <- j[["diseaseTrait"]][["trait"]]
+		if(is.null(traitname))
+		{
+			l[["trait"]] <- j[["diseaseTrait"]][["trait"]]
+		} else {
+			l[["trait"]] <- traitname
+		}
 		l[["note"]] <- ""
 		if(or_flag) l[["note"]] <- paste0(l[["note"]], "beta+se converted from OR+CI; ")
 		if(!is.null(j[["studyDesignComment"]])) paste0(l[["note"]], j[["studyDesignComment"]], "; ")
