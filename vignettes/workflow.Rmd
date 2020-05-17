@@ -78,30 +78,8 @@ x$delete_wd()
 
 Workflow for all datasets
 
+
 ```{r}
-newdats <- determine_new_datasets()
-newdats <- being_processed(newdats) %>% subset(., need)
-ignore <- list()
-for(i in 1:nrow(newdats))
-{
-	ebi_id <- newdats$ebi_id[i]
-	message(ebi_id)
-	x <- ObtainEbiDataset$new(
-		ebi_id = ebi_id, 
-		ftp_path = newdats$path[i]
-	)
-	x$download_dataset()
-	x$format_dataset()
-	x$organise_metadata()
-	x$write_metadata()
-	x$upload_metadata()
-	x$upload_check()
-	x$upload_gwas()
-	x$delete_wd()
-	rm(x)
-}
-
-
 ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
 newdats <- determine_new_datasets(blacklist=ignore_list)
 newdats <- being_processed(newdats) %>% subset(., need)
@@ -123,20 +101,13 @@ for(i in 1:nrow(newdats))
 
 ```
 
-
-
-
-
 ## Lookup build
-
-
 
 ```{r}
 x <- ObtainEbiDataset$new("GCST000755", ftp_path=get_ftp_path("GCST000755"))
 x$download_dataset()
 x$format_dataset()
 ```
-
 
 ## Suhre proteins
 
@@ -155,8 +126,6 @@ traitinfo$igd_id <- paste0("prot-c-", traitinfo$seqid)
 suhre <- merge(suhre, traitinfo, by="igd_id")
 save(suhre, file="suhre.rdata")
 
-
-
 load("suhre.rdata")
 for(i in 1:nrow(suhre))
 {
@@ -169,7 +138,7 @@ for(i in 1:nrow(suhre))
 	x$download_dataset()
 	x$pipeline()
 }
-
-
 ```
+
+Conclusion - they seem to be missing standard errors? Need to do this through the batch processing.
 
