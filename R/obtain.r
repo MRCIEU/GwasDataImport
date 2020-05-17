@@ -35,6 +35,12 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		self$traitname <- traitname
 	},
 
+	finalize = function()
+	{
+		message("Removing downloaded files")
+		delete_wd()
+	}
+
 	#' @description
 	#' delete working directory
 	delete_wd = function()
@@ -49,7 +55,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	set_wd = function(wd)
 	{
 		self$wd <- wd
-		dir.create(self$wd, recursive=TRUE)
+		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
 	},
 
 	#' @description
@@ -59,6 +65,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	#' @param outdir=self$wd <what param does>
 	download_dataset = function(ftp_path=self$ftp_path, ftp_url=options()$ebi_ftp_url, outdir=self$wd)
 	{
+		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
 		b <- basename(ftp_path)
 		dl <- file.path(outdir, b)
 		ftp <- file.path(ftp_url, ftp_path)
@@ -283,7 +290,6 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		if('try-error' %in% class(o))
 		{
 			message("Download failed")
-			self$delete_wd()
 			return(NULL)
 		}
 
@@ -293,7 +299,6 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		{
 			message("Formatting failed")
 			message("Add ", self$ebi_id, " to ignore list")
-			self$delete_wd()
 			return(self$ebi_id)
 		}
 
@@ -302,7 +307,6 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		if('try-error' %in% class(o))
 		{
 			message("Formatting failed")
-			self$delete_wd()
 			return(NULL)
 		}
 
@@ -311,12 +315,10 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		if('try-error' %in% class(o))
 		{
 			message("GWAS upload failed")
-			self$delete_wd()
 			return(NULL)
 		} else if(o$status_code != 200) {
 			message("GWAS upload failed")
 			print(httr::content(o))
-			self$delete_wd()
 			return(NULL)
 		}
 
@@ -325,18 +327,15 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 		if('try-error' %in% class(o))
 		{
 			message("GWAS upload failed")
-			self$delete_wd()
 			self$upload_delete()
 			return(NULL)
 		} else if(o$status_code != 201) {
 			message("GWAS upload failed")
 			print(httr::content(o))
-			self$delete_wd()
 			self$upload_delete()
 			return(NULL)
 		}
 
 		message("Completed successfully")
-		x$delete_wd()
 	}
 ))

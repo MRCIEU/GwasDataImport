@@ -132,42 +132,44 @@ for(i in 1:nrow(newdats))
 
 
 ```{r}
-o <- ieugwasr::tophits(2)
-chr <- o$chr
-pos <- o$position
-from <- determine_build(o$rsid, o$chr, o$position, build=c(37,38))
-
-
-gdat <- data.table::fread("~/Downloads/20686565-GCST000755-EFO_0004612.h.tsv.gz")
-from <- determine_build(gdat$hm_rsid, gdat$hm_chrom, gdat$hm_pos)
-
-
-dat <- dplyr::tibble(rsid=dat$hm_rsid, chr=dat$hm_chrom, pos=dat$hm_pos)
-
-gdat <- subset(gdat, !(is.na(hm_chrom) | is.na(hm_rsid) | is.na(hm_pos)))
-d19 <- liftover_gwas(gdat$hm_rsid, gdat$hm_chrom, gdat$hm_pos)
-
-
-# library(liftOver)
-
-
-
-
 x <- ObtainEbiDataset$new("GCST000755", ftp_path=get_ftp_path("GCST000755"))
 x$download_dataset()
 x$format_dataset()
+```
+
+
+## Suhre proteins
+
+```{r}
+ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
+newdats <- determine_new_datasets(blacklist=ignore_list, exclude = FALSE)
+suhre <- subset(newdats, grepl("Suhr", path))
+suhre <- separate(suhre, path, sep="/", into=c("p1","p2","p3"), remove=F)
+temp <- do.call(rbind, strsplit(suhre$p3, split="_"))
+suhre$igd_id <- paste0("prot-c-", temp[,1], "_", temp[,2])
+suhre$igd_id
+
+traitinfo <- data.table::fread("http://metabolomics.helmholtz-muenchen.de/pgwas/download/probeanno.tsv", sep="\t")
+traitinfo$igd_id <- paste0("prot-c-", traitinfo$seqid)
+
+suhre <- merge(suhre, traitinfo, by="igd_id")
+save(suhre, file="suhre.rdata")
 
 
 
-# cur = makeCurrentGwascat()
-
-# path = system.file(package="liftOver", "extdata", "hg38ToHg19.over.chain")
-
-
-# ebi_id <- "GCST000755"
-
+load("suhre.rdata")
+for(i in 1:nrow(suhre))
+{
+	x <- ObtainEbiDataset$new(
+		ebi_id=suhre$ebi_id[i],
+		ftp_path=suhre$path[i],
+		igd_id=suhre$igd_id[i],
+		traitname=suhre$target[i]
+	)
+	x$download_dataset()
+	x$pipeline()
+}
 
 
 ```
-
 
