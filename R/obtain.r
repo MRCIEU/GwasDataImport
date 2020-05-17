@@ -39,7 +39,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	{
 		message("Removing downloaded files")
 		delete_wd()
-	}
+	},
 
 	#' @description
 	#' delete working directory
