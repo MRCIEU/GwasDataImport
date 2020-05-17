@@ -12,6 +12,7 @@ Obtain EBI Dataset class
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ObtainEbiDataset$new()}}
+\item \href{#method-finalize}{\code{ObtainEbiDataset$finalize()}}
 \item \href{#method-delete_wd}{\code{ObtainEbiDataset$delete_wd()}}
 \item \href{#method-set_wd}{\code{ObtainEbiDataset$set_wd()}}
 \item \href{#method-download_dataset}{\code{ObtainEbiDataset$download_dataset()}}
@@ -57,6 +58,15 @@ Initialise
 \subsection{Returns}{
 new ObtainEbiDataset object
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\subsection{Method \code{finalize()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$finalize()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-delete_wd"></a>}}
