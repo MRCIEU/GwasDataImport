@@ -26,8 +26,12 @@ To obtain a dataset for a specific EBI ID:
 ebi_id <- "GCST005522"
 x <- ObtainEbiDataset$new(
 	ebi_id = ebi_id, 
-	ftp_path=get_ftp_path(ebi_id)
+	ftp_path=get_ftp_path(ebi_id),
+	igd_id = "ebi-a-EBITEST"
 )
+x$upload_delete()
+x$pipeline()
+
 x$download_dataset()
 x$format_dataset()
 x$organise_metadata()
@@ -64,8 +68,11 @@ ebi_id <- newdats$ebi_id[1]
 ebi_id <- "GCST004426"
 x <- ObtainEbiDataset$new(
 	ebi_id = ebi_id, 
-	ftp_path=get_ftp_path(ebi_id)
+	ftp_path=get_ftp_path(ebi_id),
+	igd_id = "ebi-a-EBITEST"
 )
+x$pipeline()
+
 x$download_dataset()
 x$format_dataset()
 x$organise_metadata()

@@ -38,7 +38,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	finalize = function()
 	{
 		message("Removing downloaded files")
-		delete_wd()
+		self$delete_wd()
 	},
 
 	#' @description
@@ -239,48 +239,52 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 	upload_metadata = function(metadata_file=self$metadata_file, datainfo_file=self$datainfo_file, access_token=ieugwasr::check_access_token())
 	{
 		keep_fields <- c("id", "trait", "note", "pmid", "year", "author", "population", "sample_size", "ncase", "ncontrol", "unit", "build", "group_name", "nsnp", "category", "subcategory", "sex")
-		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
-		httr::POST(
-			paste0(options()$igd_api, "edit/add"),
-			body = self$metadata %>% magrittr::extract(keep_fields),
-			headers,
-			encode = "json",
-			httr::timeout(300)
-		)
+		# headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
+		# httr::POST(
+		# 	paste0(options()$igd_api, "edit/add"),
+		# 	body = self$metadata %>% magrittr::extract(keep_fields),
+		# 	headers,
+		# 	encode = "json",
+		# 	httr::timeout(300)
+		# )
+		ieugwasr::api_query("edit/add", query=self$metadata %>% magrittr::extract(keep_fields), access_token=access_token, method="POST")
 	},
 
 	upload_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
-		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
+		# headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
 		# httr::GET(
 		# 	paste0(options()$igd_api, "edit/check/", id),
 		# 	headers,
 		# 	httr::timeout(300)
 		# ) %>% httr::content()
-		ieugwasr::editcheck(id)
+		# ieugwasr::editcheck(id)
+		ieugwasr::api_query(paste0("edit/check/", id), access_token=access_token, method="GET")
 	},
 
 	upload_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
-		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
-		httr::DELETE(
-			paste0(options()$igd_api, "edit/delete/", id),
-			headers,
-			httr::timeout(300)
-		)
+		# headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
+		# httr::DELETE(
+		# 	paste0(options()$igd_api, "edit/delete/", id),
+		# 	headers,
+		# 	httr::timeout(300)
+		# )
+		ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
 	},
 
 	upload_gwas = function(datainfo_file=self$datainfo_file, gwasfile=self$datainfo$filename, access_token=ieugwasr::check_access_token())
 	{
-		headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
 		y <- x$datainfo
 		y$gwas_file <- httr::upload_file(x$gwas_out)
-		httr::POST(
-			paste0(options()$igd_api, "edit/upload"),
-			headers,
-			body = y,
-			httr::timeout(600)
-		)
+		# headers <- httr::add_headers(`X-Api-Token` = access_token, `X-Api-Source` = "EbiDataImport")
+		# httr::POST(
+		# 	paste0(options()$igd_api, "edit/upload"),
+		# 	headers,
+		# 	body = y,
+		# 	httr::timeout(600)
+		# )
+		ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
 	},
 
 	pipeline = function()
@@ -322,7 +326,7 @@ ObtainEbiDataset <- R6::R6Class("ObtainEbiDataset", list(
 			return(NULL)
 		}
 
-		message("Upload metadata")
+		message("Upload GWAS data")
 		o <- try(self$upload_gwas())
 		if('try-error' %in% class(o))
 		{
