@@ -4,16 +4,16 @@
 \alias{liftover_gwas}
 \title{Liftover GWAS positions}
 \usage{
-liftover_gwas(rsid, chr, pos, build = c(37, 38, 36))
+liftover_gwas(dat, build = c(37, 38, 36))
 }
 \arguments{
+\item{build}{Builds to try e.g. c(37,38,36)}
+
 \item{rsid}{rsid}
 
 \item{chr}{chr}
 
 \item{pos}{pos}
-
-\item{build}{Builds to try e.g. c(37,38,36)}
 }
 \value{
 NULL if already build 37 or dataframe of b37 positions

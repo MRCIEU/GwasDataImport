@@ -18,11 +18,6 @@ Obtain EBI Dataset class
 \item \href{#method-download_dataset}{\code{ObtainEbiDataset$download_dataset()}}
 \item \href{#method-format_dataset}{\code{ObtainEbiDataset$format_dataset()}}
 \item \href{#method-organise_metadata}{\code{ObtainEbiDataset$organise_metadata()}}
-\item \href{#method-write_metadata}{\code{ObtainEbiDataset$write_metadata()}}
-\item \href{#method-upload_metadata}{\code{ObtainEbiDataset$upload_metadata()}}
-\item \href{#method-upload_check}{\code{ObtainEbiDataset$upload_check()}}
-\item \href{#method-upload_delete}{\code{ObtainEbiDataset$upload_delete()}}
-\item \href{#method-upload_gwas}{\code{ObtainEbiDataset$upload_gwas()}}
 \item \href{#method-pipeline}{\code{ObtainEbiDataset$pipeline()}}
 \item \href{#method-clone}{\code{ObtainEbiDataset$clone()}}
 }
@@ -180,69 +175,6 @@ Download and parse metadata
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-write_metadata}{}}}
-\subsection{Method \code{write_metadata()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$write_metadata(
-  metadata = self$metadata,
-  datainfo = self$datainfo,
-  outdir = self$wd
-)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-upload_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-upload_metadata}{}}}
-\subsection{Method \code{upload_metadata()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$upload_metadata(
-  metadata_file = self$metadata_file,
-  datainfo_file = self$datainfo_file,
-  access_token = ieugwasr::check_access_token()
-)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-upload_check"></a>}}
-\if{latex}{\out{\hypertarget{method-upload_check}{}}}
-\subsection{Method \code{upload_check()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$upload_check(
-  id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
-)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-upload_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-upload_delete}{}}}
-\subsection{Method \code{upload_delete()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$upload_delete(
-  id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
-)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-upload_gwas"></a>}}
-\if{latex}{\out{\hypertarget{method-upload_gwas}{}}}
-\subsection{Method \code{upload_gwas()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObtainEbiDataset$upload_gwas(
-  datainfo_file = self$datainfo_file,
-  gwasfile = self$datainfo$filename,
-  access_token = ieugwasr::check_access_token()
-)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pipeline"></a>}}

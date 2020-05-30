@@ -137,6 +137,42 @@ determine_build <- function(rsid, chr, pos, build=c(37,38,36))
 }
 
 
+#' Determine build just from positions
+#'
+#' A bit sketchy but computationally fast - just assumes that there will be at least 50x more position matches in the true build than either of the others.
+#'
+#' @param pos Vector of positions
+#' @param build c(37,38,36)
+#' @param threshold how many times more in the true build than the others. default = 50 
+#'
+#' @export
+#' @return build or if not determined then dataframe
+determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
+{
+	stopifnot(length(build) == 3)
+	data(build_ref)
+	l <- list()
+	for(i in 1:length(build))
+	{
+		n <- sum(pos %in% build_ref[[paste0("b", build[i])]])
+		l[[i]] <- dplyr::tibble(
+			build=build[i],
+			prop_pos = n / length(pos),
+			n_found = n
+		)
+	}
+	l <- dplyr::bind_rows(l)
+	m <- which.max(l$n_found)
+	print(l)
+	if(all(l$n_found[m] / l$n_found[-m] > threshold))
+	{
+		return(l$build[m])
+	} else {
+		return(l)
+	}
+}
+
+
 #' Liftover GWAS positions
 #'
 #' Determine GWAS build and liftover to b37
@@ -148,46 +184,66 @@ determine_build <- function(rsid, chr, pos, build=c(37,38,36))
 #'
 #' @export
 #' @return NULL if already build 37 or dataframe of b37 positions
-liftover_gwas <- function(rsid, chr, pos, build=c(37, 38, 36))
+liftover_gwas <- function(dat, build=c(37,38,36), to=37)
 {
-	from <- determine_build(rsid, chr, pos, build=build)
+	stopifnot("chr" %in% names(dat))
+	stopifnot("pos" %in% names(dat))
+	if(!"snp" %in% names(dat))
+	{
+		message("Only using position")
+		from <- determine_build_position(dat$pos, build=build)
+	} else {
+		message("Using rsid")
+		from <- determine_build(dat$snp, dat$chr, dat$pos, build=build)
+	}
 	if(is.data.frame(from))
 	{
 		stop("Cannot determine build")
 	} else {
-		if(from == 37)
+		if(from == to)
 		{
-			message("Already build 37")
-			return(NULL)
+			message("Already build ", to)
+			return(dat)
 		}
 	}
-	message("Build: ", from)
-	if(from == 36)
-	{
-		path <- system.file(package="EbiDataImport", "extdata", "hg18ToHg19.over.chain")
-	} else if( from == 38)
-	{
-		path <- system.file(package="EbiDataImport", "extdata", "hg38ToHg19.over.chain")
-	} else {
-		stop("from must be 36 or 38")
-	}
+	message("Lifting build: ", from, " to ", to)
 
+	tab <- dplyr::tibble(build=c(36,37,38), name=c("Hg18", "Hg19", "Hg38"))
+
+	path <- system.file(package="EbiDataImport", "extdata", paste0(
+		tolower(tab$name[tab$build==from]),
+		"To",
+		tab$name[tab$build==to],
+		".over.chain"
+	))
+	stopifnot(file.exists(path))
+
+	message("Loading chainfile")
 	ch <- rtracklayer::import.chain(path)
 
-	if(!grepl("chr", chr[1]))
+	message("Converting chromosome codings")
+	if(!grepl("chr", dat$chr[1]))
 	{
-		chr <- paste0("chr", chr)
+		dat$chr <- paste0("chr", dat$chr)
 	}
-	chr[chr == "chr23"] <- "chrX"
-	chr[chr == "chr24"] <- "chrY"
-	chr[chr == "chr25"] <- "chrXY"
-	chr[chr == "chr26"] <- "chrM"
-	chr[chr == "chrMT"] <- "chrM"
+	dat$chr[dat$chr == "chr23"] <- "chrX"
+	dat$chr[dat$chr == "chr24"] <- "chrY"
+	dat$chr[dat$chr == "chr25"] <- "chrXY"
+	dat$chr[dat$chr == "chr26"] <- "chrM"
+	dat$chr[dat$chr == "chrMT"] <- "chrM"
 
-
-	dat <- GenomicRanges::GRanges(seqnames=chr, ranges=IRanges::IRanges(start=pos, end=pos), rsid=rsid)
-	d19 <- rtracklayer::liftOver(dat, ch) %>% unlist()
-	d19 <- d19 %>% dplyr::as_tibble() %>% dplyr::select(rsid=rsid, chr=seqnames, pos=start)
-	d19$chr <- gsub("chr", "", d19$chr)
-	return(d19)
+	message("Organising")
+	datg <- GenomicRanges::GRanges(seqnames=dat$chr, ranges=IRanges::IRanges(start=dat$pos, end=dat$pos), LIFTOVERCHRPOS=paste0(dat$chr, ":", dat$pos))
+	message("Lifting")
+	d19 <- rtracklayer::liftOver(datg, ch) %>% unlist()
+	message("Organising again")
+	d19 <- d19 %>% dplyr::as_tibble() %>% dplyr::select(LIFTOVERCHRPOS=LIFTOVERCHRPOS, LIFTOVERCHR=seqnames, LIFTOVERPOS=start)
+	dat$LIFTOVERCHRPOS <- paste0(dat$chr, ":", dat$pos)
+	dat <- merge(dat, d19, by="LIFTOVERCHRPOS")
+	dat$chr <- dat$LIFTOVERCHR
+	dat$pos <- dat$LIFTOVERPOS
+	dat <- subset(dat, select=-c(LIFTOVERCHRPOS, LIFTOVERCHR, LIFTOVERPOS))
+	dat$chr <- gsub("chr", "", dat$chr)
+	message("Done")
+	return(dat)
 }

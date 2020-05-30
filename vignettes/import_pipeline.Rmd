@@ -1,0 +1,33 @@
+---
+title: "import_pipeline"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{import_pipeline}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(EbiDataImport)
+```
+
+
+
+```{r}
+library(devtools)
+load_all()
+
+x <- Dataset$new(filename="~/data/ubm-a/pos_0002.txt.gz", igd_id="ieu-b-TESTING")
+x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
+x$format_dataset()
+x$collect_metadata(list(trait="hello", build="x", category="asd", subcategory="asd", group_name="asd", population="asd", sex="asd", note='asdasd'))
+
+o <- liftover_gwas(out, to=38)
+```
