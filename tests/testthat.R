@@ -1,4 +1,4 @@
 library(testthat)
-library(EbiDataImport)
+library(igdimport)
 
-test_check("EbiDataImport")
+test_check("igdimport")

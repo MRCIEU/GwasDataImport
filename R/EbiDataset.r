@@ -1,22 +1,29 @@
-#' Obtain EBI Dataset class
+#' Object that downloads, develops and uploads EBI dataset
 #'
 #' @export
-EbiDataset <- R6::R6Class("EbiDataset", list(
-	inherit = Dataset,
+EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 
+	#' @field ebi_id EBI ID to look for
 	ebi_id = NULL,
+
+	#' @field traitname Name of trait
 	traitname = NULL,
+
+	#' @field ftp_path Path to files in EBI FTP
 	ftp_path = NULL,
+
+	#' @field or_flag TRUE/FALSE if had to convert OR to beta
 	or_flag = NULL,
 
 	#' @description
-	#' Initialise
-	#' @param ebi_id e.g. GCST004426
-	#' @param wd=tempdir() <what param does>
-	#' @param ftp_path=NULL <what param does>
+	#' Initialise object
+	#' @param ebi_id e.g. GCST005522
+	#' @param wd Directory in which to download and develop dataset. Default=tempdir(). Deleted automatically upon object removal
+	#' @param ftp_path Pre-specified path to data. Default=NULL
 	#' @param igd_id Defaults to "ebi-a-<ebi_id>"
+	#' @param traitname Option to provide traitname of dataset
 	#'
-	#' @return new ObtainEbiDataset object
+	#' @return A new EbiDataset object
 	initialize = function(ebi_id, wd=tempdir(), ftp_path=NULL, igd_id=paste0("ebi-a-", ebi_id), traitname=NULL)
 	{
 		self$ebi_id <- ebi_id
@@ -30,9 +37,9 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 
 	#' @description
 	#' Download
-	#' @param ftp_path=self$ftp_path <what param does>
-	#' @param ftp_url=options()$ebi_ftp_url <what param does>
-	#' @param outdir=self$wd <what param does>
+	#' @param ftp_path  Pre-specified path to data. Default=self$ftp_path
+	#' @param ftp_url Default=options()$ebi_ftp_url
+	#' @param outdir Default=self$wd
 	download_dataset = function(ftp_path=self$ftp_path, ftp_url=options()$ebi_ftp_url, outdir=self$wd)
 	{
 		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
@@ -47,7 +54,7 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 	#' @description
 	#' format dataset
 	#'
-	#' @param filename=self$filename <what param does>
+	#' @param filename Default=self$filename
 	format_dataset = function(filename=self$filename)
 	{
 		keep_cols <- c("hm_rsid", "hm_chrom", "hm_pos", "hm_effect_allele", "hm_other_allele", "hm_effect_allele_frequency", "hm_beta", "standard_error", "p_value")
@@ -73,17 +80,10 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 		stopifnot(nrow(out) > 0)
 
 		message("Determining build")
-		names(out)[names(out) == "hm_rsid"] <- "rsid"
+		names(out)[names(out) == "hm_rsid"] <- "snp"
 		names(out)[names(out) == "hm_chrom"] <- "chr"
 		names(out)[names(out) == "hm_pos"] <- "pos"
 		out <- liftover_gwas(out)
-		if(!is.null(d19))
-		{
-			out <- merge(out, d19, by.x="hm_rsid", by.y="rsid")
-			out$hm_chrom <- out$chr
-			out$hm_pos <- out$pos
-			out <- dplyr::select(out, tidyselect::all_of(keep_cols))
-		}
 		stopifnot(nrow(out) > 0)
 
 		gwas_out <- paste0(filename, ".format.gz")
@@ -99,15 +99,16 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 
 	#' @description
 	#' Download and parse metadata
-	#' @param ebi_id=self$ebi_id <what param does>
-	#' @param or_flag=self$or_flag <what param does>
-	#' @param igd_id=NULL <what param does>
-	#' @param units=NULL <what param does>
-	#' @param sex="NA" <what param does>
-	#' @param category="NA" <what param does>
-	#' @param subcategory="NA" <what param does>
-	#' @param build="HG19/GRCh37" <what param does>
-	#' @param group_name="public" <what param does>
+	#' @param ebi_id Default=self$ebi_id
+	#' @param or_flag Default=self$or_flag
+	#' @param igd_id Default=NULL
+	#' @param units Default=NULL
+	#' @param sex Default="NA"
+	#' @param category Default="NA"
+	#' @param subcategory Default="NA"
+	#' @param build Default="HG19/GRCh37"
+	#' @param group_name Default="public"
+	#' @param traitname Default=self$traitname
 	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=self$igd_id, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public", traitname=self$traitname)
 	{
 		l <- list()
@@ -198,6 +199,8 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 		self$datainfo <- m
 	},
 
+	#' @description
+	#' Once initialised this function will string together everything i.e. downloading, processing and uploading
 	pipeline = function()
 	{
 		message("Downloading")		
@@ -238,7 +241,7 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 		}
 
 		message("Upload GWAS data")
-		o <- try(self$api_gwas_upload())
+		o <- try(self$api_gwasdata_upload())
 		if('try-error' %in% class(o))
 		{
 			message("GWAS upload failed")

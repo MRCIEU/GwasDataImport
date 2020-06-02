@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(EbiDataImport)
+library(igdimport)
 ```
 
 
 Upload pipeline example
 
 ```{r}
-fn <- system.file(package="EbiDataImport", "extdata/pos_0002.txt.gz")
+fn <- system.file(package="igdimport", "extdata/pos_0002.txt.gz")
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
 

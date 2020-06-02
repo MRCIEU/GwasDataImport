@@ -1,4 +1,4 @@
-Package: EbiDataImport
+Package: igdimport
 Title: Import EBI data to IGD
 Version: 0.1.0
 Authors@R: 

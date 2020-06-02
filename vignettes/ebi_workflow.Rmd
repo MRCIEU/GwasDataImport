@@ -15,57 +15,22 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(EbiDataImport)
+library(igdimport)
 ```
 
-
-To obtain a dataset for a specific EBI ID:
-
-
-```{r}
-ebi_id <- "GCST005522"
-x <- EbiDataset$new(
-	ebi_id = ebi_id, 
-	ftp_path=get_ftp_path(ebi_id),
-	igd_id = "ebi-a-EBITEST"
-)
-x$upload_delete()
-x$pipeline()
-
-x$download_dataset()
-x$format_dataset()
-x$organise_metadata()
-x$write_metadata()
-```
-
-To upload to the API:
-
-```{r}
-x$datainfo$id <- x$metadata$id <- x$ebi_id <- runif(1, 100000, 999999) %>% round %>% as.character %>% paste0("ebitest-", .)
-x$upload_delete(x$ebi_id)
-x$upload_metadata()
-x$upload_check()
-x$upload_gwas()
-x$upload_delete(x$ebi_id)
-```
-
-To get a list of datasets that need to be imported:
-
-```{r}
-newdats <- determine_new_datasets()
-```
-
-
-Complete workflow for one dataset:
+## Complete workflow for one dataset
 
 ```{r, eval=FALSE}
+
+# library(devtools)
+# load_all()
+# ieugwasr::select_api("dev2")
 
 # Authorise
 ieugwasr::get_access_token()
 
-# Define ID
-ebi_id <- newdats$ebi_id[1]
-ebi_id <- "GCST004426"
+# This is a small file, good for testing
+ebi_id <- "GCST005522"
 x <- EbiDataset$new(
 	ebi_id = ebi_id, 
 	ftp_path=get_ftp_path(ebi_id),
@@ -73,24 +38,28 @@ x <- EbiDataset$new(
 	wd = paste0("uploads/", ebi_id)
 )
 x$pipeline()
-
-x$download_dataset()
-x$format_dataset()
-x$organise_metadata()
-x$write_metadata()
-x$upload_metadata()
-x$upload_check()
-x$upload_gwas()
-x$delete_wd()
 ```
 
-Workflow for all datasets
+Now delete:
+
+```{r, eval=FALSE}
+x$api_gwasdata_delete()
+```
 
 
-```{r}
+## Workflow for all datasets
+
+To get a list of datasets that need to be imported:
+
+```{r, eval=FALSE}
 ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
 newdats <- determine_new_datasets(blacklist=ignore_list)
 newdats <- being_processed(newdats) %>% subset(., need)
+```
+
+
+
+```{r, eval=FALSE}
 ignore <- list()
 for(i in 2:nrow(newdats))
 {
@@ -107,12 +76,11 @@ for(i in 2:nrow(newdats))
 	}
 	rm(x)
 }
-
 ```
 
 ## Lookup build
 
-```{r}
+```{r, eval=FALSE}
 x <- EbiDataset$new("GCST000755", ftp_path=get_ftp_path("GCST000755"))
 x$download_dataset()
 x$format_dataset()
@@ -120,7 +88,7 @@ x$format_dataset()
 
 ## Suhre proteins
 
-```{r}
+```{r, eval=FALSE}
 ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
 newdats <- determine_new_datasets(blacklist=ignore_list, exclude = FALSE)
 suhre <- subset(newdats, grepl("Suhr", path))

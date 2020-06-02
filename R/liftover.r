@@ -27,10 +27,10 @@ create_build_reference <- function()
 	b37$rsid <- names(b37)
 	GenomeInfoDb::seqlevels(b37) <- paste0("chr", GenomeInfoDb::seqlevels(b37))
 
-	ch36 <- rtracklayer::import.chain(system.file(package="EbiDataImport", "extdata", "hg19ToHg18.over.chain"))
+	ch36 <- rtracklayer::import.chain(system.file(package="igdimport", "extdata", "hg19ToHg18.over.chain"))
 	b36 <- rtracklayer::liftOver(x=b37, chain=ch36) %>% unlist()
 
-	ch38 <- rtracklayer::import.chain(system.file(package="EbiDataImport", "extdata", "hg19ToHg38.over.chain"))
+	ch38 <- rtracklayer::import.chain(system.file(package="igdimport", "extdata", "hg19ToHg38.over.chain"))
 	b38 <- rtracklayer::liftOver(x=b37, chain=ch38) %>% unlist()
 	
 	b36 <- dplyr::tibble(rsid=b36$rsid, b36=GenomicRanges::start(b36))
@@ -210,7 +210,7 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37)
 
 	tab <- dplyr::tibble(build=c(36,37,38), name=c("Hg18", "Hg19", "Hg38"))
 
-	path <- system.file(package="EbiDataImport", "extdata", paste0(
+	path <- system.file(package="igdimport", "extdata", paste0(
 		tolower(tab$name[tab$build==from]),
 		"To",
 		tab$name[tab$build==to],

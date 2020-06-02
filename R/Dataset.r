@@ -1,3 +1,6 @@
+#' Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
+#'
+#' @export
 Dataset <- R6::R6Class("Dataset", list(
 	filename = NULL,
 	igd_id = NULL,
@@ -215,7 +218,15 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	api_metadata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
-		ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
+		o <- ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
+		if(httr::status_code(o) == 200)
+		{
+			message("Successfully deleted gwas data and metadata from API")
+			self$gwasdata_uploaded <- FALSE
+			self$metadata_uploaded <- FALSE
+		} else {
+			message("Failed to delete gwas / meta data")
+		}
 	},
 
 	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out, access_token=ieugwasr::check_access_token())
@@ -223,12 +234,12 @@ Dataset <- R6::R6Class("Dataset", list(
 		y <- datainfo
 		y$gwas_file <- httr::upload_file(gwasfile)
 		o <- ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
-		if(httr::status_code(o) == 200)
+		if(httr::status_code(o) == 201)
 		{
 			message("Successfully uploaded metadata")
 			self$gwasdata_uploaded <- TRUE
 		} else {
-			message("Failed to uploaded metadata")
+			message("Failed to upload metadata")
 		}
 		return(o)
 	},
@@ -240,7 +251,7 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	api_gwasdata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
-		ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
+		self$api_metadata_delete(id=id, access_token=access_token)
 	}
 ))
 
