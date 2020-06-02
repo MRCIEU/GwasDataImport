@@ -10,6 +10,8 @@ Dataset <- R6::R6Class("Dataset", list(
 	datainfo = NULL,
 	datainfo_file = NULL,
 	params = NULL,
+	metadata_uploaded = FALSE,
+	gwasdata_uploaded = FALSE,
 
 	#' @description
 	#' Initialise
@@ -55,7 +57,6 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	finalize = function()
 	{
-		message("Removing downloaded files")
 		self$delete_wd()
 	},
 
@@ -63,7 +64,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' delete working directory
 	delete_wd = function()
 	{
-		message("Deleting download directory")
+		message("Deleting temporary directory")
 		unlink(self$wd, recursive=TRUE)
 	},
 
@@ -194,27 +195,52 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$datainfo_file <- outfile
 	},
 
-	upload_metadata = function(metadata_file=self$metadata_file, access_token=ieugwasr::check_access_token())
+	api_metadata_upload = function(metadata=self$metadata, access_token=ieugwasr::check_access_token())
 	{
-		ieugwasr::api_query("edit/add", query=self$metadata %>% magrittr::extract(keep_fields), access_token=access_token, method="POST")
+		o <- ieugwasr::api_query("edit/add", query=metadata, access_token=access_token, method="POST")
+		if(httr::status_code(o) == 200)
+		{
+			message("Successfully uploaded metadata")
+			self$metadata_uploaded <- TRUE
+		} else {
+			message("Failed to uploaded metadata")
+		}
+		return(o)
 	},
 
-	upload_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	api_metadata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		ieugwasr::api_query(paste0("edit/check/", id), access_token=access_token, method="GET")
 	},
 
-	upload_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	api_metadata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
 	},
 
-	upload_gwas = function(datainfo_file=self$datainfo_file, gwasfile=self$datainfo$filename, access_token=ieugwasr::check_access_token())
+	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out, access_token=ieugwasr::check_access_token())
 	{
-		y <- x$datainfo
-		y$gwas_file <- httr::upload_file(x$gwas_out)
-		ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
-	}
+		y <- datainfo
+		y$gwas_file <- httr::upload_file(gwasfile)
+		o <- ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
+		if(httr::status_code(o) == 200)
+		{
+			message("Successfully uploaded metadata")
+			self$gwasdata_uploaded <- TRUE
+		} else {
+			message("Failed to uploaded metadata")
+		}
+		return(o)
+	},
 
+	api_gwasdata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	{
+		ieugwasr::api_query(paste0("quality_control/check/", id), access_token=access_token)
+	},
+
+	api_gwasdata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	{
+		ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
+	}
 ))
 

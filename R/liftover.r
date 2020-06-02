@@ -244,6 +244,10 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37)
 	dat$pos <- dat$LIFTOVERPOS
 	dat <- subset(dat, select=-c(LIFTOVERCHRPOS, LIFTOVERCHR, LIFTOVERPOS))
 	dat$chr <- gsub("chr", "", dat$chr)
+	dat <- dat %>% dplyr::arrange(chr, pos) %>% dplyr::as_tibble()
+	dat$code <- paste(dat$chr, dat$pos, dat$ea, dat$oa)
+	dat <- subset(dat, !duplicated(code))
+	dat <- subset(dat, select=-c(code))
 	message("Done")
 	return(dat)
 }

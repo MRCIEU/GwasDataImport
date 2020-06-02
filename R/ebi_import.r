@@ -5,19 +5,9 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 	inherit = Dataset,
 
 	ebi_id = NULL,
-	igd_id = NULL,
 	traitname = NULL,
-	wd = NULL,
-	filename = NULL,
-	gwas_out = NULL,
 	ftp_path = NULL,
-	nsnp_read = NULL,
-	nsnp = NULL,
 	or_flag = NULL,
-	metadata = NULL,
-	metadata_file = NULL,
-	datainfo = NULL,
-	datainfo_file = NULL,
 
 	#' @description
 	#' Initialise
@@ -31,33 +21,12 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 	{
 		self$ebi_id <- ebi_id
 		self$igd_id <- igd_id
+		self$check_id(igd_id)
 		self$set_wd(wd)
 		self$ftp_path <- ftp_path
 		self$traitname <- traitname
 	},
 
-	finalize = function()
-	{
-		message("Removing downloaded files")
-		self$delete_wd()
-	},
-
-	#' @description
-	#' delete working directory
-	delete_wd = function()
-	{
-		message("Deleting download directory")
-		unlink(self$wd, recursive=TRUE)
-	},
-
-	#' @description
-	#' set working directory (creates)
-	#' @param wd working directory
-	set_wd = function(wd)
-	{
-		self$wd <- wd
-		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
-	},
 
 	#' @description
 	#' Download
@@ -257,7 +226,7 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 		}
 
 		message("Upload metadata")
-		o <- try(self$upload_metadata())
+		o <- try(self$api_metadata_upload())
 		if('try-error' %in% class(o))
 		{
 			message("GWAS upload failed")
@@ -269,7 +238,7 @@ EbiDataset <- R6::R6Class("EbiDataset", list(
 		}
 
 		message("Upload GWAS data")
-		o <- try(self$upload_gwas())
+		o <- try(self$api_gwas_upload())
 		if('try-error' %in% class(o))
 		{
 			message("GWAS upload failed")

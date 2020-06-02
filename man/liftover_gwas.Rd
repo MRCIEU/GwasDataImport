@@ -4,7 +4,7 @@
 \alias{liftover_gwas}
 \title{Liftover GWAS positions}
 \usage{
-liftover_gwas(dat, build = c(37, 38, 36))
+liftover_gwas(dat, build = c(37, 38, 36), to = 37)
 }
 \arguments{
 \item{build}{Builds to try e.g. c(37,38,36)}

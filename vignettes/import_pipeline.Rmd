@@ -19,15 +19,36 @@ library(EbiDataImport)
 ```
 
 
+Upload pipeline example
 
 ```{r}
-library(devtools)
-load_all()
+fn <- system.file(package="EbiDataImport", "extdata/pos_0002.txt.gz")
+id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
+```
 
-x <- Dataset$new(filename="~/data/ubm-a/pos_0002.txt.gz", igd_id="ieu-b-TESTING")
+Run pipeline:
+
+```{r}
+x <- Dataset$new(filename=fn, igd_id=id)
 x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
 x$format_dataset()
-x$collect_metadata(list(trait="hello", build="x", category="asd", subcategory="asd", group_name="asd", population="asd", sex="asd", note='asdasd'))
+x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+x$api_metadata_upload()
+x$api_metadata_check() %>% httr::content()
+x$api_metadata_delete()
+x$api_metadata_check() %>% httr::content()
+x$api_metadata_upload()
+x$api_metadata_check() %>% httr::content()
+x$api_gwasdata_upload()
+x$api_gwasdata_check() %>% httr::content()
+x$api_gwasdata_delete()
+```
 
-o <- liftover_gwas(out, to=38)
+Example of liftover
+
+```{r}
+a <- data.table::fread(x$gwas_out) %>% dplyr::as_tibble()
+o <- liftover_gwas(a, to=38)
+a
+o
 ```
