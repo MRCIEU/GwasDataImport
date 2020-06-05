@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(igdimport)
+library(GwasDataImport)
 ```
 
 There are three ways to determine the build of a dataset:
