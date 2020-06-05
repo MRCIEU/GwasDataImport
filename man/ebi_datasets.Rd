@@ -7,11 +7,11 @@
 ebi_datasets(ebi_ftp_url = options()$ebi_ftp_url)
 }
 \arguments{
-\item{ebi_ftp_url=options()$ebi_ftp_url}{<what param does>}
+\item{ebi_ftp_url}{EBI FTP default=options()$ebi_ftp_url}
 }
 \value{
-
+data frame
 }
 \description{
-<full description>
+Convert output from listftp into something that is easier to read
 }

@@ -1,8 +1,8 @@
 ---
-title: "import_pipeline"
+title: "Importing datasets into OpenGWAS"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{import_pipeline}
+  %\VignetteIndexEntry{Importing datasets into OpenGWAS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,40 +15,242 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(igdimport)
+library(GwasDataImport)
 ```
 
+This package provides some simple tools to import a summary dataset into the OpenGWAS database. Here are the steps:
 
-Upload pipeline example
+1. Download the summary dataset
+2. Initialise
+2. Specify which columns in the summary dataset correspond to which fields
+3. Process the summary dataset
+4. Input the meta-data
+5. Upload meta-data and processed summary dataset
+6. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+7. Check report and release the dataset
+8. [Wait for the data to be uploaded to the OpenGWAS database]
+
+This may look like a lot but it's only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:
+
+```{r, eval=FALSE}
+# Authenticate
+ieugwasr::get_access_token()
+
+# Initialise
+x <- Dataset$new(filename=filename, igd_id=id)
+
+# Specify columns
+x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
+# Process dataset
+x$format_dataset()
+
+# Input metadata
+x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+
+# Upload metadata
+x$api_metadata_upload()
+
+# Upload summary data
+x$api_gwasdata_upload()
+
+```
+
+The steps are detailed below.
+
+## 1. Download the summary dataset
+
+Need to have a file that can be read into R. Make sure that you have at least the following columns:
+
+- chromosome
+- position
+- beta
+- se
+- effect allele
+- other allele
+- pval
+
+Optional additional columns:
+
+- rsid
+- effect allele frequency
+- number of controls (or total sample size if continuous trait)
+- number of cases
+- imputation z-score
+- imputation info score
+
+## 2. Initialise
+
+Need to specify a few things e.g. the dataset filename. Here we'll use a small example dataset
 
 ```{r}
-fn <- system.file(package="igdimport", "extdata/pos_0002.txt.gz")
+filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
+```
+
+Can also specify the id you want to use. If you don't specify this then it will just use the next available id for the `ieu-a` data batch. Going to create a random testing id here:
+
+
+```{r}
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
 
-Run pipeline:
+Authenticate:
 
 ```{r}
+ieugwasr::get_access_token()
+```
+
+Also make sure you are on the university network or connected to the VPN. e.g. you should be able to access this page: http://ieu-db-interface.epi.bris.ac.uk:8082/
+
+Now create a new instance of the `Dataset` object. 
+
+```{r}
+x <- Dataset$new(filename=filename, igd_id=id)
+```
+
+This has done the following things
+
+1. Checked if the ID exists
+2. Created a new temporary directory in which to store the processed data files. 
+
+NOTE: at the end of this process that temporary directory will be automatically deleted.
+
+Let's look at the object:
+
+```{r}
+x
+```
+
+It is an `R6` object that contains some functions and some data objects. You can access any of these with the `$` operator. e.g. to find out the location of the temporary directory:
+
+
+```{r}
+x$wd
+```
+
+Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)
+
+```{r}
+x$check_id()
+```
+
+You can now specify 
+
+## 3. Specify columns in dataset
+
+To read the data correctly, need to specify which column corresponds to which field. The data looks like this:
+
+```
+CHROM   RSID    POS     REF     ALT     MAF     BETA    SEBETA  PVAL
+1       rs2462492       54676   C       T       0.399665        -0.0036 0.0197  0.07
+1       rs3107975       55326   T       C       0.0089751       0.0234  0.1004  0.09
+1       rs74447903      57033   T       C       0.0018298       -0.182  0.2317  0.36
+1       rs114608975     86028   T       C       0.10448 -0.0372 0.0316  0.62
+1       rs6702460       91536   G       T       0.45422 0.0088  0.0193  0.19
+1       rs8179466       234313  C       T       0.074974        -0.017  0.0385  0.18
+```
+
+You can specify the columns either by numeric position or by the column name. e.g.
+
+```{r}
+x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
+```
+
+Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are 
+
+
+## 4. Process the summary dataset
+
+Once you are happy with how the columns are being parsed, the dataset can now be processed. This involves
+
+1. Reading in the dataset
+2. Checking that the fields are as they should be (quite a light check)
+3. Removing any rows that have missing values in any required fields
+4. Updating build to hg19/b37 if necessary
+5. Writing processed dataset to file, ready for upload
+
+This is achieved using:
+
+```{r}
+x$format_dataset()
+```
+
+## 5. Input the meta-data
+
+While you are waiting for `format_dataset()` to run, you can specify metadata. e.g. here is a minimal example:
+
+```{r}
+x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+```
+
+But more fields can be specified. You can see a detailed list of them here: http://gwas-api.mrcieu.ac.uk/docs or running this command:
+
+```{r}
+x$view_metadata_options()
+```
+
+To see a simplified version of this, where only the required fields are shown, see:
+
+```{r}
+x$get_required_fields()
+```
+
+## 6. Upload meta-data and processed summary dataset
+
+Once the meta-data is entered, it can be uploaded along with the processed GWAS summary data:
+
+```{r}
+x$api_metadata_upload()
+x$api_gwasdata_upload()
+```
+
+## 7. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+
+Once uploaded, the dataset will go through a processing pipeline on the server.
+
+## 8. Check report and release the dataset
+
+You can check the metadata:
+
+```{r}
+x$api_metadata_check() %>% httr::content()
+```
+
+You can also check the status of the files being generated on the server side for this dataset:
+
+```{r}
+x$api_gwasdata_check() %>% httr::content()
+```
+
+If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
+
+http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>
+
+If you are happy with the dataset then you can next release the dataset using the following command:
+
+```{r, eval=FALSE}
+x$release(comments="Some comments here")
+```
+
+Alternatively, you can delete the data that has been uploaded:
+
+```{r}
+x$api_gwasdata_delete()
+```
+
+## 9. [Wait for the data to be uploaded to the OpenGWAS database]
+
+Now the GWAS data should be uploaded to the OpenGWAS database
+
+
+## Summary:
+
+Run pipeline:
+
+```{r, eval=FALSE}
 x <- Dataset$new(filename=fn, igd_id=id)
 x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
 x$format_dataset()
 x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
 x$api_metadata_upload()
-x$api_metadata_check() %>% httr::content()
-x$api_metadata_delete()
-x$api_metadata_check() %>% httr::content()
-x$api_metadata_upload()
-x$api_metadata_check() %>% httr::content()
 x$api_gwasdata_upload()
-x$api_gwasdata_check() %>% httr::content()
-x$api_gwasdata_delete()
-```
-
-Example of liftover
-
-```{r}
-a <- data.table::fread(x$gwas_out) %>% dplyr::as_tibble()
-o <- liftover_gwas(a, to=38)
-a
-o
 ```

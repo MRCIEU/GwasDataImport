@@ -8,6 +8,37 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 
 Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{filename}}{Path to raw GWAS summary dataset}
+
+\item{\code{igd_id}}{ID to use for upload}
+
+\item{\code{wd}}{Work directory in which to save processed files. Will be deleted upon completion}
+
+\item{\code{gwas_out}}{path to processed summary file}
+
+\item{\code{nsnp_read}}{Number of SNPs read initially}
+
+\item{\code{nsnp}}{Number of SNPs retained after reading}
+
+\item{\code{metadata}}{List of meta-data entries}
+
+\item{\code{metadata_file}}{Path to meta-data json file}
+
+\item{\code{datainfo}}{List of GWAS file parameters}
+
+\item{\code{datainfo_file}}{Path to datainfo json file}
+
+\item{\code{params}}{Initial column identifiers specified for raw dataset}
+
+\item{\code{metadata_uploaded}}{TRUE/FALSE of whether the metadata has been uploaded}
+
+\item{\code{gwasdata_uploaded}}{TRUE/FALSE of whether the gwas data has been uploaded}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -18,6 +49,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item \href{#method-set_wd}{\code{Dataset$set_wd()}}
 \item \href{#method-determine_columns}{\code{Dataset$determine_columns()}}
 \item \href{#method-format_dataset}{\code{Dataset$format_dataset()}}
+\item \href{#method-view_metadata_options}{\code{Dataset$view_metadata_options()}}
 \item \href{#method-get_required_fields}{\code{Dataset$get_required_fields()}}
 \item \href{#method-collect_metadata}{\code{Dataset$collect_metadata()}}
 \item \href{#method-write_metadata}{\code{Dataset$write_metadata()}}
@@ -42,13 +74,11 @@ Initialise
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{igd_id}}{Defaults to "ebi-a-<ebi_id>"}
+\item{\code{filename}}{Path to raw GWAS summary data file}
 
-\item{\code{ebi_id}}{e.g. GCST004426}
+\item{\code{wd}}{Path to directory to use as the working directory. Will be deleted upon completion - best to keep as the default randomly generated temporary directory}
 
-\item{\code{wd=tempdir()}}{<what param does>}
-
-\item{\code{ftp_path=NULL}}{<what param does>}
+\item{\code{igd_id}}{Option to provide a specified ID for upload. If none provided then will use the next ieu-a batch ID}
 }
 \if{html}{\out{</div>}}
 }
@@ -60,15 +90,24 @@ new ObtainEbiDataset object
 \if{html}{\out{<a id="method-check_id"></a>}}
 \if{latex}{\out{\hypertarget{method-check_id}{}}}
 \subsection{Method \code{check_id()}}{
+Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_id(id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_id(id = self$igd_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to check}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
 \if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
+Upon completion of the Dataset object (either end of R session or deleting the object), all temporary data will be deleted
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$finalize()}\if{html}{\out{</div>}}
 }
@@ -78,7 +117,7 @@ new ObtainEbiDataset object
 \if{html}{\out{<a id="method-delete_wd"></a>}}
 \if{latex}{\out{\hypertarget{method-delete_wd}{}}}
 \subsection{Method \code{delete_wd()}}{
-delete working directory
+Delete working directory
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$delete_wd()}\if{html}{\out{</div>}}
 }
@@ -88,7 +127,7 @@ delete working directory
 \if{html}{\out{<a id="method-set_wd"></a>}}
 \if{latex}{\out{\hypertarget{method-set_wd}{}}}
 \subsection{Method \code{set_wd()}}{
-set working directory (creates)
+Set working directory (creates)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$set_wd(wd)}\if{html}{\out{</div>}}
 }
@@ -105,16 +144,30 @@ set working directory (creates)
 \if{html}{\out{<a id="method-determine_columns"></a>}}
 \if{latex}{\out{\hypertarget{method-determine_columns}{}}}
 \subsection{Method \code{determine_columns()}}{
+Specify which columns in the dataset correspond to which fields.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$determine_columns(params, nrows = 100, gwas_file = self$filename, ...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{params}}{List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col").}
+
+\item{\code{nrows}}{How many rows to read to check that parameters have been specified correctly}
+
+\item{\code{gwas_file}}{Filename to read}
+
+\item{\code{...}}{Further arguments to pass to data.table::fread in order to correctly read the dataset}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format_dataset"></a>}}
 \if{latex}{\out{\hypertarget{method-format_dataset}{}}}
 \subsection{Method \code{format_dataset()}}{
-format dataset
+Process dataset ready for uploading. Determins build and lifts over to hg19/b37 if necessary.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$format_dataset(
   gwas_file = self$filename,
@@ -127,33 +180,64 @@ format dataset
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{dl=self$dl}}{<what param does>}
+\item{\code{gwas_file}}{GWAS filename}
+
+\item{\code{gwas_out}}{Filename to save processed dataset to}
+
+\item{\code{params}}{Column specifications (see determine_columns for more info)}
+
+\item{\code{...}}{Further arguments to pass to data.table::fread in order to correctly read the dataset}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-view_metadata_options"></a>}}
+\if{latex}{\out{\hypertarget{method-view_metadata_options}{}}}
+\subsection{Method \code{view_metadata_options()}}{
+View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$view_metadata_options()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_required_fields"></a>}}
 \if{latex}{\out{\hypertarget{method-get_required_fields}{}}}
 \subsection{Method \code{get_required_fields()}}{
+Get a list of fields and whether or not they are required
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$get_required_fields()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-collect_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-collect_metadata}{}}}
 \subsection{Method \code{collect_metadata()}}{
+Input metadata
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$collect_metadata(metadata, igd_id = self$igd_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.}
+
+\item{\code{igd_id}}{ID to be used for uploading to the database}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-write_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-write_metadata}{}}}
 \subsection{Method \code{write_metadata()}}{
+Write meta data to json file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$write_metadata(
   metadata = self$metadata,
@@ -162,11 +246,23 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{List of meta data fields and their values}
+
+\item{\code{datainfo}}{List of data column parameters}
+
+\item{\code{outdir}}{Output directory to write json files}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_metadata_upload"></a>}}
 \if{latex}{\out{\hypertarget{method-api_metadata_upload}{}}}
 \subsection{Method \code{api_metadata_upload()}}{
+Upload meta data to API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_upload(
   metadata = self$metadata,
@@ -174,11 +270,21 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{List of meta data fields and their values}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_metadata_check"></a>}}
 \if{latex}{\out{\hypertarget{method-api_metadata_check}{}}}
 \subsection{Method \code{api_metadata_check()}}{
+View meta-data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_check(
   id = self$igd_id,
@@ -186,11 +292,21 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to check}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_metadata_delete"></a>}}
 \if{latex}{\out{\hypertarget{method-api_metadata_delete}{}}}
 \subsection{Method \code{api_metadata_delete()}}{
+Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_delete(
   id = self$igd_id,
@@ -198,11 +314,21 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to delete}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_gwasdata_upload"></a>}}
 \if{latex}{\out{\hypertarget{method-api_gwasdata_upload}{}}}
 \subsection{Method \code{api_gwasdata_upload()}}{
+Upload gwas dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_upload(
   datainfo = self$datainfo,
@@ -211,11 +337,23 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{datainfo}}{List of data column parameters}
+
+\item{\code{gwasfile}}{Path to processed gwasfile}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_gwasdata_check"></a>}}
 \if{latex}{\out{\hypertarget{method-api_gwasdata_check}{}}}
 \subsection{Method \code{api_gwasdata_check()}}{
+Check status of API processing pipeline
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_check(
   id = self$igd_id,
@@ -223,11 +361,21 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to check}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_gwasdata_delete"></a>}}
 \if{latex}{\out{\hypertarget{method-api_gwasdata_delete}{}}}
 \subsection{Method \code{api_gwasdata_delete()}}{
+Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_delete(
   id = self$igd_id,
@@ -235,6 +383,15 @@ format dataset
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to delete}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

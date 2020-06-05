@@ -7,13 +7,13 @@
 listftp(url = options()$ebi_ftp_url, recursive = TRUE)
 }
 \arguments{
-\item{url}{<what param does>}
+\item{url}{FTP url to look up}
 
-\item{recursive=TRUE}{<what param does>}
+\item{recursive}{If false then just the top directory, otherwise list recursively}
 }
 \value{
-
+Vector of paths
 }
 \description{
-<full description>
+List all files on the EBI FTP server
 }

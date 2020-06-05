@@ -1,12 +1,12 @@
 #' listftp
 #'
-#' <full description>
+#' List all files on the EBI FTP server
 #'
-#' @param url <what param does>
-#' @param recursive=TRUE <what param does>
+#' @param url FTP url to look up
+#' @param recursive If false then just the top directory, otherwise list recursively
 #'
 #' @export
-#' @return
+#' @return Vector of paths
 listftp <- function(url=options()$ebi_ftp_url, recursive=TRUE)
 {
 	out <- tempfile()
@@ -26,10 +26,11 @@ listftp <- function(url=options()$ebi_ftp_url, recursive=TRUE)
 
 #' determine_new_datasets
 #'
-#' <full description>
+#' Figure out which datasets are not present in the database
 #'
-#' @param ebi_ftp_url=options()$ebi_ftp_url <what param does>
-#' @param blacklist=NULL <what param does>
+#' @param ebi_ftp_url FTP url default=options()$ebi_ftp_url
+#' @param blacklist List of EBI datasets to ignore default=NULL
+#' @param exclude_multi_datasets If a EBI ID has more than one dataset then should it be ignored
 #'
 #' @export
 #' @return data frame
@@ -62,12 +63,12 @@ determine_new_datasets <- function(ebi_ftp_url=options()$ebi_ftp_url, blacklist=
 
 #' being_processed
 #'
-#' <full description>
+#' List of EBI datasets that are currently being processed
 #'
-#' @param dat <what param does>
+#' @param dat Output from \code{determine_new_datasets}
 #'
 #' @export
-#' @return
+#' @return Updated dat
 being_processed <- function(dat)
 {
 	message("Checking if new datasets aren't in check list")
@@ -85,12 +86,12 @@ being_processed <- function(dat)
 
 #' ebi_datasets
 #'
-#' <full description>
+#' Convert output from listftp into something that is easier to read
 #'
-#' @param ebi_ftp_url=options()$ebi_ftp_url <what param does>
+#' @param ebi_ftp_url EBI FTP default=options()$ebi_ftp_url
 #'
 #' @export
-#' @return
+#' @return data frame
 ebi_datasets <- function(ebi_ftp_url=options()$ebi_ftp_url)
 {
 	message("Listing EBI FTP, may take a few minutes")
@@ -109,7 +110,7 @@ ebi_datasets <- function(ebi_ftp_url=options()$ebi_ftp_url)
 #' Get harmonised file for specific EBI ID
 #'
 #' @param ebi_id EBI ID e.g. GCST000879
-#' @param ebi_ftp_url=options()$ebi_ftp_url <what param does>
+#' @param ebi_ftp_url EBI FTP default=options()$ebi_ftp_url
 #'
 #' @export
 #' @return ftp path (excluding server)

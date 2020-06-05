@@ -2,26 +2,39 @@
 #'
 #' @export
 Dataset <- R6::R6Class("Dataset", list(
+	
+	#' @field filename Path to raw GWAS summary dataset
 	filename = NULL,
+	#' @field igd_id ID to use for upload
 	igd_id = NULL,
+	#' @field wd Work directory in which to save processed files. Will be deleted upon completion
 	wd = NULL,
+	#' @field gwas_out path to processed summary file
 	gwas_out = NULL,
+	#' @field nsnp_read Number of SNPs read initially
 	nsnp_read = NULL,
+	#' @field nsnp Number of SNPs retained after reading
 	nsnp = NULL,
+	#' @field metadata List of meta-data entries
 	metadata = NULL,
+	#' @field metadata_file Path to meta-data json file
 	metadata_file = NULL,
+	#' @field datainfo List of GWAS file parameters
 	datainfo = NULL,
+	#' @field datainfo_file Path to datainfo json file
 	datainfo_file = NULL,
+	#' @field params Initial column identifiers specified for raw dataset
 	params = NULL,
+	#' @field metadata_uploaded TRUE/FALSE of whether the metadata has been uploaded
 	metadata_uploaded = FALSE,
+	#' @field gwasdata_uploaded TRUE/FALSE of whether the gwas data has been uploaded
 	gwasdata_uploaded = FALSE,
 
 	#' @description
 	#' Initialise
-	#' @param ebi_id e.g. GCST004426
-	#' @param wd=tempdir() <what param does>
-	#' @param ftp_path=NULL <what param does>
-	#' @param igd_id Defaults to "ebi-a-<ebi_id>"
+	#' @param filename Path to raw GWAS summary data file
+	#' @param wd Path to directory to use as the working directory. Will be deleted upon completion - best to keep as the default randomly generated temporary directory
+	#' @param igd_id Option to provide a specified ID for upload. If none provided then will use the next ieu-a batch ID
 	#'
 	#' @return new ObtainEbiDataset object
 	initialize = function(filename, wd=tempdir(), igd_id=NULL)
@@ -36,8 +49,12 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$filename <- filename
 	},
 
-	check_id = function(id)
+	#' @description
+	#' Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed
+	#' @param id ID to check
+	check_id = function(id=self$igd_id)
 	{
+		stopifnot(!is.null(id))
 		message("Checking existing IDs")
 		r <- ieugwasr::api_query(paste0("gwasinfo/", id), access_token=ieugwasr::check_access_token(), method="GET")
 		if(length(ieugwasr::get_query_content(r)) != 0)
@@ -54,17 +71,18 @@ Dataset <- R6::R6Class("Dataset", list(
 		{
 			stop("ID already being processed: ", id)
 		}
-		return(NULL)
+		invisible(NULL)
 	},
 
-
+	#' @description
+	#' Upon completion of the Dataset object (either end of R session or deleting the object), all temporary data will be deleted
 	finalize = function()
 	{
 		self$delete_wd()
 	},
 
 	#' @description
-	#' delete working directory
+	#' Delete working directory
 	delete_wd = function()
 	{
 		message("Deleting temporary directory")
@@ -72,14 +90,22 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
-	#' set working directory (creates)
+	#' Set working directory (creates)
 	#' @param wd working directory
 	set_wd = function(wd)
 	{
 		self$wd <- wd
+		message("Creating direcotry at:")
+		message(wd)
 		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
 	},
 
+	#' @description
+	#' Specify which columns in the dataset correspond to which fields. 
+	#' @param params List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col"). 
+	#' @param nrows How many rows to read to check that parameters have been specified correctly
+	#' @param gwas_file Filename to read
+	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
 	determine_columns = function(params, nrows=100, gwas_file=self$filename, ...)
 	{
 		required_columns <- c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col")
@@ -130,17 +156,20 @@ Dataset <- R6::R6Class("Dataset", list(
 		print(str(out))
 		if(is.infinite(nrows))
 		{
-			return(out)
+			invisible(out)
 		} else {
-			return(NULL)
+			invisible(NULL)
 		}
 	},
 
 
 	#' @description
-	#' format dataset
+	#' Process dataset ready for uploading. Determins build and lifts over to hg19/b37 if necessary.
 	#'
-	#' @param dl=self$dl <what param does>
+	#' @param gwas_file GWAS filename
+	#' @param gwas_out Filename to save processed dataset to
+	#' @param params Column specifications (see determine_columns for more info)
+	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
 	format_dataset = function(gwas_file=self$filename, gwas_out = file.path(self$wd, "format.txt.gz"), params=self$params, ...)
 	{
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
@@ -158,6 +187,19 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$datainfo$gwas_file <- self$gwas_out
 	},
 
+
+	#' @description
+	#' View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs 
+	view_metadata_options = function()
+	{
+		swagger <- jsonlite::read_json(paste0(options()$ieugwasr_api, "swagger.json"))
+		p <- swagger$paths$"/edit/add"$post$parameters
+		str(p)
+	},
+
+	#' @description
+	#' Get a list of fields and whether or not they are required
+	#' @return data.frame
 	get_required_fields = function()
 	{
 		swagger <- jsonlite::read_json(paste0(options()$ieugwasr_api, "swagger.json"))
@@ -166,9 +208,13 @@ Dataset <- R6::R6Class("Dataset", list(
 		re[re] <- sapply(p[re], function(x) x$required)
 		dplyr::tibble(parameter=sapply(p, function(x) x$name), required=re) %>% 
 		subset(., parameter != "X-Api-Token") %>%
-		return
+		invisible()
 	},
 
+	#' @description
+	#' Input metadata
+	#' @param metadata List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.
+	#' @param igd_id ID to be used for uploading to the database
 	collect_metadata = function(metadata, igd_id=self$igd_id)
 	{
 		fields <- self$get_required_fields()
@@ -187,6 +233,11 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$metadata <- l
 	},
 
+	#' @description
+	#' Write meta data to json file
+	#' @param metadata List of meta data fields and their values
+	#' @param datainfo List of data column parameters
+	#' @param outdir Output directory to write json files
 	write_metadata = function(metadata=self$metadata, datainfo=self$datainfo, outdir=self$wd)
 	{
 		outfile <- file.path(outdir, "metadata.json")
@@ -198,6 +249,10 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$datainfo_file <- outfile
 	},
 
+	#' @description
+	#' Upload meta data to API
+	#' @param metadata List of meta data fields and their values
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_metadata_upload = function(metadata=self$metadata, access_token=ieugwasr::check_access_token())
 	{
 		o <- ieugwasr::api_query("edit/add", query=metadata, access_token=access_token, method="POST")
@@ -211,11 +266,19 @@ Dataset <- R6::R6Class("Dataset", list(
 		return(o)
 	},
 
+	#' @description
+	#' View meta-data
+	#' @param id ID to check
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_metadata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		ieugwasr::api_query(paste0("edit/check/", id), access_token=access_token, method="GET")
 	},
 
+	#' @description
+	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+	#' @param id ID to delete
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_metadata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		o <- ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
@@ -229,6 +292,11 @@ Dataset <- R6::R6Class("Dataset", list(
 		}
 	},
 
+	#' @description
+	#' Upload gwas dataset
+	#' @param datainfo List of data column parameters
+	#' @param gwasfile Path to processed gwasfile
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out, access_token=ieugwasr::check_access_token())
 	{
 		y <- datainfo
@@ -244,11 +312,19 @@ Dataset <- R6::R6Class("Dataset", list(
 		return(o)
 	},
 
+	#' @description
+	#' Check status of API processing pipeline
+	#' @param id ID to check
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_gwasdata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		ieugwasr::api_query(paste0("quality_control/check/", id), access_token=access_token)
 	},
 
+	#' @description
+	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+	#' @param id ID to delete
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_gwasdata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		self$api_metadata_delete(id=id, access_token=access_token)

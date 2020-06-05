@@ -1,5 +1,5 @@
 context("Obtain data")
-library(igdimport)
+library(GwasDataImport)
 
 test_that("data obtain pipeline", {
 

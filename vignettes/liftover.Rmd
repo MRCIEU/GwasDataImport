@@ -1,0 +1,27 @@
+---
+title: "Automating liftover"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Automating liftover}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(igdimport)
+```
+
+There are three ways to determine the build of a dataset:
+
+- `determine_build` - Lookup build against a selected number of HM3 SNPs, matching by rsid
+- `determine_build_position` - Lookup build against a selected number of HM3 SNPs, matching by chromosome and position
+- `determine_build_biomart` - Lookup positions on biomaRt
+
+The `liftover_gwas` function determines the build using each of those options, and then performs the liftover automatically.

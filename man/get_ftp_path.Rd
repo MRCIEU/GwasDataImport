@@ -9,7 +9,7 @@ get_ftp_path(ebi_id, ebi_ftp_url = options()$ebi_ftp_url)
 \arguments{
 \item{ebi_id}{EBI ID e.g. GCST000879}
 
-\item{ebi_ftp_url=options()$ebi_ftp_url}{<what param does>}
+\item{ebi_ftp_url}{EBI FTP default=options()$ebi_ftp_url}
 }
 \value{
 ftp path (excluding server)

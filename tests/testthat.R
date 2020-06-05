@@ -1,4 +1,4 @@
 library(testthat)
-library(igdimport)
+library(GwasDataImport)
 
-test_check("igdimport")
+test_check("GwasDataImport")

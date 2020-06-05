@@ -11,13 +11,15 @@ determine_new_datasets(
 )
 }
 \arguments{
-\item{ebi_ftp_url=options()$ebi_ftp_url}{<what param does>}
+\item{ebi_ftp_url}{FTP url default=options()$ebi_ftp_url}
 
-\item{blacklist=NULL}{<what param does>}
+\item{blacklist}{List of EBI datasets to ignore default=NULL}
+
+\item{exclude_multi_datasets}{If a EBI ID has more than one dataset then should it be ignored}
 }
 \value{
 data frame
 }
 \description{
-<full description>
+Figure out which datasets are not present in the database
 }

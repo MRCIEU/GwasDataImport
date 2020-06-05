@@ -51,6 +51,7 @@ Object that downloads, develops and uploads EBI dataset
 \item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="finalize">}\href{../../igdimport/html/Dataset.html#method-finalize}{\code{igdimport::Dataset$finalize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="get_required_fields">}\href{../../igdimport/html/Dataset.html#method-get_required_fields}{\code{igdimport::Dataset$get_required_fields()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="set_wd">}\href{../../igdimport/html/Dataset.html#method-set_wd}{\code{igdimport::Dataset$set_wd()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="view_metadata_options">}\href{../../igdimport/html/Dataset.html#method-view_metadata_options}{\code{igdimport::Dataset$view_metadata_options()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="write_metadata">}\href{../../igdimport/html/Dataset.html#method-write_metadata}{\code{igdimport::Dataset$write_metadata()}}\out{</span>}
 }
 \out{</details>}

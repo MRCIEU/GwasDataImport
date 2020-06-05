@@ -7,11 +7,11 @@
 being_processed(dat)
 }
 \arguments{
-\item{dat}{<what param does>}
+\item{dat}{Output from \code{determine_new_datasets}}
 }
 \value{
-
+Updated dat
 }
 \description{
-<full description>
+List of EBI datasets that are currently being processed
 }
