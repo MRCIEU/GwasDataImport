@@ -57,6 +57,9 @@
       <a href="../articles/ebi_workflow.html">EBI upload pipeline</a>
     </li>
     <li>
+      <a href="../articles/edit.html">Edit existing GWAS meta data</a>
+    </li>
+    <li>
       <a href="../articles/import_pipeline.html">Importing datasets into OpenGWAS</a>
     </li>
     <li>
@@ -196,6 +199,7 @@
 <li>Removing any rows that have missing values in any required fields</li>
 <li>Updating build to hg19/b37 if necessary</li>
 <li>Writing processed dataset to file, ready for upload</li>
+<li>Calculate the md5 checksum</li>
 </ol>
 <p>This is achieved using:</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">format_dataset</span>()</pre></body></html></div>
@@ -216,6 +220,7 @@
 <p>Once the meta-data is entered, it can be uploaded along with the processed GWAS summary data:</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_metadata_upload</span>()
 <span class="no">x</span>$<span class="fu">api_gwasdata_upload</span>()</pre></body></html></div>
+<p>This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.</p>
 </div>
 <div id="wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report" class="section level2">
 <h2 class="hasAnchor">
@@ -232,7 +237,7 @@
 <p>If you see a file called <code>&lt;id&gt;_report.html</code> then the pipeline is complete. To view the report, go to:</p>
 <p><a href="http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/" class="uri">http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/</a><id></id></p>
 <p>If you are happy with the dataset then you can next release the dataset using the following command:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">release</span>(<span class="kw">comments</span><span class="kw">=</span><span class="st">"Some comments here"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwas_release</span>(<span class="kw">comments</span><span class="kw">=</span><span class="st">"Some comments here"</span>)</pre></body></html></div>
 <p>Alternatively, you can delete the data that has been uploaded:</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwasdata_delete</span>()</pre></body></html></div>
 </div>

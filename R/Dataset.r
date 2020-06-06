@@ -37,29 +37,29 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param igd_id Option to provide a specified ID for upload. If none provided then will use the next ieu-a batch ID
 	#'
 	#' @return new ObtainEbiDataset object
-	initialize = function(filename, wd=tempdir(), igd_id=NULL)
+	initialize = function(filename=NULL, wd=tempdir(), igd_id=NULL)
 	{
 		if(!is.null(igd_id))
 		{
-			self$check_id(igd_id)
+			self$is_new_id(igd_id)
 		}
 		self$igd_id <- igd_id
 		self$set_wd(wd)
-		stopifnot(file.exists(filename))
 		self$filename <- filename
 	},
 
 	#' @description
 	#' Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed
 	#' @param id ID to check
-	check_id = function(id=self$igd_id)
+	is_new_id = function(id=self$igd_id)
 	{
 		stopifnot(!is.null(id))
 		message("Checking existing IDs")
 		r <- ieugwasr::api_query(paste0("gwasinfo/", id), access_token=ieugwasr::check_access_token(), method="GET")
 		if(length(ieugwasr::get_query_content(r)) != 0)
 		{
-			stop("ID already in database: ", id)
+			message("ID already in database: ", id)
+			invisible(TRUE)
 		}
 		message("Checking in-process IDs")
 		r <- ieugwasr::api_query(paste0("edit/check/", id), access_token=ieugwasr::check_access_token(), method="GET")
@@ -69,9 +69,10 @@ Dataset <- R6::R6Class("Dataset", list(
 		}
 		if(length(ieugwasr::get_query_content(r)) != 0)
 		{
-			stop("ID already being processed: ", id)
+			message("ID already being processed: ", id)
+			invisible(TRUE)
 		}
-		invisible(NULL)
+		invisible(FALSE)
 	},
 
 	#' @description
@@ -182,6 +183,8 @@ Dataset <- R6::R6Class("Dataset", list(
 		write.table(out, file=zz, row=F, col=TRUE, qu=FALSE, na="")
 		close(zz)
 
+		message("Calculating md5")
+		self$datainfo$md5 <- tools::md5sum(gwas_out)
 		self$nsnp <- nrow(out)
 		self$gwas_out <- gwas_out
 		self$datainfo$gwas_file <- self$gwas_out
@@ -258,8 +261,31 @@ Dataset <- R6::R6Class("Dataset", list(
 		o <- ieugwasr::api_query("edit/add", query=metadata, access_token=access_token, method="POST")
 		if(httr::status_code(o) == 200)
 		{
-			message("Successfully uploaded metadata")
+			self$igd_id <- httr::content(o)$id
 			self$metadata_uploaded <- TRUE
+			message("ID: ", self$igd_id)
+			message("Successfully uploaded metadata")
+		} else {
+			message("Failed to uploaded metadata")
+		}
+		return(o)
+	},
+
+
+	#' @description
+	#' Upload meta data to API
+	#' @param metadata List of meta data fields and their values
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
+	api_metadata_edit = function(metadata=self$metadata, access_token=ieugwasr::check_access_token())
+	{
+		stopifnot(!is.null(metadata$id))
+		o <- ieugwasr::api_query("edit/edit", query=metadata, access_token=access_token, method="POST")
+		if(httr::status_code(o) == 200)
+		{
+			self$igd_id <- httr::content(o)$id
+			self$metadata_uploaded <- TRUE
+			message("ID: ", self$igd_id)
+			message("Successfully uploaded metadata")
 		} else {
 			message("Failed to uploaded metadata")
 		}
@@ -299,7 +325,10 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out, access_token=ieugwasr::check_access_token())
 	{
+		stopifnot(!is.null(self$igd_id))
+		stopifnot(self$metadata_uploaded)
 		y <- datainfo
+		y$id <- self$igd_id
 		y$gwas_file <- httr::upload_file(gwasfile)
 		o <- ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
 		if(httr::status_code(o) == 201)
@@ -328,6 +357,29 @@ Dataset <- R6::R6Class("Dataset", list(
 	api_gwasdata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		self$api_metadata_delete(id=id, access_token=access_token)
+	},
+
+	#' @description
+	#' View the html report for a processed dataset
+	#' 
+	api_report = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	{
+		o <- httr::content(x$api_gwasdata_check())
+		if(!any(grepl("html", unlist(o))))
+		{
+			message("html report hasn't been generated yet")
+			return(o)
+		}
+		url <- paste0(options()$ieugwasr_api, "quality_control/report/", id)
+		browseURL(url)
+	},
+
+	#' @description
+	#' Release a dataset 
+	api_gwas_release = function(comments=NULL, passed_qc="True", id=self$igd_id, access_token=ieugwasr::check_access_token())
+	{
+		payload <- list(id=id, comments=comments, passed_qc=passed_qc)
+		ieugwasr::api_query("quality_control/release", query=payload, access_token=access_token, method="POST")
 	}
 ))
 

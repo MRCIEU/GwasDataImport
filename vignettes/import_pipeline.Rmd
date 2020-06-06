@@ -168,6 +168,7 @@ Once you are happy with how the columns are being parsed, the dataset can now be
 3. Removing any rows that have missing values in any required fields
 4. Updating build to hg19/b37 if necessary
 5. Writing processed dataset to file, ready for upload
+6. Calculate the md5 checksum
 
 This is achieved using:
 
@@ -204,6 +205,8 @@ x$api_metadata_upload()
 x$api_gwasdata_upload()
 ```
 
+This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.
+
 ## 7. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
 
 Once uploaded, the dataset will go through a processing pipeline on the server.
@@ -229,7 +232,7 @@ http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>
 If you are happy with the dataset then you can next release the dataset using the following command:
 
 ```{r, eval=FALSE}
-x$release(comments="Some comments here")
+x$api_gwas_release(comments="Some comments here")
 ```
 
 Alternatively, you can delete the data that has been uploaded:
