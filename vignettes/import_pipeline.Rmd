@@ -54,6 +54,11 @@ x$api_metadata_upload()
 # Upload summary data
 x$api_gwasdata_upload()
 
+# View report
+x$api_report()
+
+# Release dataset
+x$api_gwas_release()
 ```
 
 The steps are detailed below.
@@ -228,6 +233,12 @@ x$api_gwasdata_check() %>% httr::content()
 If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
 
 http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>
+
+Or run:
+
+```{r, eval=FALSE}
+x$api_report()
+```
 
 If you are happy with the dataset then you can next release the dataset using the following command:
 

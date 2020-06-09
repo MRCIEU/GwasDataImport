@@ -123,7 +123,13 @@
 <span class="no">x</span>$<span class="fu">api_metadata_upload</span>()
 
 <span class="co"># Upload summary data</span>
-<span class="no">x</span>$<span class="fu">api_gwasdata_upload</span>()</pre></body></html></div>
+<span class="no">x</span>$<span class="fu">api_gwasdata_upload</span>()
+
+<span class="co"># View report</span>
+<span class="no">x</span>$<span class="fu">api_report</span>()
+
+<span class="co"># Release dataset</span>
+<span class="no">x</span>$<span class="fu">api_gwas_release</span>()</pre></body></html></div>
 <p>The steps are detailed below.</p>
 <div id="download-the-summary-dataset" class="section level2">
 <h2 class="hasAnchor">
@@ -236,10 +242,12 @@
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwasdata_check</span>() <span class="kw">%&gt;%</span> <span class="kw pkg">httr</span><span class="kw ns">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span>()</pre></body></html></div>
 <p>If you see a file called <code>&lt;id&gt;_report.html</code> then the pipeline is complete. To view the report, go to:</p>
 <p><a href="http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/" class="uri">http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/</a><id></id></p>
+<p>Or run:</p>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_report</span>()</pre></body></html></div>
 <p>If you are happy with the dataset then you can next release the dataset using the following command:</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwas_release</span>(<span class="kw">comments</span><span class="kw">=</span><span class="st">"Some comments here"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwas_release</span>(<span class="kw">comments</span><span class="kw">=</span><span class="st">"Some comments here"</span>)</pre></body></html></div>
 <p>Alternatively, you can delete the data that has been uploaded:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwasdata_delete</span>()</pre></body></html></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">x</span>$<span class="fu">api_gwasdata_delete</span>()</pre></body></html></div>
 </div>
 <div id="wait-for-the-data-to-be-uploaded-to-the-opengwas-database" class="section level2">
 <h2 class="hasAnchor">
@@ -250,7 +258,7 @@
 <h2 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary:</h2>
 <p>Run pipeline:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">Dataset</span>$<span class="fu">new</span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">fn</span>, <span class="kw">igd_id</span><span class="kw">=</span><span class="no">id</span>)
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">Dataset</span>$<span class="fu">new</span>(<span class="kw">filename</span><span class="kw">=</span><span class="no">fn</span>, <span class="kw">igd_id</span><span class="kw">=</span><span class="no">id</span>)
 <span class="no">x</span>$<span class="fu">determine_columns</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">chr_col</span><span class="kw">=</span><span class="fl">1</span>, <span class="kw">snp_col</span><span class="kw">=</span><span class="fl">2</span>, <span class="kw">pos_col</span><span class="kw">=</span><span class="fl">3</span>, <span class="kw">oa_col</span><span class="kw">=</span><span class="fl">4</span>, <span class="kw">ea_col</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">eaf_col</span><span class="kw">=</span><span class="fl">6</span>, <span class="kw">beta_col</span><span class="kw">=</span><span class="fl">7</span>, <span class="kw">se_col</span><span class="kw">=</span><span class="fl">8</span>, <span class="kw">pval_col</span><span class="kw">=</span><span class="fl">9</span>))
 <span class="no">x</span>$<span class="fu">format_dataset</span>()
 <span class="no">x</span>$<span class="fu">collect_metadata</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">trait</span><span class="kw">=</span><span class="st">"hello"</span>, <span class="kw">build</span><span class="kw">=</span><span class="st">"HG19/GRCh37"</span>, <span class="kw">category</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">subcategory</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">group_name</span><span class="kw">=</span><span class="st">"public"</span>, <span class="kw">population</span><span class="kw">=</span><span class="st">"European"</span>, <span class="kw">sex</span><span class="kw">=</span><span class="st">"Males"</span>, <span class="kw">note</span><span class="kw">=</span><span class="st">'asdasd'</span>))

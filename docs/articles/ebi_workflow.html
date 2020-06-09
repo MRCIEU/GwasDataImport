@@ -118,7 +118,7 @@
 <span class="no">ebi_id</span> <span class="kw">&lt;-</span> <span class="st">"GCST005522"</span>
 <span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">EbiDataset</span>$<span class="fu">new</span>(
     <span class="kw">ebi_id</span> <span class="kw">=</span> <span class="no">ebi_id</span>,
-    <span class="kw">ftp_path</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/GwasDataImport/man/get_ftp_path.html">get_ftp_path</a></span>(<span class="no">ebi_id</span>),
+    <span class="kw">ftp_path</span><span class="kw">=</span><span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span>(<span class="no">ebi_id</span>),
     <span class="kw">igd_id</span> <span class="kw">=</span> <span class="st">"ebi-a-EBITEST"</span>,
     <span class="kw">wd</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"uploads/"</span>, <span class="no">ebi_id</span>)
 )
@@ -131,8 +131,8 @@
 <a href="#workflow-for-all-datasets" class="anchor"></a>Workflow for all datasets</h2>
 <p>To get a list of datasets that need to be imported:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">ignore_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html">scan</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span>), <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>())
-<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GwasDataImport/man/determine_new_datasets.html">determine_new_datasets</a></span>(<span class="kw">blacklist</span><span class="kw">=</span><span class="no">ignore_list</span>)
-<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GwasDataImport/man/being_processed.html">being_processed</a></span>(<span class="no">newdats</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">.</span>, <span class="no">need</span>)</pre></body></html></div>
+<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span>(<span class="kw">blacklist</span><span class="kw">=</span><span class="no">ignore_list</span>)
+<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/being_processed.html">being_processed</a></span>(<span class="no">newdats</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">.</span>, <span class="no">need</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">ignore</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>()
 <span class="kw">for</span>(<span class="no">i</span> <span class="kw">in</span> <span class="fl">2</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">newdats</span>))
 {
@@ -153,7 +153,7 @@
 <div id="lookup-build" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lookup-build" class="anchor"></a>Lookup build</h2>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">EbiDataset</span>$<span class="fu">new</span>(<span class="st">"GCST000755"</span>, <span class="kw">ftp_path</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/pkg/GwasDataImport/man/get_ftp_path.html">get_ftp_path</a></span>(<span class="st">"GCST000755"</span>))
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">EbiDataset</span>$<span class="fu">new</span>(<span class="st">"GCST000755"</span>, <span class="kw">ftp_path</span><span class="kw">=</span><span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span>(<span class="st">"GCST000755"</span>))
 <span class="no">x</span>$<span class="fu">download_dataset</span>()
 <span class="no">x</span>$<span class="fu">format_dataset</span>()</pre></body></html></div>
 </div>
@@ -161,7 +161,7 @@
 <h2 class="hasAnchor">
 <a href="#suhre-proteins" class="anchor"></a>Suhre proteins</h2>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">ignore_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html">scan</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span>), <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>())
-<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GwasDataImport/man/determine_new_datasets.html">determine_new_datasets</a></span>(<span class="kw">blacklist</span><span class="kw">=</span><span class="no">ignore_list</span>, <span class="kw">exclude</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="no">newdats</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span>(<span class="kw">blacklist</span><span class="kw">=</span><span class="no">ignore_list</span>, <span class="kw">exclude</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="no">suhre</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">newdats</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"Suhr"</span>, <span class="no">path</span>))
 <span class="no">suhre</span> <span class="kw">&lt;-</span> <span class="fu">separate</span>(<span class="no">suhre</span>, <span class="no">path</span>, <span class="kw">sep</span><span class="kw">=</span><span class="st">"/"</span>, <span class="kw">into</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"p1"</span>,<span class="st">"p2"</span>,<span class="st">"p3"</span>), <span class="kw">remove</span><span class="kw">=</span><span class="no">F</span>)
 <span class="no">temp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(<span class="no">suhre</span>$<span class="no">p3</span>, <span class="kw">split</span><span class="kw">=</span><span class="st">"_"</span>))
