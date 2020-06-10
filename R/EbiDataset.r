@@ -15,6 +15,9 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 	#' @field or_flag TRUE/FALSE if had to convert OR to beta
 	or_flag = NULL,
 
+	#' @field gwas_out1 Path to first look at EBI dataset
+	gwas_out1 = NULL,
+
 	#' @description
 	#' Initialise object
 	#' @param ebi_id e.g. GCST005522
@@ -28,7 +31,7 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 	{
 		self$ebi_id <- ebi_id
 		self$igd_id <- igd_id
-		self$check_id(igd_id)
+		self$is_new_id(igd_id)
 		self$set_wd(wd)
 		self$ftp_path <- ftp_path
 		self$traitname <- traitname
@@ -51,13 +54,13 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		self$filename <- filename
 	},
 
+
 	#' @description
-	#' format dataset
-	#'
-	#' @param filename Default=self$filename
-	format_dataset = function(filename=self$filename)
+	#' organise data before formatting. This is slow but doesn't really matter
+	#' 
+	format_ebi_dataset = function(filename=self$filename, output=file.path(self$wd, "step1.txt.gz"))
 	{
-		keep_cols <- c("hm_rsid", "hm_chrom", "hm_pos", "hm_effect_allele", "hm_other_allele", "hm_effect_allele_frequency", "hm_beta", "standard_error", "p_value")
+		keep_cols <- c("hm_chrom", "hm_rsid", "hm_pos", "hm_other_allele", "hm_effect_allele", "hm_effect_allele_frequency", "hm_beta", "standard_error", "p_value")
 
 		a <- data.table::fread(filename, header=TRUE)
 		stopifnot(all(keep_cols %in% names(a)))
@@ -72,28 +75,12 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 				a[["standard_error"]] <- (log(a[["hm_ci_upper"]]) - log(a[["hm_odds_ratio"]])) / 1.96
 			}
 		}
-
 		out <- a %>% 
-			dplyr::select(tidyselect::all_of(keep_cols)) %>%
-			subset(., !is.na(hm_chrom) & !is.na(hm_pos) & !is.na(hm_effect_allele) & !is.na(hm_beta) & !is.na(standard_error))
-
-		stopifnot(nrow(out) > 0)
-
-		message("Determining build")
-		names(out)[names(out) == "hm_rsid"] <- "snp"
-		names(out)[names(out) == "hm_chrom"] <- "chr"
-		names(out)[names(out) == "hm_pos"] <- "pos"
-		out <- liftover_gwas(out)
-		stopifnot(nrow(out) > 0)
-
-		gwas_out <- paste0(filename, ".format.gz")
-		zz <- gzfile(gwas_out, "w")
-		write.table(out, file=zz, row=F, col=TRUE, qu=FALSE, na="")
+			dplyr::select(keep_cols)
+		zz <- gzfile(output, "w")
+		write.table(out, file=zz, row=F, col=TRUE, qu=FALSE)
 		close(zz)
-
-		self$nsnp_read <- nrow(a)
-		self$nsnp <- nrow(out)
-		self$gwas_out <- gwas_out
+		self$gwas_out1 <- output
 		self$or_flag <- or_flag
 	},
 
@@ -169,34 +156,18 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		l[["nsnp_stated"]] <- j[["snpCount"]]
 		l[["nsnp_read"]] <- self$nsnp_read
 		l[["nsnp"]] <- self$nsnp
-		l[["efo"]] <- httr::GET(j[["_links"]][["efoTraits"]][["href"]]) %>% httr::content(., encoding="text") %>% 
+		l[["ontology"]] <- httr::GET(j[["_links"]][["efoTraits"]][["href"]]) %>% httr::content(., encoding="text") %>% 
 			{.[["_embedded"]]} %>% 
 			{.[["efoTraits"]]} %>%
-			sapply(., function(x) x[["shortForm"]]) %>% paste(., collapse=",")
+			sapply(., function(x) x[["shortForm"]]) %>% paste(., collapse=";")
 		l[["sex"]] <- sex
 		l[["mr"]] <- 1
 		l[["category"]] <- category
 		l[["subcategory"]] <- subcategory
 		self$metadata <- l
 
-		m <- list()
-		m[["id"]] <- l[["id"]]
-		m[["gwas_file"]] <- basename(self$gwas_out)
-		m[["snp_col"]] <- 1
-		m[["chr_col"]] <- 2
-		m[["pos_col"]] <- 3
-		m[["ea_col"]] <- 4
-		m[["oa_col"]] <- 5
-		m[["eaf_col"]] <- 6
-		m[["beta_col"]] <- 7
-		m[["se_col"]] <- 8
-		m[["pval_col"]] <- 9
-		m[["header"]] <- "True"
-		m[["gzipped"]] <- "True"
-		m[["delimiter"]] <- "space"
-		m[["cohort_cases"]] <- l[["ncase"]]
-		m[["cohort_controls"]] <- ifelse(is.na(l[["ncase"]]), l[["sample_size"]], l[["ncontrol"]])
-		self$datainfo <- m
+		self$datainfo[["cohort_cases"]] <- l[["ncase"]]
+		self$datainfo[["cohort_controls"]] <- ifelse(is.na(l[["ncase"]]), l[["sample_size"]], l[["ncontrol"]])
 	},
 
 	#' @description
@@ -212,7 +183,11 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		}
 
 		message("Formatting")
-		o <- try(self$format_dataset())
+		o <- try({
+			self$format_ebi_dataset()
+			self$determine_columns(params=list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9), gwas_file=x$gwas_out1)
+			self$format_dataset(gwas_file=x$gwas_out1)
+		})
 		if('try-error' %in% class(o))
 		{
 			message("Formatting failed")

@@ -41,7 +41,7 @@ ieugwasr::get_access_token()
 ebi_id <- "GCST005522"
 x <- EbiDataset$new(
 	ebi_id = ebi_id, 
-	ftp_path=get_ftp_path(ebi_id),
+	ftp_path = get_ftp_path(ebi_id),
 	igd_id = "ebi-a-EBITEST",
 	wd = paste0("uploads/", ebi_id)
 )
@@ -51,6 +51,27 @@ x$pipeline()
 Now delete:
 
 ```{r, eval=FALSE}
+x$api_gwasdata_delete()
+```
+
+
+## Running each step individually
+
+```{r}
+ebi_id <- "GCST005522"
+x <- EbiDataset$new(
+	ebi_id = ebi_id, 
+	ftp_path = get_ftp_path(ebi_id),
+	igd_id = "ebi-a-EBITEST",
+	wd = paste0("uploads/", ebi_id)
+)
+x$download_dataset()
+x$format_ebi_dataset()
+x$determine_columns(params=list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9), gwas_file=x$gwas_out1)
+x$format_dataset(gwas_file=x$gwas_out1)
+x$organise_metadata()
+x$api_metadata_upload()
+x$api_gwasdata_upload()
 x$api_gwasdata_delete()
 ```
 

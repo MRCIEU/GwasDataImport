@@ -46,7 +46,7 @@ x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, ea
 x$format_dataset()
 
 # Input metadata
-x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd', ontology="EFO:1234;EFO:2345"))
 
 # Upload metadata
 x$api_metadata_upload()

@@ -27,10 +27,10 @@ create_build_reference <- function()
 	b37$rsid <- names(b37)
 	GenomeInfoDb::seqlevels(b37) <- paste0("chr", GenomeInfoDb::seqlevels(b37))
 
-	ch36 <- rtracklayer::import.chain(system.file(package="igdimport", "extdata", "hg19ToHg18.over.chain"))
+	ch36 <- rtracklayer::import.chain(system.file(package="GwasDataImport", "extdata", "hg19ToHg18.over.chain"))
 	b36 <- rtracklayer::liftOver(x=b37, chain=ch36) %>% unlist()
 
-	ch38 <- rtracklayer::import.chain(system.file(package="igdimport", "extdata", "hg19ToHg38.over.chain"))
+	ch38 <- rtracklayer::import.chain(system.file(package="GwasDataImport", "extdata", "hg19ToHg38.over.chain"))
 	b38 <- rtracklayer::liftOver(x=b37, chain=ch38) %>% unlist()
 	
 	b36 <- dplyr::tibble(rsid=b36$rsid, b36=GenomicRanges::start(b36))
@@ -163,7 +163,6 @@ determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
 	}
 	l <- dplyr::bind_rows(l)
 	m <- which.max(l$n_found)
-	print(l)
 	if(all(l$n_found[m] / l$n_found[-m] > threshold))
 	{
 		return(l$build[m])
@@ -175,29 +174,34 @@ determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
 
 #' Liftover GWAS positions
 #'
-#' Determine GWAS build and liftover to b37
+#' Determine GWAS build and liftover to required build
 #'
-#' @param rsid rsid
-#' @param chr chr
-#' @param pos pos
-#' @param build Builds to try e.g. c(37,38,36)
+#' @param dat Data frame with chr, pos, snp name, effect allele, non-effect allele columns
+#' @param build The possible builds to check data against Default = c(37,38,26)
+#' @param to Which build to lift over to. Default=37
+#' @param chr_col Name of chromosome column name. Required
+#' @param pos_col Name of position column name. Required
+#' @param snp_col Name of SNP column name. Optional. Uses less certain method of matching if not available
+#' @param ea_col Name of effect allele column name. Optional. Might lead to duplicated rows if not presented
+#' @param oa_col Name of other allele column name. Optional. Might lead to duplicated rows if not presented
 #'
 #' @export
-#' @return NULL if already build 37 or dataframe of b37 positions
-liftover_gwas <- function(dat, build=c(37,38,36), to=37)
+#' @return Data frame
+liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col="pos", snp_col="snp", ea_col="ea", oa_col="oa")
 {
-	stopifnot("chr" %in% names(dat))
-	stopifnot("pos" %in% names(dat))
-	if(!"snp" %in% names(dat))
+	stopifnot(chr_col %in% names(dat))
+	stopifnot(pos_col %in% names(dat))
+	if(is.null(snp_col))
 	{
 		message("Only using position")
-		from <- determine_build_position(dat$pos, build=build)
+		from <- determine_build_position(dat[[pos_col]], build=build)
 	} else {
 		message("Using rsid")
-		from <- determine_build(dat$snp, dat$chr, dat$pos, build=build)
+		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build)
 	}
 	if(is.data.frame(from))
 	{
+		print(from)
 		stop("Cannot determine build")
 	} else {
 		if(from == to)
@@ -210,7 +214,7 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37)
 
 	tab <- dplyr::tibble(build=c(36,37,38), name=c("Hg18", "Hg19", "Hg38"))
 
-	path <- system.file(package="igdimport", "extdata", paste0(
+	path <- system.file(package="GwasDataImport", "extdata", paste0(
 		tolower(tab$name[tab$build==from]),
 		"To",
 		tab$name[tab$build==to],
@@ -222,32 +226,39 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37)
 	ch <- rtracklayer::import.chain(path)
 
 	message("Converting chromosome codings")
-	if(!grepl("chr", dat$chr[1]))
+	if(!grepl("chr", dat[[chr_col]][1]))
 	{
-		dat$chr <- paste0("chr", dat$chr)
+		dat[[chr_col]] <- paste0("chr", dat[[chr_col]])
 	}
-	dat$chr[dat$chr == "chr23"] <- "chrX"
-	dat$chr[dat$chr == "chr24"] <- "chrY"
-	dat$chr[dat$chr == "chr25"] <- "chrXY"
-	dat$chr[dat$chr == "chr26"] <- "chrM"
-	dat$chr[dat$chr == "chrMT"] <- "chrM"
+	dat[[chr_col]][dat[[chr_col]] == "chr23"] <- "chrX"
+	dat[[chr_col]][dat[[chr_col]] == "chr24"] <- "chrY"
+	dat[[chr_col]][dat[[chr_col]] == "chr25"] <- "chrXY"
+	dat[[chr_col]][dat[[chr_col]] == "chr26"] <- "chrM"
+	dat[[chr_col]][dat[[chr_col]] == "chrMT"] <- "chrM"
+
 
 	message("Organising")
-	datg <- GenomicRanges::GRanges(seqnames=dat$chr, ranges=IRanges::IRanges(start=dat$pos, end=dat$pos), LIFTOVERCHRPOS=paste0(dat$chr, ":", dat$pos))
+	datg <- GenomicRanges::GRanges(seqnames=dat[[chr_col]], ranges=IRanges::IRanges(start=dat[[pos_col]], end=dat[[pos_col]]), LIFTOVERCHRPOS=paste0(dat[[chr_col]], ":", dat[[pos_col]]))
+
 	message("Lifting")
 	d19 <- rtracklayer::liftOver(datg, ch) %>% unlist()
 	message("Organising again")
 	d19 <- d19 %>% dplyr::as_tibble() %>% dplyr::select(LIFTOVERCHRPOS=LIFTOVERCHRPOS, LIFTOVERCHR=seqnames, LIFTOVERPOS=start)
-	dat$LIFTOVERCHRPOS <- paste0(dat$chr, ":", dat$pos)
+	dat$LIFTOVERCHRPOS <- paste0(dat[[chr_col]], ":", dat[[pos_col]])
 	dat <- merge(dat, d19, by="LIFTOVERCHRPOS")
-	dat$chr <- dat$LIFTOVERCHR
-	dat$pos <- dat$LIFTOVERPOS
+	dat[[chr_col]] <- dat$LIFTOVERCHR
+	dat[[pos_col]] <- dat$LIFTOVERPOS
 	dat <- subset(dat, select=-c(LIFTOVERCHRPOS, LIFTOVERCHR, LIFTOVERPOS))
-	dat$chr <- gsub("chr", "", dat$chr)
-	dat <- dat %>% dplyr::arrange(chr, pos) %>% dplyr::as_tibble()
-	dat$code <- paste(dat$chr, dat$pos, dat$ea, dat$oa)
-	dat <- subset(dat, !duplicated(code))
-	dat <- subset(dat, select=-c(code))
+	dat[[chr_col]] <- gsub("chr", "", dat[[chr_col]])
+	dat <- dat[order(dat[[chr_col]], dat[[pos_col]]), ] %>% dplyr::as_tibble()
+
+	if(!is.null(ea_col) & !is.na(oa_col))
+	{
+		dat$code <- paste(dat[[chr_col]], dat[[pos_col]], dat[[ea_col]], dat[[oa_col]])
+		dat <- subset(dat, !duplicated(code))
+		dat <- subset(dat, select=-c(code))		
+	}
+
 	message("Done")
 	return(dat)
 }

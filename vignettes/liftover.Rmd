@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(GwasDataImport)
+library(data.table)
 ```
 
 There are three ways to determine the build of a dataset:
@@ -25,3 +26,11 @@ There are three ways to determine the build of a dataset:
 - `determine_build_biomart` - Lookup positions on biomaRt
 
 The `liftover_gwas` function determines the build using each of those options, and then performs the liftover automatically.
+
+
+
+```{r}
+filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
+dat <- data.table::fread(filename)
+a <- liftover_gwas(dat, to=38, chr_col="CHROM", pos_col="POS", snp_col="RSID", ea_col="ALT", oa_col="REF")
+```

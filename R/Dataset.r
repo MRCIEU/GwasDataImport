@@ -129,31 +129,35 @@ Dataset <- R6::R6Class("Dataset", list(
 			beta=a[[params$beta_col]],
 			se=a[[params$se_col]],
 			pval=a[[params$pval_col]]
-			) %>%
-			subset(., ! (is.na(chr) | is.na(pos) | is.na(ea) | is.na(oa) | is.na(beta) | is.na(se) | is.na(pval)))
+			)
 		stopifnot(all(is.numeric(out$pos)))
 		stopifnot(all(is.numeric(out$beta)))
 		stopifnot(all(is.numeric(out$se)))
 		stopifnot(all(is.numeric(out$pval)))
-
 		j <- length(required_columns)
 		for(i in optional_columns)
 		{
 			if(!is.null(params[[i]]))
 			{
-				j <- j+1
-				out[[gsub("_col$", "", i)]] <- a[[ params[[i]] ]]
-				m[[i]] <- j
+				if(any(!is.na( a[[ params[[i]] ]] )))
+				{
+					j <- j+1
+					out[[gsub("_col$", "", i)]] <- a[[ params[[i]] ]]
+					m[[i]] <- j
+				}
 			}
 		}
+		out <- out %>%
+			subset(., ! (is.na(chr) | is.na(pos) | is.na(ea) | is.na(oa) | is.na(beta) | is.na(se) | is.na(pval)))
 		stopifnot(nrow(out) > 0)
+
 		m[["id"]] <- self$igd_id
 		m[["header"]] <- "True"
 		m[["gzipped"]] <- "True"
 		m[["delimiter"]] <- "space"
 		self$datainfo <- m
 		self$params <- params
-		message("Is this how the dataset should look:")
+		message("Is this how the dataset should look?")
 		print(str(out))
 		if(is.infinite(nrows))
 		{
@@ -210,8 +214,8 @@ Dataset <- R6::R6Class("Dataset", list(
 		re <- sapply(p, function(x) "required" %in% names(x))
 		re[re] <- sapply(p[re], function(x) x$required)
 		dplyr::tibble(parameter=sapply(p, function(x) x$name), required=re) %>% 
-		subset(., parameter != "X-Api-Token") %>%
-		invisible()
+		subset(., parameter != "X-Api-Token") %>% 
+		return()
 	},
 
 	#' @description
@@ -220,7 +224,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param igd_id ID to be used for uploading to the database
 	collect_metadata = function(metadata, igd_id=self$igd_id)
 	{
-		fields <- self$get_required_fields()
+		fields <- x$get_required_fields()
 		stopifnot(all(fields$parameter[fields$required] %in% names(metadata)))
 		l <- list()
 		for(i in fields$parameter)
@@ -333,10 +337,10 @@ Dataset <- R6::R6Class("Dataset", list(
 		o <- ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
 		if(httr::status_code(o) == 201)
 		{
-			message("Successfully uploaded metadata")
+			message("Successfully uploaded GWAS data")
 			self$gwasdata_uploaded <- TRUE
 		} else {
-			message("Failed to upload metadata")
+			message("Failed to upload GWAS data")
 		}
 		return(o)
 	},
