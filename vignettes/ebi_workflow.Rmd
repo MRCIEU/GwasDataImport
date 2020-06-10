@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval=FALSE
 )
 ```
 
@@ -57,7 +58,7 @@ x$api_gwasdata_delete()
 
 ## Running each step individually
 
-```{r}
+```{r, eval=FALSE}
 ebi_id <- "GCST005522"
 x <- EbiDataset$new(
 	ebi_id = ebi_id, 

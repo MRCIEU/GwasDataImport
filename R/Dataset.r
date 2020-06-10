@@ -365,7 +365,8 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	#' @description
 	#' View the html report for a processed dataset
-	#' 
+	#' @param id ID of report to view
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_report = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		o <- httr::content(x$api_gwasdata_check())
@@ -380,6 +381,10 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	#' @description
 	#' Release a dataset 
+	#' @param comments Optional comments to provide when uploading
+	#' @param passed_qc True or False
+	#' @param id ID to release
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_gwas_release = function(comments=NULL, passed_qc="True", id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
 		payload <- list(id=id, comments=comments, passed_qc=passed_qc)

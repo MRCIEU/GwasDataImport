@@ -57,7 +57,8 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 
 	#' @description
 	#' organise data before formatting. This is slow but doesn't really matter
-	#' 
+	#' @param filename Filename of GWAS dataset
+	#' @param output Where to save formatted dataset
 	format_ebi_dataset = function(filename=self$filename, output=file.path(self$wd, "step1.txt.gz"))
 	{
 		keep_cols <- c("hm_chrom", "hm_rsid", "hm_pos", "hm_other_allele", "hm_effect_allele", "hm_effect_allele_frequency", "hm_beta", "standard_error", "p_value")

@@ -43,7 +43,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Dataset$new()}}
-\item \href{#method-check_id}{\code{Dataset$check_id()}}
+\item \href{#method-is_new_id}{\code{Dataset$is_new_id()}}
 \item \href{#method-finalize}{\code{Dataset$finalize()}}
 \item \href{#method-delete_wd}{\code{Dataset$delete_wd()}}
 \item \href{#method-set_wd}{\code{Dataset$set_wd()}}
@@ -54,11 +54,14 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item \href{#method-collect_metadata}{\code{Dataset$collect_metadata()}}
 \item \href{#method-write_metadata}{\code{Dataset$write_metadata()}}
 \item \href{#method-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
+\item \href{#method-api_metadata_edit}{\code{Dataset$api_metadata_edit()}}
 \item \href{#method-api_metadata_check}{\code{Dataset$api_metadata_check()}}
 \item \href{#method-api_metadata_delete}{\code{Dataset$api_metadata_delete()}}
 \item \href{#method-api_gwasdata_upload}{\code{Dataset$api_gwasdata_upload()}}
 \item \href{#method-api_gwasdata_check}{\code{Dataset$api_gwasdata_check()}}
 \item \href{#method-api_gwasdata_delete}{\code{Dataset$api_gwasdata_delete()}}
+\item \href{#method-api_report}{\code{Dataset$api_report()}}
+\item \href{#method-api_gwas_release}{\code{Dataset$api_gwas_release()}}
 \item \href{#method-clone}{\code{Dataset$clone()}}
 }
 }
@@ -68,7 +71,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \subsection{Method \code{new()}}{
 Initialise
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$new(filename, wd = tempdir(), igd_id = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$new(filename = NULL, wd = tempdir(), igd_id = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -87,12 +90,12 @@ new ObtainEbiDataset object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-check_id"></a>}}
-\if{latex}{\out{\hypertarget{method-check_id}{}}}
-\subsection{Method \code{check_id()}}{
+\if{html}{\out{<a id="method-is_new_id"></a>}}
+\if{latex}{\out{\hypertarget{method-is_new_id}{}}}
+\subsection{Method \code{is_new_id()}}{
 Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_id(id = self$igd_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$is_new_id(id = self$igd_id)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -281,6 +284,28 @@ Upload meta data to API
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-api_metadata_edit"></a>}}
+\if{latex}{\out{\hypertarget{method-api_metadata_edit}{}}}
+\subsection{Method \code{api_metadata_edit()}}{
+Upload meta data to API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_edit(
+  metadata = self$metadata,
+  access_token = ieugwasr::check_access_token()
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{List of meta data fields and their values}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-api_metadata_check"></a>}}
 \if{latex}{\out{\hypertarget{method-api_metadata_check}{}}}
 \subsection{Method \code{api_metadata_check()}}{
@@ -387,6 +412,56 @@ Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and rela
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{ID to delete}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-api_report"></a>}}
+\if{latex}{\out{\hypertarget{method-api_report}{}}}
+\subsection{Method \code{api_report()}}{
+View the html report for a processed dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$api_report(
+  id = self$igd_id,
+  access_token = ieugwasr::check_access_token()
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID of report to view}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-api_gwas_release"></a>}}
+\if{latex}{\out{\hypertarget{method-api_gwas_release}{}}}
+\subsection{Method \code{api_gwas_release()}}{
+Release a dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwas_release(
+  comments = NULL,
+  passed_qc = "True",
+  id = self$igd_id,
+  access_token = ieugwasr::check_access_token()
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{comments}}{Optional comments to provide when uploading}
+
+\item{\code{passed_qc}}{True or False}
+
+\item{\code{id}}{ID to release}
 
 \item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
 }

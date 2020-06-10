@@ -9,7 +9,7 @@ Object that downloads, develops and uploads EBI dataset
 Object that downloads, develops and uploads EBI dataset
 }
 \section{Super class}{
-\code{\link[igdimport:Dataset]{igdimport::Dataset}} -> \code{EbiDataset}
+\code{\link[GwasDataImport:Dataset]{GwasDataImport::Dataset}} -> \code{EbiDataset}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -21,6 +21,8 @@ Object that downloads, develops and uploads EBI dataset
 \item{\code{ftp_path}}{Path to files in EBI FTP}
 
 \item{\code{or_flag}}{TRUE/FALSE if had to convert OR to beta}
+
+\item{\code{gwas_out1}}{Path to first look at EBI dataset}
 }
 \if{html}{\out{</div>}}
 }
@@ -29,7 +31,7 @@ Object that downloads, develops and uploads EBI dataset
 \itemize{
 \item \href{#method-new}{\code{EbiDataset$new()}}
 \item \href{#method-download_dataset}{\code{EbiDataset$download_dataset()}}
-\item \href{#method-format_dataset}{\code{EbiDataset$format_dataset()}}
+\item \href{#method-format_ebi_dataset}{\code{EbiDataset$format_ebi_dataset()}}
 \item \href{#method-organise_metadata}{\code{EbiDataset$organise_metadata()}}
 \item \href{#method-pipeline}{\code{EbiDataset$pipeline()}}
 \item \href{#method-clone}{\code{EbiDataset$clone()}}
@@ -38,21 +40,25 @@ Object that downloads, develops and uploads EBI dataset
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_check">}\href{../../igdimport/html/Dataset.html#method-api_gwasdata_check}{\code{igdimport::Dataset$api_gwasdata_check()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_delete">}\href{../../igdimport/html/Dataset.html#method-api_gwasdata_delete}{\code{igdimport::Dataset$api_gwasdata_delete()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_upload">}\href{../../igdimport/html/Dataset.html#method-api_gwasdata_upload}{\code{igdimport::Dataset$api_gwasdata_upload()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_check">}\href{../../igdimport/html/Dataset.html#method-api_metadata_check}{\code{igdimport::Dataset$api_metadata_check()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_delete">}\href{../../igdimport/html/Dataset.html#method-api_metadata_delete}{\code{igdimport::Dataset$api_metadata_delete()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_upload">}\href{../../igdimport/html/Dataset.html#method-api_metadata_upload}{\code{igdimport::Dataset$api_metadata_upload()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="check_id">}\href{../../igdimport/html/Dataset.html#method-check_id}{\code{igdimport::Dataset$check_id()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="collect_metadata">}\href{../../igdimport/html/Dataset.html#method-collect_metadata}{\code{igdimport::Dataset$collect_metadata()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="delete_wd">}\href{../../igdimport/html/Dataset.html#method-delete_wd}{\code{igdimport::Dataset$delete_wd()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="determine_columns">}\href{../../igdimport/html/Dataset.html#method-determine_columns}{\code{igdimport::Dataset$determine_columns()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="finalize">}\href{../../igdimport/html/Dataset.html#method-finalize}{\code{igdimport::Dataset$finalize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="get_required_fields">}\href{../../igdimport/html/Dataset.html#method-get_required_fields}{\code{igdimport::Dataset$get_required_fields()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="set_wd">}\href{../../igdimport/html/Dataset.html#method-set_wd}{\code{igdimport::Dataset$set_wd()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="view_metadata_options">}\href{../../igdimport/html/Dataset.html#method-view_metadata_options}{\code{igdimport::Dataset$view_metadata_options()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="write_metadata">}\href{../../igdimport/html/Dataset.html#method-write_metadata}{\code{igdimport::Dataset$write_metadata()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwas_release">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwas_release}{\code{GwasDataImport::Dataset$api_gwas_release()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_check">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_check}{\code{GwasDataImport::Dataset$api_gwasdata_check()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_delete">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_delete}{\code{GwasDataImport::Dataset$api_gwasdata_delete()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_upload">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_upload}{\code{GwasDataImport::Dataset$api_gwasdata_upload()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_check">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_check}{\code{GwasDataImport::Dataset$api_metadata_check()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_delete">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_delete}{\code{GwasDataImport::Dataset$api_metadata_delete()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_edit">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_edit}{\code{GwasDataImport::Dataset$api_metadata_edit()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_upload}{\code{GwasDataImport::Dataset$api_metadata_upload()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report">}\href{../../GwasDataImport/html/Dataset.html#method-api_report}{\code{GwasDataImport::Dataset$api_report()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata">}\href{../../GwasDataImport/html/Dataset.html#method-collect_metadata}{\code{GwasDataImport::Dataset$collect_metadata()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd">}\href{../../GwasDataImport/html/Dataset.html#method-delete_wd}{\code{GwasDataImport::Dataset$delete_wd()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns">}\href{../../GwasDataImport/html/Dataset.html#method-determine_columns}{\code{GwasDataImport::Dataset$determine_columns()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="finalize">}\href{../../GwasDataImport/html/Dataset.html#method-finalize}{\code{GwasDataImport::Dataset$finalize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="format_dataset">}\href{../../GwasDataImport/html/Dataset.html#method-format_dataset}{\code{GwasDataImport::Dataset$format_dataset()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_required_fields">}\href{../../GwasDataImport/html/Dataset.html#method-get_required_fields}{\code{GwasDataImport::Dataset$get_required_fields()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="is_new_id">}\href{../../GwasDataImport/html/Dataset.html#method-is_new_id}{\code{GwasDataImport::Dataset$is_new_id()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="set_wd">}\href{../../GwasDataImport/html/Dataset.html#method-set_wd}{\code{GwasDataImport::Dataset$set_wd()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="view_metadata_options">}\href{../../GwasDataImport/html/Dataset.html#method-view_metadata_options}{\code{GwasDataImport::Dataset$view_metadata_options()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="write_metadata">}\href{../../GwasDataImport/html/Dataset.html#method-write_metadata}{\code{GwasDataImport::Dataset$write_metadata()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -116,18 +122,23 @@ Download
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_dataset"></a>}}
-\if{latex}{\out{\hypertarget{method-format_dataset}{}}}
-\subsection{Method \code{format_dataset()}}{
-format dataset
+\if{html}{\out{<a id="method-format_ebi_dataset"></a>}}
+\if{latex}{\out{\hypertarget{method-format_ebi_dataset}{}}}
+\subsection{Method \code{format_ebi_dataset()}}{
+organise data before formatting. This is slow but doesn't really matter
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EbiDataset$format_dataset(filename = self$filename)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EbiDataset$format_ebi_dataset(
+  filename = self$filename,
+  output = file.path(self$wd, "step1.txt.gz")
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{filename}}{Default=self$filename}
+\item{\code{filename}}{Filename of GWAS dataset}
+
+\item{\code{output}}{Where to save formatted dataset}
 }
 \if{html}{\out{</div>}}
 }

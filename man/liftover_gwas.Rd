@@ -4,20 +4,37 @@
 \alias{liftover_gwas}
 \title{Liftover GWAS positions}
 \usage{
-liftover_gwas(dat, build = c(37, 38, 36), to = 37)
+liftover_gwas(
+  dat,
+  build = c(37, 38, 36),
+  to = 37,
+  chr_col = "chr",
+  pos_col = "pos",
+  snp_col = "snp",
+  ea_col = "ea",
+  oa_col = "oa"
+)
 }
 \arguments{
-\item{build}{Builds to try e.g. c(37,38,36)}
+\item{dat}{Data frame with chr, pos, snp name, effect allele, non-effect allele columns}
 
-\item{rsid}{rsid}
+\item{build}{The possible builds to check data against Default = c(37,38,26)}
 
-\item{chr}{chr}
+\item{to}{Which build to lift over to. Default=37}
 
-\item{pos}{pos}
+\item{chr_col}{Name of chromosome column name. Required}
+
+\item{pos_col}{Name of position column name. Required}
+
+\item{snp_col}{Name of SNP column name. Optional. Uses less certain method of matching if not available}
+
+\item{ea_col}{Name of effect allele column name. Optional. Might lead to duplicated rows if not presented}
+
+\item{oa_col}{Name of other allele column name. Optional. Might lead to duplicated rows if not presented}
 }
 \value{
-NULL if already build 37 or dataframe of b37 positions
+Data frame
 }
 \description{
-Determine GWAS build and liftover to b37
+Determine GWAS build and liftover to required build
 }
