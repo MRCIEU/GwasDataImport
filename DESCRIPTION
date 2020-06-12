@@ -23,7 +23,8 @@ Imports:
     jsonlite,
     data.table,
     httr,
-    magrittr
+    magrittr,
+    rtracklayer
 Suggests: 
     testthat,
     knitr,
