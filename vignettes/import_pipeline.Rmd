@@ -269,3 +269,41 @@ x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subca
 x$api_metadata_upload()
 x$api_gwasdata_upload()
 ```
+
+
+## Example
+
+```{r, eval=FALSE}
+library(GwasDataImport)
+library(data.table)
+library(tidyr)
+
+fn <- "1KG_CRP_GWAS_AJHG_2018.txt.gz"
+a <- fread(fn, he=T)
+a <- tidyr::separate(a, "MarkerName", sep=":", into=c("chr", "pos", "type"))
+a$pval <- pnorm(abs(a$Effect) / a$StdErr, lower.tail=FALSE) * 2
+
+a$Allele2[a$Allele1=="d"] <- "i"
+a$Allele2[a$Allele1=="i"] <- "d"
+table(a$Allele1)
+table(a$Allele2)
+
+a <- dplyr::select(a, chr, pos, Allele1, Allele2, Effect, StdErr, pval)
+write.table(a, file="crp.txt", row=F, col=T, qu=F)
+
+x <- Dataset$new(filename="crp.txt")
+
+# Specify columns
+x$determine_columns(list(chr_col=1, pos_col=2, oa_col=4, ea_col=3, beta_col=5, se_col=6, pval_col=7))
+# Process dataset
+x$format_dataset()
+
+# Input metadata
+x$collect_metadata(list(trait="C-reactive protein", build="HG19/GRCh37", category="Continuous", subcategory="NA", group_name="public", population="European", sex="Males and Females", ontology="EFO_0004458", pmid="30388399", sample_size=204402))
+
+# Upload metadata
+x$api_metadata_upload() %>% httr::content()
+
+# Upload summary data
+o <- x$api_gwasdata_upload()
+```
