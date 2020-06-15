@@ -147,7 +147,7 @@ determine_build <- function(rsid, chr, pos, build=c(37,38,36))
 #'
 #' @export
 #' @return build or if not determined then dataframe
-determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
+determine_build_position <- function(pos, build=c(37,38,36))
 {
 	stopifnot(length(build) == 3)
 	data(build_ref)
@@ -162,13 +162,9 @@ determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
 		)
 	}
 	l <- dplyr::bind_rows(l)
+	print(l)
 	m <- which.max(l$n_found)
-	if(all(l$n_found[m] / l$n_found[-m] > threshold))
-	{
-		return(l$build[m])
-	} else {
-		return(l)
-	}
+	return(l$build[m])
 }
 
 
@@ -189,8 +185,6 @@ determine_build_position <- function(pos, build=c(37,38,36), threshold=50)
 #' @return Data frame
 liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col="pos", snp_col="snp", ea_col="ea", oa_col="oa")
 {
-	stopifnot(chr_col %in% names(dat))
-	stopifnot(pos_col %in% names(dat))
 	if(is.null(snp_col))
 	{
 		message("Only using position")

@@ -180,7 +180,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
 		self$datainfo[["gwas_file"]] <- gwas_out
 		message("Determining build")
-		out <- liftover_gwas(out)
+		out <- liftover_gwas(out, chr_col=params$chr_col, pos_col=params$pos_col, snp_col=params$snp_col, ea_col=params$ea_col, oa_col=params$oa_col)
 		stopifnot(nrow(out) > 0)
 
 		zz <- gzfile(gwas_out, "w")
@@ -237,6 +237,12 @@ Dataset <- R6::R6Class("Dataset", list(
 		l[["id"]] <- igd_id
 		l[["nsnp_read"]] <- self$nsnp_read
 		l[["nsnp"]] <- self$nsnp
+		excl <- names(metadata)[!names(metadata) %in% names(l)]
+		if(length(excl) > 0)
+		{
+			message("The following field names were not permitted:")
+			message(paste(excl, collapse="\n"))
+		}
 		self$metadata <- l
 	},
 
