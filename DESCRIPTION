@@ -18,7 +18,6 @@ Required:
 Imports: 
     R6,
     ieugwasr,
-    gwasvcf,
     glue,
     tidyr,
     dplyr,
@@ -40,7 +39,6 @@ Remotes:
     bioc::3.11/SummarizedExperiment,
     bioc::3.11/biomaRt,
     github::mrcieu/ieugwasr,
-    github::mrcieu/gwasvcf
 Suggests: 
     testthat,
     knitr,
