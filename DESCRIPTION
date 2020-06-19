@@ -33,12 +33,12 @@ Imports:
     SummarizedExperiment,
     biomaRt
 Remotes:
-    bioc::3.10/rtracklayer,
-    bioc::3.10/GenomeInfoDb,
-    bioc::3.10/GenomicRanges,
-    bioc::3.10/IRanges,
-    bioc::3.10/SummarizedExperiment,
-    bioc::3.10/biomaRt,
+    bioc::3.11/rtracklayer,
+    bioc::3.11/GenomicRanges,
+    bioc::3.11/GenomeInfoDb,
+    bioc::3.11/IRanges,
+    bioc::3.11/SummarizedExperiment,
+    bioc::3.11/biomaRt,
     github::mrcieu/ieugwasr,
     github::mrcieu/gwasvcf
 Suggests: 
