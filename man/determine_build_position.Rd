@@ -4,7 +4,7 @@
 \alias{determine_build_position}
 \title{Determine build just from positions}
 \usage{
-determine_build_position(pos, build = c(37, 38, 36), threshold = 50)
+determine_build_position(pos, build = c(37, 38, 36))
 }
 \arguments{
 \item{pos}{Vector of positions}

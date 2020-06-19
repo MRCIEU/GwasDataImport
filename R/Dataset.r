@@ -180,7 +180,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
 		self$datainfo[["gwas_file"]] <- gwas_out
 		message("Determining build")
-		out <- liftover_gwas(out, chr_col=params$chr_col, pos_col=params$pos_col, snp_col=params$snp_col, ea_col=params$ea_col, oa_col=params$oa_col)
+		out <- liftover_gwas(out, chr_col=self$datainfo$chr_col, pos_col=self$datainfo$pos_col, snp_col=self$datainfo$snp_col, ea_col=self$datainfo$ea_col, oa_col=self$datainfo$oa_col)
 		stopifnot(nrow(out) > 0)
 
 		zz <- gzfile(gwas_out, "w")

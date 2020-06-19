@@ -104,20 +104,41 @@ determine_build_biomart <- function(rsid, chr, pos, build=c(37,38,36))
 #' @param chr chr
 #' @param pos pos
 #' @param build Builds to try e.g. c(37,38,36)
+#' @param biomart_fallback Whether to try biomart if reference background not matching
 #'
 #' @export
 #' @return build if detected, or dataframe of matches if not
-determine_build <- function(rsid, chr, pos, build=c(37,38,36))
+determine_build <- function(rsid, chr, pos, build=c(37,38,36), biomart_fallback=TRUE)
 {
 	index <- sample(1:length(rsid), min(length(rsid), 1000000))
 	dat <- dplyr::tibble(rsid=rsid[index], chr=chr[index], pos=pos[index])
 	data(build_ref)
 	dat2 <- merge(dat, build_ref, by="rsid")
-	if(nrow(dat2) < 20 & nrow(dat) > 100)
+	if(nrow(dat) > 100000)
 	{
-		message("Not enough variants in reference dataset, using biomart")
-
-		return(determine_build_biomart(rsid, chr, pos, build))
+		if(nrow(dat2) < 20)
+		{
+			message("Not enough variants in reference dataset")
+			if(biomart_fallback)
+			{
+				message("Trying biomaRt")
+				return(determine_build_biomart(rsid, chr, pos, build))
+			} else {
+				return(data.frame())
+			}
+		}
+	} else {
+		if(nrow(dat2) < 20)
+		{
+			message("Failed to match in reference dataset")
+			if(biomart_fallback)
+			{
+				message("Trying biomaRt")
+				return(determine_build_biomart(rsid, chr, pos, build))
+			} else {
+				return(data.frame())
+			}
+		}
 	}
 	l <- list()
 	for(i in 1:length(build))

@@ -14,9 +14,10 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Required:
-    R6,
-    ieugwasr
+    R>=3.6.0
 Imports: 
+    R6,
+    ieugwasr,
     glue,
     tidyr,
     dplyr,
@@ -24,7 +25,12 @@ Imports:
     data.table,
     httr,
     magrittr,
-    rtracklayer
+    rtracklayer,
+    GenomeInfoDb,
+    GenomicRanges,
+    IRanges,
+    SummarizedExperiment,
+    biomaRt
 Suggests: 
     testthat,
     knitr,
