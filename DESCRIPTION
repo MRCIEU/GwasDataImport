@@ -18,6 +18,7 @@ Required:
 Imports: 
     R6,
     ieugwasr,
+    gwasvcf,
     glue,
     tidyr,
     dplyr,
