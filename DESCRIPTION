@@ -32,6 +32,15 @@ Imports:
     IRanges,
     SummarizedExperiment,
     biomaRt
+Remotes:
+    bioc::3.10/rtracklayer,
+    bioc::3.10/GenomeInfoDb,
+    bioc::3.10/GenomicRanges,
+    bioc::3.10/IRanges,
+    bioc::3.10/SummarizedExperiment,
+    bioc::3.10/biomaRt,
+    github::mrcieu/ieugwasr,
+    github::mrcieu/gwasvcf
 Suggests: 
     testthat,
     knitr,
