@@ -94,6 +94,13 @@ Dataset <- R6::R6Class("Dataset", list(
 		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
 	},
 
+	se_from_bp = function(beta, pval, minp = 1e-300)
+	{
+		pval <- pmax(pval, minp)
+		z <- qnorm(pval/2, low=FALSE)
+		return(beta / z)
+	}
+
 	#' @description
 	#' Specify which columns in the dataset correspond to which fields. 
 	#' @param params List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col"). 
@@ -125,8 +132,15 @@ Dataset <- R6::R6Class("Dataset", list(
 			)
 		stopifnot(all(is.numeric(out$pos)))
 		stopifnot(all(is.numeric(out$beta)))
-		stopifnot(all(is.numeric(out$se)))
 		stopifnot(all(is.numeric(out$pval)))
+
+		index <- is.na(out$se)
+		if(any(index))
+		{
+			message("Deriving se for ", sum(index), " out of ", length(index), " entries")
+			out$se[index] <- self$se_from_bp(out$beta, out$pval)
+		}
+
 		j <- length(required_columns)
 		for(i in optional_columns)
 		{
