@@ -23,6 +23,7 @@ Imports:
     dplyr,
     jsonlite,
     data.table,
+    R.utils,
     httr,
     magrittr,
     rtracklayer,
