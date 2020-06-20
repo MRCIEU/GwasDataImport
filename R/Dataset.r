@@ -98,8 +98,8 @@ Dataset <- R6::R6Class("Dataset", list(
 	{
 		pval <- pmax(pval, minp)
 		z <- qnorm(pval/2, low=FALSE)
-		return(beta / z)
-	}
+		return(abs(beta / z))
+	},
 
 	#' @description
 	#' Specify which columns in the dataset correspond to which fields. 
@@ -133,6 +133,8 @@ Dataset <- R6::R6Class("Dataset", list(
 		stopifnot(all(is.numeric(out$pos)))
 		stopifnot(all(is.numeric(out$beta)))
 		stopifnot(all(is.numeric(out$pval)))
+		is_all_1 <- all.equal(out$se, rep(1, length(out$se)), tol=0.05)
+		stopifnot(!is_all_1)
 
 		index <- is.na(out$se)
 		if(any(index))
