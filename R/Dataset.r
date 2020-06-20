@@ -76,13 +76,6 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
-	#' Upon completion of the Dataset object (either end of R session or deleting the object), all temporary data will be deleted
-	finalize = function()
-	{
-		self$delete_wd()
-	},
-
-	#' @description
 	#' Delete working directory
 	delete_wd = function()
 	{

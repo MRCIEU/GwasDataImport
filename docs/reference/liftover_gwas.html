@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Liftover GWAS positions — liftover_gwas" />
-<meta property="og:description" content="Determine GWAS build and liftover to b37" />
+<meta property="og:description" content="Determine GWAS build and liftover to required build" />
 
 
 
@@ -130,35 +130,60 @@
     </div>
 
     <div class="ref-description">
-    <p>Determine GWAS build and liftover to b37</p>
+    <p>Determine GWAS build and liftover to required build</p>
     </div>
 
-    <pre class="usage"><span class='fu'>liftover_gwas</span>(<span class='no'>dat</span>, <span class='kw'>build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>37</span>, <span class='fl'>38</span>, <span class='fl'>36</span>), <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>37</span>)</pre>
+    <pre class="usage"><span class='fu'>liftover_gwas</span>(
+  <span class='no'>dat</span>,
+  <span class='kw'>build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>37</span>, <span class='fl'>38</span>, <span class='fl'>36</span>),
+  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fl'>37</span>,
+  <span class='kw'>chr_col</span> <span class='kw'>=</span> <span class='st'>"chr"</span>,
+  <span class='kw'>pos_col</span> <span class='kw'>=</span> <span class='st'>"pos"</span>,
+  <span class='kw'>snp_col</span> <span class='kw'>=</span> <span class='st'>"snp"</span>,
+  <span class='kw'>ea_col</span> <span class='kw'>=</span> <span class='st'>"ea"</span>,
+  <span class='kw'>oa_col</span> <span class='kw'>=</span> <span class='st'>"oa"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>dat</th>
+      <td><p>Data frame with chr, pos, snp name, effect allele, non-effect allele columns</p></td>
+    </tr>
+    <tr>
       <th>build</th>
-      <td><p>Builds to try e.g. c(37,38,36)</p></td>
+      <td><p>The possible builds to check data against Default = c(37,38,26)</p></td>
     </tr>
     <tr>
-      <th>rsid</th>
-      <td><p>rsid</p></td>
+      <th>to</th>
+      <td><p>Which build to lift over to. Default=37</p></td>
     </tr>
     <tr>
-      <th>chr</th>
-      <td><p>chr</p></td>
+      <th>chr_col</th>
+      <td><p>Name of chromosome column name. Required</p></td>
     </tr>
     <tr>
-      <th>pos</th>
-      <td><p>pos</p></td>
+      <th>pos_col</th>
+      <td><p>Name of position column name. Required</p></td>
+    </tr>
+    <tr>
+      <th>snp_col</th>
+      <td><p>Name of SNP column name. Optional. Uses less certain method of matching if not available</p></td>
+    </tr>
+    <tr>
+      <th>ea_col</th>
+      <td><p>Name of effect allele column name. Optional. Might lead to duplicated rows if not presented</p></td>
+    </tr>
+    <tr>
+      <th>oa_col</th>
+      <td><p>Name of other allele column name. Optional. Might lead to duplicated rows if not presented</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>NULL if already build 37 or dataframe of b37 positions</p>
+    <p>Data frame</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

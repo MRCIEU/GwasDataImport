@@ -174,7 +174,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 
 <ul>
 <li><p><a href='#method-new'><code>Dataset$new()</code></a></p></li>
-<li><p><a href='#method-check_id'><code>Dataset$check_id()</code></a></p></li>
+<li><p><a href='#method-is_new_id'><code>Dataset$is_new_id()</code></a></p></li>
 <li><p><a href='#method-finalize'><code>Dataset$finalize()</code></a></p></li>
 <li><p><a href='#method-delete_wd'><code>Dataset$delete_wd()</code></a></p></li>
 <li><p><a href='#method-set_wd'><code>Dataset$set_wd()</code></a></p></li>
@@ -185,17 +185,20 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 <li><p><a href='#method-collect_metadata'><code>Dataset$collect_metadata()</code></a></p></li>
 <li><p><a href='#method-write_metadata'><code>Dataset$write_metadata()</code></a></p></li>
 <li><p><a href='#method-api_metadata_upload'><code>Dataset$api_metadata_upload()</code></a></p></li>
+<li><p><a href='#method-api_metadata_edit'><code>Dataset$api_metadata_edit()</code></a></p></li>
 <li><p><a href='#method-api_metadata_check'><code>Dataset$api_metadata_check()</code></a></p></li>
 <li><p><a href='#method-api_metadata_delete'><code>Dataset$api_metadata_delete()</code></a></p></li>
 <li><p><a href='#method-api_gwasdata_upload'><code>Dataset$api_gwasdata_upload()</code></a></p></li>
 <li><p><a href='#method-api_gwasdata_check'><code>Dataset$api_gwasdata_check()</code></a></p></li>
 <li><p><a href='#method-api_gwasdata_delete'><code>Dataset$api_gwasdata_delete()</code></a></p></li>
+<li><p><a href='#method-api_report'><code>Dataset$api_report()</code></a></p></li>
+<li><p><a href='#method-api_gwas_release'><code>Dataset$api_gwas_release()</code></a></p></li>
 <li><p><a href='#method-clone'><code>Dataset$clone()</code></a></p></li>
 </ul>
 <p><hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 <p>Initialise</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>new</span>(<span class='no'>filename</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>igd_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>new</span>(<span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>igd_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
@@ -209,9 +212,9 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 <h3>Returns</h3>
 <p>new ObtainEbiDataset object</p>
 <p><hr>
-<a id="method-check_id"></a></p><h3>Method <code>check_id()</code></h3>
+<a id="method-is_new_id"></a></p><h3>Method <code>is_new_id()</code></h3>
 <p>Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>check_id</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>igd_id</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>is_new_id</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>igd_id</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
@@ -333,6 +336,21 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 
 </dl><p></div></p>
 <p><hr>
+<a id="method-api_metadata_edit"></a></p><h3>Method <code>api_metadata_edit()</code></h3>
+<p>Upload meta data to API</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>api_metadata_edit</span>(
+  <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>metadata</span>,
+  <span class='kw'>access_token</span> <span class='kw'>=</span> <span class='kw pkg'>ieugwasr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ieugwasr/man/check_access_token.html'>check_access_token</a></span>()
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>metadata</code></dt><dd><p>List of meta data fields and their values</p></dd>
+
+<dt><code>access_token</code></dt><dd><p>Google OAuth2.0 token. See ieugwasr documentation for more info</p></dd>
+
+</dl><p></div></p>
+<p><hr>
 <a id="method-api_metadata_check"></a></p><h3>Method <code>api_metadata_check()</code></h3>
 <p>View meta-data</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>api_metadata_check</span>(
@@ -406,6 +424,42 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
 <dt><code>id</code></dt><dd><p>ID to delete</p></dd>
+
+<dt><code>access_token</code></dt><dd><p>Google OAuth2.0 token. See ieugwasr documentation for more info</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-api_report"></a></p><h3>Method <code>api_report()</code></h3>
+<p>View the html report for a processed dataset</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>api_report</span>(
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>igd_id</span>,
+  <span class='kw'>access_token</span> <span class='kw'>=</span> <span class='kw pkg'>ieugwasr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ieugwasr/man/check_access_token.html'>check_access_token</a></span>()
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>id</code></dt><dd><p>ID of report to view</p></dd>
+
+<dt><code>access_token</code></dt><dd><p>Google OAuth2.0 token. See ieugwasr documentation for more info</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-api_gwas_release"></a></p><h3>Method <code>api_gwas_release()</code></h3>
+<p>Release a dataset</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Dataset</span>$<span class='fu'>api_gwas_release</span>(
+  <span class='kw'>comments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>passed_qc</span> <span class='kw'>=</span> <span class='st'>"True"</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>igd_id</span>,
+  <span class='kw'>access_token</span> <span class='kw'>=</span> <span class='kw pkg'>ieugwasr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ieugwasr/man/check_access_token.html'>check_access_token</a></span>()
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>comments</code></dt><dd><p>Optional comments to provide when uploading</p></dd>
+
+<dt><code>passed_qc</code></dt><dd><p>True or False</p></dd>
+
+<dt><code>id</code></dt><dd><p>ID to release</p></dd>
 
 <dt><code>access_token</code></dt><dd><p>Google OAuth2.0 token. See ieugwasr documentation for more info</p></dd>
 

@@ -93,7 +93,8 @@
     
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">GwasDataImport</span>)
 <span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span>
-<span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span></pre></body></html></div>
+<span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)</pre></body></html></div>
 <p>There are three ways to determine the build of a dataset:</p>
 <ul>
 <li>
@@ -104,6 +105,20 @@
 <code>determine_build_biomart</code> - Lookup positions on biomaRt</li>
 </ul>
 <p>The <code>liftover_gwas</code> function determines the build using each of those options, and then performs the liftover automatically.</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span>)
+<span class="no">dat</span> <span class="kw">&lt;-</span> <span class="kw pkg">data.table</span><span class="kw ns">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(<span class="no">filename</span>)
+<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/liftover_gwas.html">liftover_gwas</a></span>(<span class="no">dat</span>, <span class="kw">to</span><span class="kw">=</span><span class="fl">38</span>, <span class="kw">chr_col</span><span class="kw">=</span><span class="st">"CHROM"</span>, <span class="kw">pos_col</span><span class="kw">=</span><span class="st">"POS"</span>, <span class="kw">snp_col</span><span class="kw">=</span><span class="st">"RSID"</span>, <span class="kw">ea_col</span><span class="kw">=</span><span class="st">"ALT"</span>, <span class="kw">oa_col</span><span class="kw">=</span><span class="st">"REF"</span>)
+<span class="co">#&gt; Using rsid</span>
+<span class="co">#&gt; Lifting build: 37 to 38</span>
+<span class="co">#&gt; Loading chainfile</span>
+<span class="co">#&gt; Warning: multiple methods tables found for 'type'</span>
+<span class="co">#&gt; Warning: replacing previous import 'BiocGenerics::type' by 'DelayedArray::type'</span>
+<span class="co">#&gt; when loading 'SummarizedExperiment'</span>
+<span class="co">#&gt; Converting chromosome codings</span>
+<span class="co">#&gt; Organising</span>
+<span class="co">#&gt; Lifting</span>
+<span class="co">#&gt; Organising again</span>
+<span class="co">#&gt; Done</span></pre></body></html></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

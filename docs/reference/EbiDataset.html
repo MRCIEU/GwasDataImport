@@ -139,7 +139,7 @@ Object that downloads, develops and uploads EBI dataset" />
 
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    <p><code>igdimport::Dataset</code> -&gt; <code>EbiDataset</code></p>
+    <p><code><a href='Dataset.html'>GwasDataImport::Dataset</a></code> -&gt; <code>EbiDataset</code></p>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
     <p><div class="r6-fields"></p><dl'>
@@ -151,6 +151,8 @@ Object that downloads, develops and uploads EBI dataset" />
 
 <dt><code>or_flag</code></dt><dd><p>TRUE/FALSE if had to convert OR to beta</p></dd>
 
+<dt><code>gwas_out1</code></dt><dd><p>Path to first look at EBI dataset</p></dd>
+
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
@@ -160,28 +162,32 @@ Object that downloads, develops and uploads EBI dataset" />
 <ul>
 <li><p><a href='#method-new'><code>EbiDataset$new()</code></a></p></li>
 <li><p><a href='#method-download_dataset'><code>EbiDataset$download_dataset()</code></a></p></li>
-<li><p><a href='#method-format_dataset'><code>EbiDataset$format_dataset()</code></a></p></li>
+<li><p><a href='#method-format_ebi_dataset'><code>EbiDataset$format_ebi_dataset()</code></a></p></li>
 <li><p><a href='#method-organise_metadata'><code>EbiDataset$organise_metadata()</code></a></p></li>
 <li><p><a href='#method-pipeline'><code>EbiDataset$pipeline()</code></a></p></li>
 <li><p><a href='#method-clone'><code>EbiDataset$clone()</code></a></p></li>
 </ul>
 <p><details ><summary>Inherited methods</summary>
 <ul>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_check"><a href='../../igdimport/html/Dataset.html#method-api_gwasdata_check'><code>igdimport::Dataset$api_gwasdata_check()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_delete"><a href='../../igdimport/html/Dataset.html#method-api_gwasdata_delete'><code>igdimport::Dataset$api_gwasdata_delete()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_gwasdata_upload"><a href='../../igdimport/html/Dataset.html#method-api_gwasdata_upload'><code>igdimport::Dataset$api_gwasdata_upload()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_check"><a href='../../igdimport/html/Dataset.html#method-api_metadata_check'><code>igdimport::Dataset$api_metadata_check()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_delete"><a href='../../igdimport/html/Dataset.html#method-api_metadata_delete'><code>igdimport::Dataset$api_metadata_delete()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="api_metadata_upload"><a href='../../igdimport/html/Dataset.html#method-api_metadata_upload'><code>igdimport::Dataset$api_metadata_upload()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="check_id"><a href='../../igdimport/html/Dataset.html#method-check_id'><code>igdimport::Dataset$check_id()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="collect_metadata"><a href='../../igdimport/html/Dataset.html#method-collect_metadata'><code>igdimport::Dataset$collect_metadata()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="delete_wd"><a href='../../igdimport/html/Dataset.html#method-delete_wd'><code>igdimport::Dataset$delete_wd()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="determine_columns"><a href='../../igdimport/html/Dataset.html#method-determine_columns'><code>igdimport::Dataset$determine_columns()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="finalize"><a href='../../igdimport/html/Dataset.html#method-finalize'><code>igdimport::Dataset$finalize()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="get_required_fields"><a href='../../igdimport/html/Dataset.html#method-get_required_fields'><code>igdimport::Dataset$get_required_fields()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="set_wd"><a href='../../igdimport/html/Dataset.html#method-set_wd'><code>igdimport::Dataset$set_wd()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="view_metadata_options"><a href='../../igdimport/html/Dataset.html#method-view_metadata_options'><code>igdimport::Dataset$view_metadata_options()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="igdimport" data-topic="Dataset" data-id="write_metadata"><a href='../../igdimport/html/Dataset.html#method-write_metadata'><code>igdimport::Dataset$write_metadata()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwas_release"><a href='../../GwasDataImport/html/Dataset.html#method-api_gwas_release'><code>GwasDataImport::Dataset$api_gwas_release()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_check"><a href='../../GwasDataImport/html/Dataset.html#method-api_gwasdata_check'><code>GwasDataImport::Dataset$api_gwasdata_check()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_delete"><a href='../../GwasDataImport/html/Dataset.html#method-api_gwasdata_delete'><code>GwasDataImport::Dataset$api_gwasdata_delete()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-api_gwasdata_upload'><code>GwasDataImport::Dataset$api_gwasdata_upload()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_check"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_check'><code>GwasDataImport::Dataset$api_metadata_check()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_delete"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_delete'><code>GwasDataImport::Dataset$api_metadata_delete()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_edit"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_edit'><code>GwasDataImport::Dataset$api_metadata_edit()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_upload'><code>GwasDataImport::Dataset$api_metadata_upload()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report"><a href='../../GwasDataImport/html/Dataset.html#method-api_report'><code>GwasDataImport::Dataset$api_report()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-collect_metadata'><code>GwasDataImport::Dataset$collect_metadata()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd"><a href='../../GwasDataImport/html/Dataset.html#method-delete_wd'><code>GwasDataImport::Dataset$delete_wd()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns"><a href='../../GwasDataImport/html/Dataset.html#method-determine_columns'><code>GwasDataImport::Dataset$determine_columns()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="finalize"><a href='../../GwasDataImport/html/Dataset.html#method-finalize'><code>GwasDataImport::Dataset$finalize()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="format_dataset"><a href='../../GwasDataImport/html/Dataset.html#method-format_dataset'><code>GwasDataImport::Dataset$format_dataset()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_required_fields"><a href='../../GwasDataImport/html/Dataset.html#method-get_required_fields'><code>GwasDataImport::Dataset$get_required_fields()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="is_new_id"><a href='../../GwasDataImport/html/Dataset.html#method-is_new_id'><code>GwasDataImport::Dataset$is_new_id()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="set_wd"><a href='../../GwasDataImport/html/Dataset.html#method-set_wd'><code>GwasDataImport::Dataset$set_wd()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="view_metadata_options"><a href='../../GwasDataImport/html/Dataset.html#method-view_metadata_options'><code>GwasDataImport::Dataset$view_metadata_options()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="write_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-write_metadata'><code>GwasDataImport::Dataset$write_metadata()</code></a></span></p></li>
 </ul>
 </details>
 
@@ -230,13 +236,18 @@ Object that downloads, develops and uploads EBI dataset" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-format_dataset"></a></p><h3>Method <code>format_dataset()</code></h3>
-<p>format dataset</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>format_dataset</span>(<span class='kw'>filename</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>filename</span>)</pre><p></div></p>
+<a id="method-format_ebi_dataset"></a></p><h3>Method <code>format_ebi_dataset()</code></h3>
+<p>organise data before formatting. This is slow but doesn't really matter</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>format_ebi_dataset</span>(
+  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>filename</span>,
+  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>self</span>$<span class='no'>wd</span>, <span class='st'>"step1.txt.gz"</span>)
+)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>filename</code></dt><dd><p>Default=self$filename</p></dd>
+<dt><code>filename</code></dt><dd><p>Filename of GWAS dataset</p></dd>
+
+<dt><code>output</code></dt><dd><p>Where to save formatted dataset</p></dd>
 
 </dl><p></div></p>
 <p><hr>

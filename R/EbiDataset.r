@@ -49,7 +49,7 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		b <- basename(ftp_path)
 		filename <- file.path(outdir, b)
 		ftp <- file.path(ftp_url, ftp_path)
-		cmd <- glue::glue("wget -O {filename} {ftp}")
+		cmd <- glue::glue("wget -q -O {filename} {ftp}")
 		system(cmd)
 		self$filename <- filename
 	},

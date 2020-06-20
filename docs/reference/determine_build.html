@@ -133,7 +133,7 @@
     <p>Determine build based on reference dataset</p>
     </div>
 
-    <pre class="usage"><span class='fu'>determine_build</span>(<span class='no'>rsid</span>, <span class='no'>chr</span>, <span class='no'>pos</span>, <span class='kw'>build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>37</span>, <span class='fl'>38</span>, <span class='fl'>36</span>))</pre>
+    <pre class="usage"><span class='fu'>determine_build</span>(<span class='no'>rsid</span>, <span class='no'>chr</span>, <span class='no'>pos</span>, <span class='kw'>build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>37</span>, <span class='fl'>38</span>, <span class='fl'>36</span>), <span class='kw'>biomart_fallback</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,6 +153,10 @@
     <tr>
       <th>build</th>
       <td><p>Builds to try e.g. c(37,38,36)</p></td>
+    </tr>
+    <tr>
+      <th>biomart_fallback</th>
+      <td><p>Whether to try biomart if reference background not matching</p></td>
     </tr>
     </table>
 

@@ -59,6 +59,9 @@ x$api_report()
 
 # Release dataset
 x$api_gwas_release()
+
+# Delete wd
+x$delete_wd()
 ```
 
 The steps are detailed below.
@@ -306,4 +309,7 @@ x$api_metadata_upload() %>% httr::content()
 
 # Upload summary data
 o <- x$api_gwasdata_upload()
+
+# delete wd
+x$delete_wd()
 ```

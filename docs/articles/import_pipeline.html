@@ -117,7 +117,7 @@
 <span class="no">x</span>$<span class="fu">format_dataset</span>()
 
 <span class="co"># Input metadata</span>
-<span class="no">x</span>$<span class="fu">collect_metadata</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">trait</span><span class="kw">=</span><span class="st">"hello"</span>, <span class="kw">build</span><span class="kw">=</span><span class="st">"HG19/GRCh37"</span>, <span class="kw">category</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">subcategory</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">group_name</span><span class="kw">=</span><span class="st">"public"</span>, <span class="kw">population</span><span class="kw">=</span><span class="st">"European"</span>, <span class="kw">sex</span><span class="kw">=</span><span class="st">"Males"</span>, <span class="kw">note</span><span class="kw">=</span><span class="st">'asdasd'</span>))
+<span class="no">x</span>$<span class="fu">collect_metadata</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">trait</span><span class="kw">=</span><span class="st">"hello"</span>, <span class="kw">build</span><span class="kw">=</span><span class="st">"HG19/GRCh37"</span>, <span class="kw">category</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">subcategory</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">group_name</span><span class="kw">=</span><span class="st">"public"</span>, <span class="kw">population</span><span class="kw">=</span><span class="st">"European"</span>, <span class="kw">sex</span><span class="kw">=</span><span class="st">"Males"</span>, <span class="kw">note</span><span class="kw">=</span><span class="st">'asdasd'</span>, <span class="kw">ontology</span><span class="kw">=</span><span class="st">"EFO:1234;EFO:2345"</span>))
 
 <span class="co"># Upload metadata</span>
 <span class="no">x</span>$<span class="fu">api_metadata_upload</span>()
@@ -129,7 +129,10 @@
 <span class="no">x</span>$<span class="fu">api_report</span>()
 
 <span class="co"># Release dataset</span>
-<span class="no">x</span>$<span class="fu">api_gwas_release</span>()</pre></body></html></div>
+<span class="no">x</span>$<span class="fu">api_gwas_release</span>()
+
+<span class="co"># Delete wd</span>
+<span class="no">x</span>$<span class="fu">delete_wd</span>()</pre></body></html></div>
 <p>The steps are detailed below.</p>
 <div id="download-the-summary-dataset" class="section level2">
 <h2 class="hasAnchor">
@@ -264,6 +267,45 @@
 <span class="no">x</span>$<span class="fu">collect_metadata</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">trait</span><span class="kw">=</span><span class="st">"hello"</span>, <span class="kw">build</span><span class="kw">=</span><span class="st">"HG19/GRCh37"</span>, <span class="kw">category</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">subcategory</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">group_name</span><span class="kw">=</span><span class="st">"public"</span>, <span class="kw">population</span><span class="kw">=</span><span class="st">"European"</span>, <span class="kw">sex</span><span class="kw">=</span><span class="st">"Males"</span>, <span class="kw">note</span><span class="kw">=</span><span class="st">'asdasd'</span>))
 <span class="no">x</span>$<span class="fu">api_metadata_upload</span>()
 <span class="no">x</span>$<span class="fu">api_gwasdata_upload</span>()</pre></body></html></div>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">GwasDataImport</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)
+
+<span class="no">fn</span> <span class="kw">&lt;-</span> <span class="st">"~/Downloads/1KG_CRP_GWAS_AJHG_2018.txt.gz"</span>
+<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(<span class="no">fn</span>, <span class="kw">he</span><span class="kw">=</span><span class="no">T</span>)
+<span class="no">a</span> <span class="kw">&lt;-</span> <span class="kw pkg">tidyr</span><span class="kw ns">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate.html">separate</a></span>(<span class="no">a</span>, <span class="st">"MarkerName"</span>, <span class="kw">sep</span><span class="kw">=</span><span class="st">":"</span>, <span class="kw">into</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"chr"</span>, <span class="st">"pos"</span>, <span class="st">"type"</span>))
+<span class="no">a</span>$<span class="no">pval</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">a</span>$<span class="no">Effect</span>) / <span class="no">a</span>$<span class="no">StdErr</span>, <span class="kw">lower.tail</span><span class="kw">=</span><span class="fl">FALSE</span>) * <span class="fl">2</span>
+
+<span class="no">a</span>$<span class="no">Allele2</span>[<span class="no">a</span>$<span class="no">Allele1</span><span class="kw">==</span><span class="st">"d"</span>] <span class="kw">&lt;-</span> <span class="st">"i"</span>
+<span class="no">a</span>$<span class="no">Allele2</span>[<span class="no">a</span>$<span class="no">Allele1</span><span class="kw">==</span><span class="st">"i"</span>] <span class="kw">&lt;-</span> <span class="st">"d"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">a</span>$<span class="no">Allele1</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">a</span>$<span class="no">Allele2</span>)
+
+<span class="no">a</span> <span class="kw">&lt;-</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">a</span>, <span class="no">chr</span>, <span class="no">pos</span>, <span class="no">Allele1</span>, <span class="no">Allele2</span>, <span class="no">Effect</span>, <span class="no">StdErr</span>, <span class="no">pval</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span>(<span class="no">a</span>, <span class="kw">file</span><span class="kw">=</span><span class="st">"crp.txt"</span>, <span class="kw">row</span><span class="kw">=</span><span class="no">F</span>, <span class="kw">col</span><span class="kw">=</span><span class="no">T</span>, <span class="kw">qu</span><span class="kw">=</span><span class="no">F</span>)
+
+<span class="no">x</span> <span class="kw">&lt;-</span> <span class="no">Dataset</span>$<span class="fu">new</span>(<span class="kw">filename</span><span class="kw">=</span><span class="st">"crp.txt"</span>)
+
+<span class="co"># Specify columns</span>
+<span class="no">x</span>$<span class="fu">determine_columns</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">chr_col</span><span class="kw">=</span><span class="fl">1</span>, <span class="kw">pos_col</span><span class="kw">=</span><span class="fl">2</span>, <span class="kw">oa_col</span><span class="kw">=</span><span class="fl">4</span>, <span class="kw">ea_col</span><span class="kw">=</span><span class="fl">3</span>, <span class="kw">beta_col</span><span class="kw">=</span><span class="fl">5</span>, <span class="kw">se_col</span><span class="kw">=</span><span class="fl">6</span>, <span class="kw">pval_col</span><span class="kw">=</span><span class="fl">7</span>))
+<span class="co"># Process dataset</span>
+<span class="no">x</span>$<span class="fu">format_dataset</span>()
+
+<span class="co"># Input metadata</span>
+<span class="no">x</span>$<span class="fu">collect_metadata</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">trait</span><span class="kw">=</span><span class="st">"C-reactive protein"</span>, <span class="kw">build</span><span class="kw">=</span><span class="st">"HG19/GRCh37"</span>, <span class="kw">category</span><span class="kw">=</span><span class="st">"Continuous"</span>, <span class="kw">subcategory</span><span class="kw">=</span><span class="st">"NA"</span>, <span class="kw">group_name</span><span class="kw">=</span><span class="st">"public"</span>, <span class="kw">population</span><span class="kw">=</span><span class="st">"European"</span>, <span class="kw">sex</span><span class="kw">=</span><span class="st">"Males and Females"</span>, <span class="kw">ontology</span><span class="kw">=</span><span class="st">"EFO_0004458"</span>, <span class="kw">pmid</span><span class="kw">=</span><span class="st">"30388399"</span>, <span class="kw">sample_size</span><span class="kw">=</span><span class="fl">204402</span>, <span class="kw">priority</span><span class="kw">=</span><span class="fl">1</span>))
+
+<span class="co"># Upload metadata</span>
+<span class="no">x</span>$<span class="fu">api_metadata_upload</span>() <span class="kw">%&gt;%</span> <span class="kw pkg">httr</span><span class="kw ns">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span>()
+
+<span class="co"># Upload summary data</span>
+<span class="no">o</span> <span class="kw">&lt;-</span> <span class="no">x</span>$<span class="fu">api_gwasdata_upload</span>()
+
+<span class="co"># delete wd</span>
+<span class="no">x</span>$<span class="fu">delete_wd</span>()</pre></body></html></div>
 </div>
   </div>
 
