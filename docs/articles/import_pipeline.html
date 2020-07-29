@@ -160,9 +160,10 @@
 <div id="initialise" class="section level2">
 <h2 class="hasAnchor">
 <a href="#initialise" class="anchor"></a>2. Initialise</h2>
-<p>Need to specify a few things e.g. the dataset filename. Here we’ll use a small example dataset</p>
+<p>Need to specify a few things e.g. the dataset filename. Here we’ll use a small example dataset that is bundled within the package</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span>)</pre></body></html></div>
-<p>Can also specify the id you want to use. If you don’t specify this then it will just use the next available id for the <code>ieu-a</code> data batch. Going to create a random testing id here:</p>
+<p>but you would define the <code>filename</code> object as just a path to your data file.</p>
+<p>Can also specify the <code>id</code> you want to use. If you don’t specify this then it will just use the next available id for the <code>ieu-a</code> data batch. Going to create a random testing id here:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">id</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"ieu-b-testing_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>())) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">"\\."</span>, <span class="st">"_"</span>, <span class="no">.</span>)</pre></body></html></div>
 <p>Authenticate:</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="kw pkg">ieugwasr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html">get_access_token</a></span>()</pre></body></html></div>
