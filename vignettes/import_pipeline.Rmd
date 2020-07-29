@@ -89,18 +89,21 @@ Optional additional columns:
 
 ## 2. Initialise
 
-Need to specify a few things e.g. the dataset filename. Here we'll use a small example dataset
+Need to specify a few things e.g. the dataset filename. Here we'll use a small example dataset that is bundled within the package
 
 ```{r}
 filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 ```
 
-Can also specify the id you want to use. If you don't specify this then it will just use the next available id for the `ieu-a` data batch. Going to create a random testing id here:
+but you would define the `filename` object as just a path to your data file.
+
+Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-a` data batch. Going to create a random testing id here:
 
 
 ```{r}
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
+
 
 Authenticate:
 
