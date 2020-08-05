@@ -140,8 +140,11 @@ Dataset <- R6::R6Class("Dataset", list(
 			out$se[index] <- self$se_from_bp(out$beta, out$pval)
 		}
 		is_all_1 <- isTRUE(all.equal(out$se, rep(1, length(out$se)), tol=0.05))
-		stopifnot(!is_all_1)
 
+		if(is_all_1)
+		{
+			stop("beta values appear to be z-scores")
+		}
 
 		j <- length(required_columns)
 		for(i in optional_columns)
