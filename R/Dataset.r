@@ -139,8 +139,8 @@ Dataset <- R6::R6Class("Dataset", list(
 			message("Deriving se for ", sum(index), " out of ", length(index), " entries")
 			out$se[index] <- self$se_from_bp(out$beta, out$pval)
 		}
-		is_all_1 <- all.equal(out$se, rep(1, length(out$se)), tol=0.05)
-		stopifnot(is_all_1)
+		is_all_1 <- isTRUE(all.equal(out$se, rep(1, length(out$se)), tol=0.05))
+		stopifnot(!is_all_1)
 
 
 		j <- length(required_columns)
