@@ -2,7 +2,7 @@ context("Standard upload")
 library(GwasDataImport)
 
 test_that("Standard upload", {
-
+	skip_on_travis('skipping on travis without vpn')
 	filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 	id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 	x <- Dataset$new(filename=filename, igd_id=id, wd="~/upload_test")

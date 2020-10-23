@@ -2,7 +2,7 @@ context("EBI upload")
 library(GwasDataImport)
 
 test_that("EBI upload", {
-
+	skip_on_travis('skipping on travis without vpn')
 	ebi_id <- "GCST005522"
 	x <- EbiDataset$new(
 		ebi_id = ebi_id, 
