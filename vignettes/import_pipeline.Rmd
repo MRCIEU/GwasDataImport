@@ -7,16 +7,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r include=FALSE}
+library(GwasDataImport)
+```
+
+**Before you start, make sure you are connected to the VPN!** i.e. you should be able to access this webpage: `r options()$ieugwasr_api`.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   eval=FALSE,
   comment = "#>"
 )
-```
-
-```{r setup}
-library(GwasDataImport)
 ```
 
 This package provides some simple tools to import a summary dataset into the OpenGWAS database. Here are the steps:
@@ -34,6 +36,8 @@ This package provides some simple tools to import a summary dataset into the Ope
 This may look like a lot but it's only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:
 
 ```{r, eval=FALSE}
+library(GwasDataImport)
+
 # Authenticate
 ieugwasr::get_access_token()
 
@@ -97,13 +101,12 @@ filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 
 but you would define the `filename` object as just a path to your data file.
 
-Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-a` data batch. Going to create a random testing id here:
+Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. Going to create a random testing id here:
 
 
 ```{r}
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
-
 
 Authenticate:
 
@@ -142,7 +145,8 @@ x$wd
 Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)
 
 ```{r}
-x$check_id()
+
+x$is_new_id()
 ```
 
 You can now specify 
@@ -201,33 +205,73 @@ But more fields can be specified. You can see a detailed list of them here: http
 x$view_metadata_options()
 ```
 
-To see a simplified version of this, where only the required fields are shown, see:
+To see a simplified version of this, see:
 
 ```{r}
-x$get_required_fields()
+x$get_metadata_fields()
 ```
 
-## 6. Upload meta-data and processed summary dataset
+## 6. Upload meta-data
 
-Once the meta-data is entered, it can be uploaded along with the processed GWAS summary data:
+Once the meta-data is entered, it can be uploaded:
 
 ```{r}
 x$api_metadata_upload()
+```
+
+You should see something like this printed to the screen:
+
+```
+Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/add]
+  Date: 2020-10-21 17:43
+  Status: 200
+  Content-Type: application/json
+  Size: 19 B
+{"id": "ieu-b-testing_1603302296_67257"}
+```
+
+Note that the `Status` is 200 - this indicates that the upload was successful. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
+
+```{r}
+x$metadata_upload_status %>% httr::content()
+```
+
+## 7. Upload processed summary dataset
+
+Similar to the step above, upload the actual GWAS data:
+
+```{r}
 x$api_gwasdata_upload()
 ```
 
 This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.
 
-## 7. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+You should see something like this printed to the screen:
 
-Once uploaded, the dataset will go through a processing pipeline on the server.
+```
+Successfully uploaded GWAS data
+Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
+  Date: 2020-10-23 08:35
+  Status: 201
+  Content-Type: application/json
+  Size: 83 B
+{"message": "Upload successful", "job_id": "5db0e832-df20-4fb9-a1ce-d829af7a7...
+```
 
-## 8. Check report and release the dataset
-
-You can check the metadata:
+Note again the `Status` here - it is `201` meaning a successful upload. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
 
 ```{r}
-x$api_metadata_check() %>% httr::content()
+x$gwasdata_upload_status %>% httr::content()
+```
+
+## 8. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+
+Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour.
+
+You can check the status of the pipeline by running:
+
+```{r}
+x$api_qc_status()
 ```
 
 You can also check the status of the files being generated on the server side for this dataset:
@@ -236,15 +280,30 @@ You can also check the status of the files being generated on the server side fo
 x$api_gwasdata_check() %>% httr::content()
 ```
 
+Gradually more files will be added e.g. expect to see
+
+- `upload.txt.gz`
+- `<id>.vcf.gz`
+- `<id>.vcf.gz.tbi`
+- `clump.txt`
+- `ldsc.txt.log`
+- `<id>_report.html`
+
+
+## 9. Check report and release the dataset
+
+
 If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
 
 http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>
 
-Or run:
+Or run if you are in an interactive session with a browser:
 
 ```{r, eval=FALSE}
 x$api_report()
 ```
+
+If it hasn't been reported yet you'll get a message. But if it is there, it should open a browser and you can view the report. It has various QC and Manhattan plots, and other metrics comparing the data against reference data etc. 
 
 If you are happy with the dataset then you can next release the dataset using the following command:
 
@@ -258,12 +317,12 @@ Alternatively, you can delete the data that has been uploaded:
 x$api_gwasdata_delete()
 ```
 
-## 9. [Wait for the data to be uploaded to the OpenGWAS database]
+## 10. [Wait for the data to be uploaded to the OpenGWAS database]
 
 Now the GWAS data should be uploaded to the OpenGWAS database
 
 
-## Summary:
+## Summary
 
 Run pipeline:
 
@@ -308,10 +367,10 @@ x$format_dataset()
 x$collect_metadata(list(trait="C-reactive protein", build="HG19/GRCh37", category="Continuous", subcategory="NA", group_name="public", population="European", sex="Males and Females", ontology="EFO_0004458", pmid="30388399", sample_size=204402, priority=1))
 
 # Upload metadata
-x$api_metadata_upload() %>% httr::content()
+x$api_metadata_upload()
 
 # Upload summary data
-o <- x$api_gwasdata_upload()
+x$api_gwasdata_upload()
 
 # delete wd
 x$delete_wd()

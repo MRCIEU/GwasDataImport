@@ -1,6 +1,6 @@
 Package: GwasDataImport
 Title: Import EBI data to OpenGWAS
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Gibran",
            family = "Hemani",
@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Required:
     R>=3.6.0
 Imports: 
@@ -43,5 +43,6 @@ Remotes:
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr

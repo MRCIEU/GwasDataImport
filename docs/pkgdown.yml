@@ -1,10 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   ebi_workflow: ebi_workflow.html
   edit: edit.html
   import_pipeline: import_pipeline.html
   liftover: liftover.html
-last_built: 2020-07-29T12:56Z
+last_built: 2020-10-23T10:27Z
 

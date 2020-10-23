@@ -5,7 +5,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	
 	#' @field filename Path to raw GWAS summary dataset
 	filename = NULL,
-	#' @field igd_id ID to use for upload
+	#' @field igd_id ID to use for upload. If NULL then the next available ID in batch ieu-b will be used automatically
 	igd_id = NULL,
 	#' @field wd Work directory in which to save processed files. Will be deleted upon completion
 	wd = NULL,
@@ -29,6 +29,10 @@ Dataset <- R6::R6Class("Dataset", list(
 	metadata_uploaded = FALSE,
 	#' @field gwasdata_uploaded TRUE/FALSE of whether the gwas data has been uploaded
 	gwasdata_uploaded = FALSE,
+	#' @field metadata_upload_status Response from server about upload process
+	metadata_upload_status = NULL,
+	#' @field gwasdata_upload_status Response from server about upload process
+	gwasdata_upload_status = NULL,
 
 	#' @description
 	#' Initialise
@@ -59,7 +63,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		if(length(ieugwasr::get_query_content(r)) != 0)
 		{
 			message("ID already in database: ", id)
-			invisible(TRUE)
+			invisible(FALSE)
 		}
 		message("Checking in-process IDs")
 		r <- ieugwasr::api_query(paste0("edit/check/", id), access_token=ieugwasr::check_access_token(), method="GET")
@@ -67,12 +71,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		{
 			stop("Are you authenticated?")
 		}
-		if(length(ieugwasr::get_query_content(r)) != 0)
-		{
-			message("ID already being processed: ", id)
-			invisible(TRUE)
-		}
-		invisible(FALSE)
+		invisible(TRUE)
 	},
 
 	#' @description
@@ -94,6 +93,11 @@ Dataset <- R6::R6Class("Dataset", list(
 		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
 	},
 
+	#' @description
+	#' Estimate standard error from beta and p-value
+	#' @param beta Effect size
+	#' @param pval p-value
+	#' @param minp Minimum p-value cutoff default = 1e-300
 	se_from_bp = function(beta, pval, minp = 1e-300)
 	{
 		pval <- pmax(pval, minp)
@@ -217,9 +221,28 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
-	#' Get a list of fields and whether or not they are required
+	#' Get a list of GWAS data fields and whether or not they are required
 	#' @return data.frame
-	get_required_fields = function()
+	get_gwasdata_fields = function()
+	{
+		swagger <- jsonlite::read_json(paste0(options()$ieugwasr_api, "swagger.json"))
+		p <- swagger$paths$"/edit/upload"$post$parameters
+		re <- sapply(p, function(x) "required" %in% names(x))
+		re[re] <- sapply(p[re], function(x) x$required)
+		dplyr::tibble(
+			parameter=sapply(p, function(x) x$name), 
+			required=re, 
+			description=sapply(p, function(x) x$description)
+		) %>% 
+		subset(., parameter != "X-Api-Token") %>%
+		return()
+	},
+
+
+	#' @description
+	#' Get a list of metadata fields and whether or not they are required
+	#' @return data.frame
+	get_metadata_fields = function()
 	{
 		swagger <- jsonlite::read_json(paste0(options()$ieugwasr_api, "swagger.json"))
 		p <- swagger$paths$"/edit/add"$post$parameters
@@ -236,7 +259,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param igd_id ID to be used for uploading to the database
 	collect_metadata = function(metadata, igd_id=self$igd_id)
 	{
-		fields <- x$get_required_fields()
+		fields <- self$get_metadata_fields()
 		stopifnot(all(fields$parameter[fields$required] %in% names(metadata)))
 		l <- list()
 		for(i in fields$parameter)
@@ -290,6 +313,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		} else {
 			message("Failed to uploaded metadata")
 		}
+		self$metadata_upload_status <- o
 		return(o)
 	},
 
@@ -311,6 +335,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		} else {
 			message("Failed to uploaded metadata")
 		}
+		self$metadata_upload_status <- o
 		return(o)
 	},
 
@@ -338,6 +363,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		} else {
 			message("Failed to delete gwas / meta data")
 		}
+		self$metadata_upload_status <- o
 	},
 
 	#' @description
@@ -360,6 +386,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		} else {
 			message("Failed to upload GWAS data")
 		}
+		self$gwasdata_upload_status <- o
 		return(o)
 	},
 
@@ -382,12 +409,23 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
+	#' Check the status of the GWAS QC processing pipeline
+	#' @param id ID to delete
+	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
+	api_qc_status = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	{
+		readr::read_file(paste0(
+			options()$cromwell_api, "/api/workflows/v1/query?label=gwas_id:", self$igd_id)
+			) %>% jsonlite::prettify()
+	},
+
+	#' @description
 	#' View the html report for a processed dataset
 	#' @param id ID of report to view
 	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
 	api_report = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
 	{
-		o <- httr::content(x$api_gwasdata_check())
+		o <- httr::content(self$api_gwasdata_check())
 		if(!any(grepl("html", unlist(o))))
 		{
 			message("html report hasn't been generated yet")

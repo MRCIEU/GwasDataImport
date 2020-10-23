@@ -73,7 +73,7 @@ Object that downloads, develops and uploads EBI dataset" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GwasDataImport</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -88,26 +88,11 @@ Object that downloads, develops and uploads EBI dataset" />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/ebi_workflow.html">EBI upload pipeline</a>
-    </li>
-    <li>
-      <a href="../articles/edit.html">Edit existing GWAS meta data</a>
-    </li>
-    <li>
-      <a href="../articles/import_pipeline.html">Importing datasets into OpenGWAS</a>
-    </li>
-    <li>
-      <a href="../articles/liftover.html">Automating liftover</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -142,7 +127,7 @@ Object that downloads, develops and uploads EBI dataset" />
     <p><code><a href='Dataset.html'>GwasDataImport::Dataset</a></code> -&gt; <code>EbiDataset</code></p>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><div class="r6-fields"></p><dl'>
+    <p><div class="r6-fields"></p><dl>
 <dt><code>ebi_id</code></dt><dd><p>EBI ID to look for</p></dd>
 
 <dt><code>traitname</code></dt><dd><p>Name of trait</p></dd>
@@ -157,7 +142,7 @@ Object that downloads, develops and uploads EBI dataset" />
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>EbiDataset$new()</code></a></p></li>
@@ -177,14 +162,16 @@ Object that downloads, develops and uploads EBI dataset" />
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_delete"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_delete'><code>GwasDataImport::Dataset$api_metadata_delete()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_edit"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_edit'><code>GwasDataImport::Dataset$api_metadata_edit()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-api_metadata_upload'><code>GwasDataImport::Dataset$api_metadata_upload()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_qc_status"><a href='../../GwasDataImport/html/Dataset.html#method-api_qc_status'><code>GwasDataImport::Dataset$api_qc_status()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report"><a href='../../GwasDataImport/html/Dataset.html#method-api_report'><code>GwasDataImport::Dataset$api_report()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-collect_metadata'><code>GwasDataImport::Dataset$collect_metadata()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd"><a href='../../GwasDataImport/html/Dataset.html#method-delete_wd'><code>GwasDataImport::Dataset$delete_wd()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns"><a href='../../GwasDataImport/html/Dataset.html#method-determine_columns'><code>GwasDataImport::Dataset$determine_columns()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="finalize"><a href='../../GwasDataImport/html/Dataset.html#method-finalize'><code>GwasDataImport::Dataset$finalize()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="format_dataset"><a href='../../GwasDataImport/html/Dataset.html#method-format_dataset'><code>GwasDataImport::Dataset$format_dataset()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_required_fields"><a href='../../GwasDataImport/html/Dataset.html#method-get_required_fields'><code>GwasDataImport::Dataset$get_required_fields()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_gwasdata_fields"><a href='../../GwasDataImport/html/Dataset.html#method-get_gwasdata_fields'><code>GwasDataImport::Dataset$get_gwasdata_fields()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_metadata_fields"><a href='../../GwasDataImport/html/Dataset.html#method-get_metadata_fields'><code>GwasDataImport::Dataset$get_metadata_fields()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="is_new_id"><a href='../../GwasDataImport/html/Dataset.html#method-is_new_id'><code>GwasDataImport::Dataset$is_new_id()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="se_from_bp"><a href='../../GwasDataImport/html/Dataset.html#method-se_from_bp'><code>GwasDataImport::Dataset$se_from_bp()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="set_wd"><a href='../../GwasDataImport/html/Dataset.html#method-set_wd'><code>GwasDataImport::Dataset$set_wd()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="view_metadata_options"><a href='../../GwasDataImport/html/Dataset.html#method-view_metadata_options'><code>GwasDataImport::Dataset$view_metadata_options()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="write_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-write_metadata'><code>GwasDataImport::Dataset$write_metadata()</code></a></span></p></li>
@@ -192,18 +179,18 @@ Object that downloads, develops and uploads EBI dataset" />
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Initialise object</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>new</span>(
-  <span class='no'>ebi_id</span>,
-  <span class='kw'>wd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
-  <span class='kw'>ftp_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>igd_id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"ebi-a-"</span>, <span class='no'>ebi_id</span>),
-  <span class='kw'>traitname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Initialise object</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>ebi_id</span>,
+  wd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  ftp_path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  igd_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"ebi-a-"</span>, <span class='va'>ebi_id</span><span class='op'>)</span>,
+  traitname <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>ebi_id</code></dt><dd><p>e.g. GCST005522</p></dd>
 
 <dt><code>wd</code></dt><dd><p>Directory in which to download and develop dataset. Default=tempdir(). Deleted automatically upon object removal</p></dd>
@@ -215,19 +202,19 @@ Object that downloads, develops and uploads EBI dataset" />
 <dt><code>traitname</code></dt><dd><p>Option to provide traitname of dataset</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A new EbiDataset object</p>
 <p><hr>
-<a id="method-download_dataset"></a></p><h3>Method <code>download_dataset()</code></h3>
-<p>Download</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>download_dataset</span>(
-  <span class='kw'>ftp_path</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>ftp_path</span>,
-  <span class='kw'>ftp_url</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>()$<span class='no'>ebi_ftp_url</span>,
-  <span class='kw'>outdir</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>wd</span>
-)</pre><p></div></p>
+<a id="method-download_dataset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>download_dataset()</code></h3>
+<p>Download</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>download_dataset</span><span class='op'>(</span>
+  ftp_path <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>ftp_path</span>,
+  ftp_url <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>ebi_ftp_url</span>,
+  outdir <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>wd</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>ftp_path</code></dt><dd><p>Pre-specified path to data. Default=self$ftp_path</p></dd>
 
 <dt><code>ftp_url</code></dt><dd><p>Default=options()$ebi_ftp_url</p></dd>
@@ -236,38 +223,38 @@ Object that downloads, develops and uploads EBI dataset" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-format_ebi_dataset"></a></p><h3>Method <code>format_ebi_dataset()</code></h3>
-<p>organise data before formatting. This is slow but doesn't really matter</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>format_ebi_dataset</span>(
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>filename</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>self</span>$<span class='no'>wd</span>, <span class='st'>"step1.txt.gz"</span>)
-)</pre><p></div></p>
+<a id="method-format_ebi_dataset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>format_ebi_dataset()</code></h3>
+<p>organise data before formatting. This is slow but doesn't really matter</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>format_ebi_dataset</span><span class='op'>(</span>
+  filename <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>filename</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>self</span><span class='op'>$</span><span class='va'>wd</span>, <span class='st'>"step1.txt.gz"</span><span class='op'>)</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>filename</code></dt><dd><p>Filename of GWAS dataset</p></dd>
 
 <dt><code>output</code></dt><dd><p>Where to save formatted dataset</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-organise_metadata"></a></p><h3>Method <code>organise_metadata()</code></h3>
-<p>Download and parse metadata</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>organise_metadata</span>(
-  <span class='kw'>ebi_id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>ebi_id</span>,
-  <span class='kw'>or_flag</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>or_flag</span>,
-  <span class='kw'>igd_id</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>igd_id</span>,
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>category</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>subcategory</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-  <span class='kw'>build</span> <span class='kw'>=</span> <span class='st'>"HG19/GRCh37"</span>,
-  <span class='kw'>group_name</span> <span class='kw'>=</span> <span class='st'>"public"</span>,
-  <span class='kw'>traitname</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>traitname</span>
-)</pre><p></div></p>
+<a id="method-organise_metadata"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>organise_metadata()</code></h3>
+<p>Download and parse metadata</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>organise_metadata</span><span class='op'>(</span>
+  ebi_id <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>ebi_id</span>,
+  or_flag <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>or_flag</span>,
+  igd_id <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>igd_id</span>,
+  units <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sex <span class='op'>=</span> <span class='st'>"NA"</span>,
+  category <span class='op'>=</span> <span class='st'>"NA"</span>,
+  subcategory <span class='op'>=</span> <span class='st'>"NA"</span>,
+  build <span class='op'>=</span> <span class='st'>"HG19/GRCh37"</span>,
+  group_name <span class='op'>=</span> <span class='st'>"public"</span>,
+  traitname <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>traitname</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>ebi_id</code></dt><dd><p>Default=self$ebi_id</p></dd>
 
 <dt><code>or_flag</code></dt><dd><p>Default=self$or_flag</p></dd>
@@ -290,17 +277,17 @@ Object that downloads, develops and uploads EBI dataset" />
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-pipeline"></a></p><h3>Method <code>pipeline()</code></h3>
-<p>Once initialised this function will string together everything i.e. downloading, processing and uploading</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>pipeline</span>()</pre><p></div></p>
+<a id="method-pipeline"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>pipeline()</code></h3>
+<p>Once initialised this function will string together everything i.e. downloading, processing and uploading</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>pipeline</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>EbiDataset</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>EbiDataset</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -322,7 +309,7 @@ Object that downloads, develops and uploads EBI dataset" />
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

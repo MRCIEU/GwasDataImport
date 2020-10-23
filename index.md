@@ -1,4 +1,3 @@
-
 # GwasDataImport
 
 <!-- badges: start -->
@@ -9,11 +8,13 @@
 
 The goal of GwasDataImport is to simplify importing GWAS summary data into the OpenGWAS database. It also automates import of EBI datasets.
 
-Documentation including tutorials and examples here: https://mrcieu.github.io/GwasDataImport
-
 ## Installation
 
 ``` r
 remotes::install_github("mrcieu/GwasDataImport")
 ```
+
+## Uploading a dataset to OpenGWAS
+
+Please see the [Importing datasets into OpenGWAS](articles/import_pipeline.html) vignette for detailed information on how to do this.
 

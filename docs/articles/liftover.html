@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GwasDataImport</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -46,26 +46,11 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/ebi_workflow.html">EBI upload pipeline</a>
-    </li>
-    <li>
-      <a href="../articles/edit.html">Edit existing GWAS meta data</a>
-    </li>
-    <li>
-      <a href="../articles/import_pipeline.html">Importing datasets into OpenGWAS</a>
-    </li>
-    <li>
-      <a href="../articles/liftover.html">Automating liftover</a>
-    </li>
-  </ul>
+  <a href="../articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -78,7 +63,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="liftover_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Automating liftover</h1>
@@ -91,10 +76,11 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">GwasDataImport</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
 <span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span>
 <span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)</pre></body></html></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-datatable.com">data.table</a></span><span class="op">)</span></pre></div>
 <p>There are three ways to determine the build of a dataset:</p>
 <ul>
 <li>
@@ -105,20 +91,18 @@
 <code>determine_build_biomart</code> - Lookup positions on biomaRt</li>
 </ul>
 <p>The <code>liftover_gwas</code> function determines the build using each of those options, and then performs the liftover automatically.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">filename</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span>)
-<span class="no">dat</span> <span class="kw">&lt;-</span> <span class="kw pkg">data.table</span><span class="kw ns">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(<span class="no">filename</span>)
-<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/liftover_gwas.html">liftover_gwas</a></span>(<span class="no">dat</span>, <span class="kw">to</span><span class="kw">=</span><span class="fl">38</span>, <span class="kw">chr_col</span><span class="kw">=</span><span class="st">"CHROM"</span>, <span class="kw">pos_col</span><span class="kw">=</span><span class="st">"POS"</span>, <span class="kw">snp_col</span><span class="kw">=</span><span class="st">"RSID"</span>, <span class="kw">ea_col</span><span class="kw">=</span><span class="st">"ALT"</span>, <span class="kw">oa_col</span><span class="kw">=</span><span class="st">"REF"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span><span class="op">)</span>
+<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/liftover_gwas.html">liftover_gwas</a></span><span class="op">(</span><span class="va">dat</span>, to<span class="op">=</span><span class="fl">38</span>, chr_col<span class="op">=</span><span class="st">"CHROM"</span>, pos_col<span class="op">=</span><span class="st">"POS"</span>, snp_col<span class="op">=</span><span class="st">"RSID"</span>, ea_col<span class="op">=</span><span class="st">"ALT"</span>, oa_col<span class="op">=</span><span class="st">"REF"</span><span class="op">)</span>
 <span class="co">#&gt; Using rsid</span>
 <span class="co">#&gt; Lifting build: 37 to 38</span>
 <span class="co">#&gt; Loading chainfile</span>
-<span class="co">#&gt; Warning: multiple methods tables found for 'type'</span>
-<span class="co">#&gt; Warning: replacing previous import 'BiocGenerics::type' by 'DelayedArray::type'</span>
-<span class="co">#&gt; when loading 'SummarizedExperiment'</span>
 <span class="co">#&gt; Converting chromosome codings</span>
 <span class="co">#&gt; Organising</span>
 <span class="co">#&gt; Lifting</span>
 <span class="co">#&gt; Organising again</span>
-<span class="co">#&gt; Done</span></pre></body></html></div>
+<span class="co">#&gt; Done</span></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -134,7 +118,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -13,7 +13,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \describe{
 \item{\code{filename}}{Path to raw GWAS summary dataset}
 
-\item{\code{igd_id}}{ID to use for upload}
+\item{\code{igd_id}}{ID to use for upload. If NULL then the next available ID in batch ieu-b will be used automatically}
 
 \item{\code{wd}}{Work directory in which to save processed files. Will be deleted upon completion}
 
@@ -36,6 +36,10 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item{\code{metadata_uploaded}}{TRUE/FALSE of whether the metadata has been uploaded}
 
 \item{\code{gwasdata_uploaded}}{TRUE/FALSE of whether the gwas data has been uploaded}
+
+\item{\code{metadata_upload_status}}{Response from server about upload process}
+
+\item{\code{gwasdata_upload_status}}{Response from server about upload process}
 }
 \if{html}{\out{</div>}}
 }
@@ -44,13 +48,14 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \itemize{
 \item \href{#method-new}{\code{Dataset$new()}}
 \item \href{#method-is_new_id}{\code{Dataset$is_new_id()}}
-\item \href{#method-finalize}{\code{Dataset$finalize()}}
 \item \href{#method-delete_wd}{\code{Dataset$delete_wd()}}
 \item \href{#method-set_wd}{\code{Dataset$set_wd()}}
+\item \href{#method-se_from_bp}{\code{Dataset$se_from_bp()}}
 \item \href{#method-determine_columns}{\code{Dataset$determine_columns()}}
 \item \href{#method-format_dataset}{\code{Dataset$format_dataset()}}
 \item \href{#method-view_metadata_options}{\code{Dataset$view_metadata_options()}}
-\item \href{#method-get_required_fields}{\code{Dataset$get_required_fields()}}
+\item \href{#method-get_gwasdata_fields}{\code{Dataset$get_gwasdata_fields()}}
+\item \href{#method-get_metadata_fields}{\code{Dataset$get_metadata_fields()}}
 \item \href{#method-collect_metadata}{\code{Dataset$collect_metadata()}}
 \item \href{#method-write_metadata}{\code{Dataset$write_metadata()}}
 \item \href{#method-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
@@ -60,6 +65,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item \href{#method-api_gwasdata_upload}{\code{Dataset$api_gwasdata_upload()}}
 \item \href{#method-api_gwasdata_check}{\code{Dataset$api_gwasdata_check()}}
 \item \href{#method-api_gwasdata_delete}{\code{Dataset$api_gwasdata_delete()}}
+\item \href{#method-api_qc_status}{\code{Dataset$api_qc_status()}}
 \item \href{#method-api_report}{\code{Dataset$api_report()}}
 \item \href{#method-api_gwas_release}{\code{Dataset$api_gwas_release()}}
 \item \href{#method-clone}{\code{Dataset$clone()}}
@@ -107,16 +113,6 @@ Check if the specified ID is unique within the database. It checks published GWA
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Upon completion of the Dataset object (either end of R session or deleting the object), all temporary data will be deleted
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$finalize()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-delete_wd"></a>}}
 \if{latex}{\out{\hypertarget{method-delete_wd}{}}}
 \subsection{Method \code{delete_wd()}}{
@@ -139,6 +135,27 @@ Set working directory (creates)
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{wd}}{working directory}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-se_from_bp"></a>}}
+\if{latex}{\out{\hypertarget{method-se_from_bp}{}}}
+\subsection{Method \code{se_from_bp()}}{
+Estimate standard error from beta and p-value
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$se_from_bp(beta, pval, minp = 1e-300)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{beta}}{Effect size}
+
+\item{\code{pval}}{p-value}
+
+\item{\code{minp}}{Minimum p-value cutoff default = 1e-300}
 }
 \if{html}{\out{</div>}}
 }
@@ -205,12 +222,25 @@ View the specifications for available meta data fields, as taken from http://gwa
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_required_fields"></a>}}
-\if{latex}{\out{\hypertarget{method-get_required_fields}{}}}
-\subsection{Method \code{get_required_fields()}}{
-Get a list of fields and whether or not they are required
+\if{html}{\out{<a id="method-get_gwasdata_fields"></a>}}
+\if{latex}{\out{\hypertarget{method-get_gwasdata_fields}{}}}
+\subsection{Method \code{get_gwasdata_fields()}}{
+Get a list of GWAS data fields and whether or not they are required
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$get_required_fields()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$get_gwasdata_fields()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_metadata_fields"></a>}}
+\if{latex}{\out{\hypertarget{method-get_metadata_fields}{}}}
+\subsection{Method \code{get_metadata_fields()}}{
+Get a list of metadata fields and whether or not they are required
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$get_metadata_fields()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -403,6 +433,28 @@ Check status of API processing pipeline
 Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_delete(
+  id = self$igd_id,
+  access_token = ieugwasr::check_access_token()
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{ID to delete}
+
+\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-api_qc_status"></a>}}
+\if{latex}{\out{\hypertarget{method-api_qc_status}{}}}
+\subsection{Method \code{api_qc_status()}}{
+Check the status of the GWAS QC processing pipeline
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$api_qc_status(
   id = self$igd_id,
   access_token = ieugwasr::check_access_token()
 )}\if{html}{\out{</div>}}

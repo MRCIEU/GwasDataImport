@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">GwasDataImport</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -46,26 +46,11 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/ebi_workflow.html">EBI upload pipeline</a>
-    </li>
-    <li>
-      <a href="articles/edit.html">Edit existing GWAS meta data</a>
-    </li>
-    <li>
-      <a href="articles/import_pipeline.html">Importing datasets into OpenGWAS</a>
-    </li>
-    <li>
-      <a href="articles/liftover.html">Automating liftover</a>
-    </li>
-  </ul>
+  <a href="articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -84,13 +69,18 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#gwasdataimport" class="anchor"></a>GwasDataImport</h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>The goal of GwasDataImport is to simplify importing GWAS summary data into the OpenGWAS database. It also automates import of EBI datasets.</p>
-<p>Documentation including vignettes here: <a href="https://mrcieu.github.io/GwasDataImport" class="uri">https://mrcieu.github.io/GwasDataImport</a></p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mrcieu/GwasDataImport"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"mrcieu/GwasDataImport"</span><span class="op">)</span></pre></div>
+</div>
+<div id="uploading-a-dataset-to-opengwas" class="section level2">
+<h2 class="hasAnchor">
+<a href="#uploading-a-dataset-to-opengwas" class="anchor"></a>Uploading a dataset to OpenGWAS</h2>
+<p>Please see the <a href="articles/import_pipeline.html">Importing datasets into OpenGWAS</a> vignette for detailed information on how to do this.</p>
 </div>
 </div>
   </div>
@@ -110,7 +100,15 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.com/MRCIEU/GwasDataImport"><img src="https://travis-ci.com/MRCIEU/GwasDataImport.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/gh/MRCIEU/GwasDataImport?branch=master"><img src="https://codecov.io/gh/MRCIEU/GwasDataImport/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -119,7 +117,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

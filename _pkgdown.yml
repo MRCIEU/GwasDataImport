@@ -1,0 +1,23 @@
+avbar:
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Vignettes"
+      href: articles/index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "Changelog"
+      href: news/index.html
+  right:
+    - text: "Source"
+      href: https://github.com/mrcieu/GwasDataImport
+
+articles:
+  - title: "Vignettes"
+    desc: >
+      The following vignettes provide detailed illustrations of the package. For most uses only the GWAS upload and metadata editing sections will be of interest
+    contents:
+    - import_pipeline
+    - edit
+    - ebi_workflow
+    - liftover
