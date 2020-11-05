@@ -63,7 +63,8 @@
 
       
 
-      </header><script src="import_pipeline_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="import_pipeline_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="import_pipeline_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="import_pipeline_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Importing datasets into OpenGWAS</h1>
@@ -241,6 +242,7 @@
 <p>Note that the <code>Status</code> is 200 - this indicates that the upload was successful. If you receive a <code>4xx</code> or <code>5xx</code> number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="va">x</span><span class="op">$</span><span class="va">metadata_upload_status</span> <span class="op">%&gt;%</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html">content</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<p>Anothing thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the <code>collect_metadata</code> method with the updated metadata, and then to re-upload the data you must use the <code>api_metadata_edit</code> function. If you try to re-run the <code>api_metadata_upload</code> function it will give you an error saying that the ID already exists.</p>
 </div>
 <div id="upload-processed-summary-dataset" class="section level2">
 <h2 class="hasAnchor">

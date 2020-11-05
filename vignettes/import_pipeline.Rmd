@@ -236,6 +236,8 @@ Note that the `Status` is 200 - this indicates that the upload was successful. I
 x$metadata_upload_status %>% httr::content()
 ```
 
+Anothing thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the `collect_metadata` method with the updated metadata, and then to re-upload the data you must use the `api_metadata_edit` function. If you try to re-run the `api_metadata_upload` function it will give you an error saying that the ID already exists.
+
 ## 7. Upload processed summary dataset
 
 Similar to the step above, upload the actual GWAS data:

@@ -167,6 +167,12 @@ Dataset <- R6::R6Class("Dataset", list(
 			subset(., ! (is.na(chr) | is.na(pos) | is.na(ea) | is.na(oa) | is.na(beta) | is.na(se) | is.na(pval)))
 		stopifnot(nrow(out) > 0)
 
+		message("Checking alleles are in A/C/T/G/D/I")
+		problems <- grepl("[^ACTGactgdiDI]", out$ea) | grepl("[^ACTGactgdiDI]", out$oa)
+		message(sum(problems), " variants with disallowed characters")
+		out <- out[!problems, ]
+		stopifnot(nrow(out) > 0)
+
 		m[["id"]] <- self$igd_id
 		m[["header"]] <- "True"
 		m[["gzipped"]] <- "True"

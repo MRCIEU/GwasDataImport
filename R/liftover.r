@@ -104,11 +104,11 @@ determine_build_biomart <- function(rsid, chr, pos, build=c(37,38,36))
 #' @param chr chr
 #' @param pos pos
 #' @param build Builds to try e.g. c(37,38,36)
-#' @param biomart_fallback Whether to try biomart if reference background not matching
+#' @param fallback Whether to try "position" (fast) or "biomart" (more accurate if you have rsids) based approaches instead
 #'
 #' @export
 #' @return build if detected, or dataframe of matches if not
-determine_build <- function(rsid, chr, pos, build=c(37,38,36), biomart_fallback=TRUE)
+determine_build <- function(rsid, chr, pos, build=c(37,38,36), fallback="position")
 {
 	index <- sample(1:length(rsid), min(length(rsid), 1000000))
 	dat <- dplyr::tibble(rsid=rsid[index], chr=chr[index], pos=pos[index])
@@ -119,7 +119,13 @@ determine_build <- function(rsid, chr, pos, build=c(37,38,36), biomart_fallback=
 		if(nrow(dat2) < 20)
 		{
 			message("Not enough variants in reference dataset")
-			if(biomart_fallback)
+
+			if(fallback == "position")
+			{
+				message("Matching by position")
+				return(determine_build_position(pos, build))
+			}
+			if(fallback == "biomart")
 			{
 				message("Trying biomaRt")
 				return(determine_build_biomart(rsid, chr, pos, build))
@@ -204,7 +210,7 @@ determine_build_position <- function(pos, build=c(37,38,36))
 #'
 #' @export
 #' @return Data frame
-liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col="pos", snp_col="snp", ea_col="ea", oa_col="oa")
+liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col="pos", snp_col="snp", ea_col="ea", oa_col="oa", build_fallback="position")
 {
 	if(is.null(snp_col))
 	{
@@ -212,7 +218,7 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col=
 		from <- determine_build_position(dat[[pos_col]], build=build)
 	} else {
 		message("Using rsid")
-		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build)
+		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback="position")
 	}
 	if(is.data.frame(from))
 	{
