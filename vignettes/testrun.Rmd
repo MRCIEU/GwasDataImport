@@ -1,0 +1,63 @@
+---
+title: "Test run for upload system"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Test run for upload system}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval=FALSE
+)
+```
+
+```{r setup}
+library(GwasDataImport)
+library(data.table)
+library(ieugwasr)
+library(dplyr)
+
+# get access
+ieugwasr::get_access_token()
+
+# Initialise
+fn <- system.file("extdata/pos_0002.txt.gz", package="GwasDataImport")
+x <- Dataset$new(filename=fn, igd_id="ieu-b-test2")
+
+# Specify columns
+x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, beta_col=7, se_col=8, pval_col=9))
+
+# Process dataset
+x$format_dataset()
+
+# Input metadata
+x$collect_metadata(list(
+	trait="whatever",
+	build="HG19/GRCh37",
+	category="Continuous",
+	subcategory="NA",
+	group_name="public",
+	population="European",
+	sex="Males and Females"
+))
+
+# Upload metadata
+x$api_metadata_upload()
+
+# Upload summary data
+x$api_gwasdata_upload()
+
+# Check status
+x$api_qc_status()
+
+# Check existing files
+x$api_gwasdata_check() %>% httr::content()
+
+# Delete everything
+x$api_gwasdata_delete()
+```
+

@@ -21,3 +21,5 @@ articles:
     - edit
     - ebi_workflow
     - liftover
+    - testrun
+    - get_positions

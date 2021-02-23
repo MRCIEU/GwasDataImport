@@ -1,0 +1,37 @@
+---
+title: "Looking up chromosome and position for large sets of rs IDs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Looking up chromosome and position for large sets of rs IDs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval=FALSE
+)
+```
+
+Often GWAS datasets are shared with only the rs ID. To upload to the OpenGWAS database we need chromsome, position, effect allele, non-effect allele - rs ID is not used primarily. 
+
+The `get_positions()` function provides a convenient way to just lookup the chromosome and position from rs ID, though be warned it is quite slow, e.g. might take up to 30 minutes for 10 million SNPs.
+
+
+```{r setup}
+library(GwasDataImport)
+library(data.table)
+
+# Read in a small dataset
+fn <- system.file("extdata/pos_0002.txt.gz", package="GwasDataImport")
+a <- fread(fn)
+
+# list of rsids
+rsid <- a$RSID
+
+# get positions
+pos <- get_positions(rsid)
+```
+

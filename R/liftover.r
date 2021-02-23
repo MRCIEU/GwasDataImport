@@ -93,9 +93,9 @@ get_positions <- function(rsid, build=37, method=c("opengwas", "biomart")[1], sp
 				message("Chunk ", i, " of ", chunks)
 				l[[i]] <- ieugwasr::variants_rsid(missing[[i]])
 			}
-			b1 <- bind_rows(l) %>%
+			b1 <- dplyr::bind_rows(l) %>%
 				dplyr::select(rsid=query, chr, pos)
-			b <- bind_rows(b, b1)
+			b <- dplyr::bind_rows(b, b1)
 		}
 	} else if(method == "biomart"){
 		data(marts)
