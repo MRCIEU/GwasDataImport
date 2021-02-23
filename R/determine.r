@@ -99,9 +99,9 @@ ebi_datasets <- function(ebi_ftp_url=options()$ebi_ftp_url)
 	all_dats <- l %>% grep("/harmonised/", ., value=TRUE) %>% grep("h.tsv.gz$", ., value=TRUE)
 	message("Formatting...")
 	dat <- dplyr::tibble(path=all_dats) %>% 
-		tidyr::separate(path, sep="/", into=c("p1", "p2", "p3"), remove=FALSE) %>% 
-		dplyr::select(-p2)
-	dat$ebi_id <- do.call(rbind, strsplit(dat$p1, split="_"))[,3]
+		tidyr::separate(path, sep="/", into=c("p0", "p1", "p2", "p3"), remove=FALSE) %>% 
+		dplyr::select(-c(p0, p2))
+	dat$ebi_id <- dat$p1
 	dat <- dplyr::select(dat, path, ebi_id)	
 	return(dat)
 }

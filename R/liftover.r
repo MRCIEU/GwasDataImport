@@ -46,26 +46,80 @@ create_build_reference <- function()
 #' Lookup positions for given rsids in particular build
 #'
 #' @param rsid rsid
-#' @param build build (36, 37 or 38)
+#' @param build build (36, 37 default or 38)
+#' @param method "opengwas" (fastest) or "biomart"
+#' @param splitsize Default 50000
 #'
 #' @export
 #' @return data frame
-get_positions <- function(rsid, build)
+get_positions <- function(rsid, build=37, method=c("opengwas", "biomart")[1], splitsize=50000)
 {
-	data(marts)
-	message("looking up build ", build)
-	if(build == 36)
+	if(length(rsid) > 100000)
 	{
-		refsnp <- "refsnp"
-	} else {
-		refsnp <- "snp_filter"
+		message("This could take quite some time")
 	}
-	biomaRt::getBM(attributes = c('refsnp_id','chr_name', 'chrom_start'), filters = c(refsnp), values = rsid, mart = get(paste0("mart", build))) %>% return()
+	n <- length(rsid)
+	chunks <- ceiling(n/splitsize)
+	message("Splitting into ", chunks, " chunks of size ", splitsize, " each")
+	rsidl <- split(rsid, 1:chunks)
+
+	if(method == "opengwas")
+	{
+		if(build != 37)
+		{
+			stop("Only build 37 available on opengwas")
+		}
+
+		l <- list()
+		for(i in 1:length(rsidl))
+		{
+			message("Chunk ", i, " of ", chunks)
+			l[[i]] <- ieugwasr::afl2_rsid(rsidl[[i]])
+		}
+		b <- dplyr::bind_rows(l) %>%
+			dplyr::select(rsid, chr, pos=start)
+
+		missing <- rsid[! rsid %in% b$rsid]
+		
+		if(length(missing) > 0)
+		{
+			message("Missing ", length(missing), " from first pass, continuing again")
+			chunks <- ceiling(length(missing)/splitsize)
+			missing <- split(missing, 1:chunks)
+
+			l <- list()
+			for(i in 1:length(missing))
+			{
+				message("Chunk ", i, " of ", chunks)
+				l[[i]] <- ieugwasr::variants_rsid(missing[[i]])
+			}
+			b1 <- bind_rows(l) %>%
+				dplyr::select(rsid=query, chr, pos)
+			b <- bind_rows(b, b1)
+		}
+	} else if(method == "biomart"){
+		data(marts)
+		message("looking up build ", build)
+		refsnp <- ifelse(build == 36, "refsnp", "snp_filter")
+		l <- list()
+		for(i in 1:length(rsidl))
+		{
+			message("Chunk ", i, " of ", chunks)
+			l[[i]] <- biomaRt::getBM(attributes = c('refsnp_id','chr_name', 'chrom_start'), filters = c(refsnp), values = rsidl[[i]], mart = get(paste0("mart", build))) %>%
+				dplyr::select(rsid=refsnp_id, chr=chr_name, pos=chrom_start)
+		}
+	} else {
+		stop("Method must be 'opengwas' or 'biomart'")
+	}
+	m <- match(rsid, b$rsid)
+	b <- b[m, ]
+	message("Found ", nrow(b), " of ", length(rsid), " rsids")
+	return(b)
 }
 
 
 
-#' Determines which build a set of SNps are on
+#' Determines which build a set of SNPs are on
 #'
 #' @param rsid rsid
 #' @param chr chr
@@ -82,8 +136,8 @@ determine_build_biomart <- function(rsid, chr, pos, build=c(37,38,36))
 	for(i in 1:length(build))
 	{
 		a <- get_positions(dat$rsid, build[i])
-		b <- dplyr::inner_join(a, dat, by=c("refsnp_id"="rsid"))
-		n <- sum(b$chr_name == b$chr & b$chrom_start == b$pos)
+		b <- dplyr::inner_join(a, dat, by=rsid)
+		n <- sum(b$chr.x == b$chr.y & b$pos.x == b$pos.y)
 		l[[i]] <- dplyr::tibble(
 			build=build[i],
 			prop_pos = n / nrow(b),

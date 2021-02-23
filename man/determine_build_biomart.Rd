@@ -2,7 +2,7 @@
 % Please edit documentation in R/liftover.r
 \name{determine_build_biomart}
 \alias{determine_build_biomart}
-\title{Determines which build a set of SNps are on}
+\title{Determines which build a set of SNPs are on}
 \usage{
 determine_build_biomart(rsid, chr, pos, build = c(37, 38, 36))
 }
@@ -19,5 +19,5 @@ determine_build_biomart(rsid, chr, pos, build = c(37, 38, 36))
 build if detected, or dataframe of matches if not
 }
 \description{
-Determines which build a set of SNps are on
+Determines which build a set of SNPs are on
 }

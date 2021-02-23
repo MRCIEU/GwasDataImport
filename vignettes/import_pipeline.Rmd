@@ -350,6 +350,10 @@ a <- fread(fn, he=T)
 a <- tidyr::separate(a, "MarkerName", sep=":", into=c("chr", "pos", "type"))
 a$pval <- pnorm(abs(a$Effect) / a$StdErr, lower.tail=FALSE) * 2
 
+# Note that if your dataset doesn't have chr/pos then you can look them up using
+# cp <- get_positions(a$MarkerName)
+# it's a bit slow though
+
 a$Allele2[a$Allele1=="d"] <- "i"
 a$Allele2[a$Allele1=="i"] <- "d"
 table(a$Allele1)

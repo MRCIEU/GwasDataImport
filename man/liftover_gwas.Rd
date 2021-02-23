@@ -12,7 +12,8 @@ liftover_gwas(
   pos_col = "pos",
   snp_col = "snp",
   ea_col = "ea",
-  oa_col = "oa"
+  oa_col = "oa",
+  build_fallback = "position"
 )
 }
 \arguments{

@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,7 +118,12 @@
     <p>Lookup positions for given rsids in particular build</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_positions</span><span class='op'>(</span><span class='va'>rsid</span>, <span class='va'>build</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_positions</span><span class='op'>(</span>
+  <span class='va'>rsid</span>,
+  build <span class='op'>=</span> <span class='fl'>37</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"opengwas"</span>, <span class='st'>"biomart"</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>,
+  splitsize <span class='op'>=</span> <span class='fl'>50000</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,7 +134,15 @@
     </tr>
     <tr>
       <th>build</th>
-      <td><p>build (36, 37 or 38)</p></td>
+      <td><p>build (36, 37 default or 38)</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>"opengwas" (fastest) or "biomart"</p></td>
+    </tr>
+    <tr>
+      <th>splitsize</th>
+      <td><p>Default 50000</p></td>
     </tr>
     </table>
 

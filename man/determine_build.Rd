@@ -4,7 +4,7 @@
 \alias{determine_build}
 \title{Determine build based on reference dataset}
 \usage{
-determine_build(rsid, chr, pos, build = c(37, 38, 36), biomart_fallback = TRUE)
+determine_build(rsid, chr, pos, build = c(37, 38, 36), fallback = "position")
 }
 \arguments{
 \item{rsid}{rsid}
@@ -15,7 +15,7 @@ determine_build(rsid, chr, pos, build = c(37, 38, 36), biomart_fallback = TRUE)
 
 \item{build}{Builds to try e.g. c(37,38,36)}
 
-\item{biomart_fallback}{Whether to try biomart if reference background not matching}
+\item{fallback}{Whether to try "position" (fast) or "biomart" (more accurate if you have rsids) based approaches instead}
 }
 \value{
 build if detected, or dataframe of matches if not
