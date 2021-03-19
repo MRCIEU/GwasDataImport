@@ -271,6 +271,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		{
 			stop("The following required fields were not provided: \n", paste(required_fields[!required_fields %in% names(metadata)], collapse="\n"))
 		}
+		stopifnot(metadata$build == "HG19/GRCh37")
 		l <- list()
 		for(i in fields$parameter)
 		{
