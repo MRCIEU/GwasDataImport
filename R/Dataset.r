@@ -266,7 +266,11 @@ Dataset <- R6::R6Class("Dataset", list(
 	collect_metadata = function(metadata, igd_id=self$igd_id)
 	{
 		fields <- self$get_metadata_fields()
-		stopifnot(all(fields$parameter[fields$required] %in% names(metadata)))
+		required_fields <- c(fields$parameter[fields$required], "build", "unit", "ontology", "sample_size", "author", "year") %>% unique()
+		if(!all(required_fields %in% names(metadata)))
+		{
+			stop("The following required fields were not provided: \n", paste(required_fields[!required_fields %in% names(metadata)], collapse="\n"))
+		}
 		l <- list()
 		for(i in fields$parameter)
 		{
