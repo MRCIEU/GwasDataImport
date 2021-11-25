@@ -57,6 +57,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item \href{#method-get_gwasdata_fields}{\code{Dataset$get_gwasdata_fields()}}
 \item \href{#method-get_metadata_fields}{\code{Dataset$get_metadata_fields()}}
 \item \href{#method-collect_metadata}{\code{Dataset$collect_metadata()}}
+\item \href{#method-check_meta_data}{\code{Dataset$check_meta_data()}}
 \item \href{#method-write_metadata}{\code{Dataset$write_metadata()}}
 \item \href{#method-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
 \item \href{#method-api_metadata_edit}{\code{Dataset$api_metadata_edit()}}
@@ -172,7 +173,7 @@ Specify which columns in the dataset correspond to which fields.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{params}}{List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col").}
+\item{\code{params}}{List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col").}
 
 \item{\code{nrows}}{How many rows to read to check that parameters have been specified correctly}
 
@@ -262,6 +263,31 @@ Input metadata
 \item{\code{metadata}}{List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.}
 
 \item{\code{igd_id}}{ID to be used for uploading to the database}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-check_meta_data"></a>}}
+\if{latex}{\out{\hypertarget{method-check_meta_data}{}}}
+\subsection{Method \code{check_meta_data()}}{
+Check effect allele columns are correct
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_meta_data(
+  metadata = self$metadata,
+  gwas_file = self$filename,
+  params = self$params
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.}
+
+\item{\code{gwas_file}}{Filename to read}
+
+\item{\code{params}}{List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col").}
 }
 \if{html}{\out{</div>}}
 }

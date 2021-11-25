@@ -107,20 +107,23 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	#' @description
 	#' Specify which columns in the dataset correspond to which fields. 
-	#' @param params List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col"). 
+	#' @param params List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col"). Optional columns are: c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col"). 
 	#' @param nrows How many rows to read to check that parameters have been specified correctly
 	#' @param gwas_file Filename to read
 	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
 	determine_columns = function(params, nrows=100, gwas_file=self$filename, ...)
 	{
-		required_columns <- c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col")
+		required_columns <- c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col")
 		optional_columns <- c("snp_col", "eaf_col", "oaf_col", "ncase_col", "imp_z_col", "imp_info_col", "ncontrol_col")
 		column_identifiers <- c(required_columns, optional_columns)
 
+		
 		stopifnot(all(required_columns %in% names(params)))
 
-		m <- list(chr_col=1, pos_col=2, ea_col=3, oa_col=4, beta_col=5, se_col=6, pval_col=7)
+		m <- list(chr_col=1, pos_col=2, ea_col=3, oa_col=4, beta_col=5, se_col=6, pval_col=7,rsid_col=8)
 		a <- data.table::fread(gwas_file, nrows=nrows, ...)
+		# a <- data.table::fread(gwas_file, nrows=nrows)
+
 		if(is.infinite(nrows))
 		{
 			self$nsnp_read <- nrow(a)
@@ -132,8 +135,10 @@ Dataset <- R6::R6Class("Dataset", list(
 			oa=a[[params$oa_col]],
 			beta=a[[params$beta_col]],
 			se=a[[params$se_col]],
-			pval=a[[params$pval_col]]
+			pval=a[[params$pval_col]],
+			rsid=a[[params$rsid_col]]
 			)
+		# head(out)
 		stopifnot(all(is.numeric(out$pos)))
 		stopifnot(all(is.numeric(out$beta)))
 		stopifnot(all(is.numeric(out$pval)))
@@ -148,6 +153,11 @@ Dataset <- R6::R6Class("Dataset", list(
 		if(is_all_1)
 		{
 			stop("beta values appear to be z-scores")
+		}
+
+		index.beta<-!is.na(out$beta)
+		if(all(out$beta[index.beta]>0)){
+			warning("beta values appear to be odds ratios")
 		}
 
 		j <- length(required_columns)
@@ -197,9 +207,12 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param gwas_out Filename to save processed dataset to
 	#' @param params Column specifications (see determine_columns for more info)
 	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
+	
 	format_dataset = function(gwas_file=self$filename, gwas_out = file.path(self$wd, "format.txt.gz"), params=self$params, ...)
 	{
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
+		# out<-self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf)
+
 		self$datainfo[["gwas_file"]] <- gwas_out
 		message("Determining build")
 		out <- liftover_gwas(out, chr_col=self$datainfo$chr_col, pos_col=self$datainfo$pos_col, snp_col=self$datainfo$snp_col, ea_col=self$datainfo$ea_col, oa_col=self$datainfo$oa_col)
@@ -214,6 +227,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		self$nsnp <- nrow(out)
 		self$gwas_out <- gwas_out
 		self$datainfo$gwas_file <- self$gwas_out
+
 	},
 
 
@@ -265,6 +279,12 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param igd_id ID to be used for uploading to the database
 	collect_metadata = function(metadata, igd_id=self$igd_id)
 	{
+
+		# Start<-proc.time()
+		self$check_meta_data() 
+		# End<-proc.time()
+		# (End-Start)/60
+
 		fields <- self$get_metadata_fields()
 		required_fields <- c(fields$parameter[fields$required], "build", "unit", "ontology", "sample_size", "author", "year") %>% unique()
 		if(!all(required_fields %in% names(metadata)))
@@ -291,6 +311,31 @@ Dataset <- R6::R6Class("Dataset", list(
 		}
 		self$metadata <- l
 	},
+
+	#' @description
+	#' Check effect allele columns are correct 
+	#' @param metadata List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.
+	#' @param gwas_file Filename to read
+	#' @param params List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col").	
+	check_meta_data = function(metadata=self$metadata,gwas_file=self$filename,params=self$params)
+	{
+	
+		out<-data.table::fread(self$gwas_out,nrows=Inf
+			)	
+
+		# allele frequency conflicts with 1000 genomes super populations implying incorrect effect allele frequency column
+		af_conclicts_function(out=out,metadata=metadata)
+
+		
+		# effect size conflicts with GWAS catalog implying incorrect effect allele column
+		# this function can be slow if there are lots of "GWAS hits" for the trait of interest because associations have to be retrieved from the GWAS catalog API
+		Start<-proc.time()	
+		gc_conflicts_function(out=out,metadata=metadata)
+		End<-proc.time()
+		(End-Start)/60		
+	},
+	
+	
 
 	#' @description
 	#' Write meta data to json file
@@ -459,3 +504,38 @@ Dataset <- R6::R6Class("Dataset", list(
 	}
 ))
 
+af_conclicts_function<-function(out=NULL,metadata=NULL)
+{
+
+
+	utils::data("refdat_1000G_superpops")
+	snplist<-unique(refdat_1000G_superpops$SNP)
+
+
+	out<-out[out$rsid %in% snplist,]
+	
+	Dat<-CheckSumStats::format_data(dat=out,outcome=metadata$trait,population=metadata$population,pmid=metadata$pmid,rsid="rsid",effect_allele="ea",other_allele="oa",beta="beta",se="se",eaf="eaf",p="pval")
+	af_conclicts<-CheckSumStats::flag_af_conflicts(target_dat=Dat)
+	if(af_conclicts$number_of_snps>10 & af_conclicts$proportion_conflicts>0.3) stop("allele frequency conflicts identified. It looks like you have incorrectly specified the effect allele frequency column.")
+}
+
+
+gc_conflicts_function<-function(out=NULL,metadata=NULL){
+
+	EFO<-CheckSumStats::get_efo(trait=metadata$trait)
+
+	snplist<-CheckSumStats::make_snplist(efo_id=EFO$efo_id,trait=metadata$trait,ref1000G_superpops=FALSE)
+	out<-out[out$rsid %in% snplist,]
+	Dat<-CheckSumStats::format_data(dat=out,outcome=metadata$trait,population=metadata$population,pmid=metadata$pmid,rsid="rsid",effect_allele="ea",other_allele="oa",beta="beta",se="se",eaf="eaf",p="pval")
+	# can make this faster by combining the above SNP retrieval step with this flag_gc_conflicts step. retrieve the rsids and results at same time?
+	gc_conflicts<-CheckSumStats::flag_gc_conflicts(dat=Dat,efo_id =EFO$efo_id,trait=metadata$trait,gwas_catalog_ancestral_group=metadata$population,beta="beta",se="se")
+	
+	N_snps<-gc_conflicts$effect_size_conflicts$n_snps
+	if(N_snps>10){
+		n_high<-unlist(gc_conflicts$effect_size_conflicts["high conflict"])
+		n_moderate<-unlist(gc_conflicts$effect_size_conflicts["moderate conflict"])
+		N_conflicts<-n_high + n_moderate
+		proportion_conflicts<-N_conflicts/N_snps
+		if(proportion_conflicts>0.5) stop("effect size conflict with GWAS catalog identified. It looks like you may have incorrectly specified the effect allele column")
+	}
+}
