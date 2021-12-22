@@ -31,7 +31,8 @@ Imports:
     GenomicRanges,
     IRanges,
     SummarizedExperiment,
-    biomaRt
+    biomaRt,
+    CheckSumStats
 Remotes:
     bioc::3.11/rtracklayer,
     bioc::3.11/GenomicRanges,

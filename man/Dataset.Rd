@@ -271,23 +271,23 @@ Input metadata
 \if{html}{\out{<a id="method-check_meta_data"></a>}}
 \if{latex}{\out{\hypertarget{method-check_meta_data}{}}}
 \subsection{Method \code{check_meta_data()}}{
-Check effect allele columns are correct
+Check effect allele and frequency columns are correct.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$check_meta_data(
-  metadata = self$metadata,
-  gwas_file = self$filename,
-  params = self$params
+  out = NULL,
+  trait = metadata$trait,
+  efo_id = metadata$ontology
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{metadata}}{List of meta-data fields and their values, see view_metadata_options for which fields need to be inputted.}
+\item{\code{trait}}{the GWAS trait}
 
-\item{\code{gwas_file}}{Filename to read}
+\item{\code{efo_id}}{identifier for GWAS trait in the experimental factor ontology}
 
-\item{\code{params}}{List of column identifiers. Identifiers can be numeric position or column header name. Required columns are: c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col","rsid_col").}
+\item{\code{Dataset}}{of GWAS results to check}
 }
 \if{html}{\out{</div>}}
 }
