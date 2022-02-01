@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,26 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">GwasDataImport</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
   <a href="articles/index.html">Articles</a>
-</li>
-<li>
-  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -65,21 +58,21 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="gwasdataimport" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#gwasdataimport" class="anchor"></a>GwasDataImport</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="gwasdataimport">GwasDataImport<a class="anchor" aria-label="anchor" href="#gwasdataimport"></a>
+</h1></div>
 <!-- badges: start -->
 
 <p>The goal of GwasDataImport is to simplify importing GWAS summary data into the OpenGWAS database. It also automates import of EBI datasets.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"mrcieu/GwasDataImport"</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mrcieu/GwasDataImport"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="uploading-a-dataset-to-opengwas" class="section level2">
-<h2 class="hasAnchor">
-<a href="#uploading-a-dataset-to-opengwas" class="anchor"></a>Uploading a dataset to OpenGWAS</h2>
+<div class="section level2">
+<h2 id="uploading-a-dataset-to-opengwas">Uploading a dataset to OpenGWAS<a class="anchor" aria-label="anchor" href="#uploading-a-dataset-to-opengwas"></a>
+</h2>
 <p>Please see the <a href="articles/import_pipeline.html">Importing datasets into OpenGWAS</a> vignette for detailed information on how to do this.</p>
 </div>
 </div>
@@ -87,37 +80,49 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Gibran Hemani <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0920-1055" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.com/MRCIEU/GwasDataImport"><img src="https://travis-ci.com/MRCIEU/GwasDataImport.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://codecov.io/gh/MRCIEU/GwasDataImport?branch=master"><img src="https://codecov.io/gh/MRCIEU/GwasDataImport/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="authors.html#citation">Citing GwasDataImport</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Gibran Hemani <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0920-1055" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.com/MRCIEU/GwasDataImport" class="external-link"><img src="https://travis-ci.com/MRCIEU/GwasDataImport.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://codecov.io/gh/MRCIEU/GwasDataImport?branch=master" class="external-link"><img src="https://codecov.io/gh/MRCIEU/GwasDataImport/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Gibran Hemani.</p>
+  <p></p>
+<p>Developed by Gibran Hemani.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -125,6 +130,8 @@
 
   
 
+
+  
 
   </body>
 </html>
