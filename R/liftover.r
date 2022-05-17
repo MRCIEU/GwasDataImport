@@ -313,6 +313,88 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col=
 
 
 	message("Organising")
+	datg <- GenomicRanges::GRanges(
+		seqnames=dat[[chr_col]], 
+		ranges=IRanges::IRanges(start=dat[[pos_col]], end=dat[[pos_col]]), 
+		ind=1:nrow(dat)
+	)
+
+	message("Lifting")
+	d19 <- rtracklayer::liftOver(datg, ch) %>% unlist()
+	message("Organising again")
+	dat <- dat[d19$ind,]
+	dat[[chr_col]] <- d19@seqnames
+	dat[[pos_col]] <- d19@ranges@start
+	dat[[chr_col]] <- gsub("chr", "", dat[[chr_col]])
+	message("Reordering")
+	dat <- dat[order(dat[[chr_col]], dat[[pos_col]]), ]
+
+	if(!is.null(ea_col) & !is.na(oa_col))
+	{
+		message("Removing duplicates")
+		nom <- names(dat)
+		if(is.numeric(chr_col)) chr_col <- nom[chr_col]
+		if(is.numeric(pos_col)) pos_col <- nom[pos_col]
+		if(is.numeric(ea_col)) ea_col <- nom[ea_col]
+		if(is.numeric(oa_col)) oa_col <- nom[oa_col]
+
+		dat <- distinct(dat, .data[[chr_col]], .data[[pos_col]], .data[[ea_col]], .data[[oa_col]], .keep_all=TRUE)
+	}
+
+	message("Done")
+	return(dat)
+}
+
+
+liftover_gwas_old <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col="pos", snp_col="snp", ea_col="ea", oa_col="oa", build_fallback="position")
+{
+	if(is.null(snp_col))
+	{
+		message("Only using position")
+		from <- determine_build_position(dat[[pos_col]], build=build)
+	} else {
+		message("Using rsid")
+		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback="position")
+	}
+	if(is.data.frame(from))
+	{
+		print(from)
+		stop("Cannot determine build")
+	} else {
+		if(from == to)
+		{
+			message("Already build ", to)
+			return(dat)
+		}
+	}
+	message("Lifting build: ", from, " to ", to)
+
+	tab <- dplyr::tibble(build=c(36,37,38), name=c("Hg18", "Hg19", "Hg38"))
+
+	path <- system.file(package="GwasDataImport", "extdata", paste0(
+		tolower(tab$name[tab$build==from]),
+		"To",
+		tab$name[tab$build==to],
+		".over.chain"
+	))
+	stopifnot(file.exists(path))
+
+	message("Loading chainfile")
+	ch <- rtracklayer::import.chain(path)
+
+	message("Converting chromosome codings")
+	if(!grepl("chr", dat[[chr_col]][1]))
+	{
+		dat[[chr_col]] <- paste0("chr", dat[[chr_col]])
+	}
+	dat[[chr_col]][dat[[chr_col]] == "chr23"] <- "chrX"
+	dat[[chr_col]][dat[[chr_col]] == "chr24"] <- "chrY"
+	dat[[chr_col]][dat[[chr_col]] == "chr25"] <- "chrXY"
+	dat[[chr_col]][dat[[chr_col]] == "chr26"] <- "chrM"
+	dat[[chr_col]][dat[[chr_col]] == "chrMT"] <- "chrM"
+
+
+	message("Organising")
 	datg <- GenomicRanges::GRanges(seqnames=dat[[chr_col]], ranges=IRanges::IRanges(start=dat[[pos_col]], end=dat[[pos_col]]), LIFTOVERCHRPOS=paste0(dat[[chr_col]], ":", dat[[pos_col]]))
 
 	message("Lifting")
