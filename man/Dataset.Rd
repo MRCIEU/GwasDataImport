@@ -25,6 +25,8 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 
 \item{\code{metadata}}{List of meta-data entries}
 
+\item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
+
 \item{\code{metadata_file}}{Path to meta-data json file}
 
 \item{\code{datainfo}}{List of GWAS file parameters}
@@ -46,35 +48,35 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Dataset$new()}}
-\item \href{#method-is_new_id}{\code{Dataset$is_new_id()}}
-\item \href{#method-delete_wd}{\code{Dataset$delete_wd()}}
-\item \href{#method-set_wd}{\code{Dataset$set_wd()}}
-\item \href{#method-se_from_bp}{\code{Dataset$se_from_bp()}}
-\item \href{#method-determine_columns}{\code{Dataset$determine_columns()}}
-\item \href{#method-format_dataset}{\code{Dataset$format_dataset()}}
-\item \href{#method-view_metadata_options}{\code{Dataset$view_metadata_options()}}
-\item \href{#method-get_gwasdata_fields}{\code{Dataset$get_gwasdata_fields()}}
-\item \href{#method-get_metadata_fields}{\code{Dataset$get_metadata_fields()}}
-\item \href{#method-collect_metadata}{\code{Dataset$collect_metadata()}}
-\item \href{#method-check_meta_data}{\code{Dataset$check_meta_data()}}
-\item \href{#method-write_metadata}{\code{Dataset$write_metadata()}}
-\item \href{#method-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
-\item \href{#method-api_metadata_edit}{\code{Dataset$api_metadata_edit()}}
-\item \href{#method-api_metadata_check}{\code{Dataset$api_metadata_check()}}
-\item \href{#method-api_metadata_delete}{\code{Dataset$api_metadata_delete()}}
-\item \href{#method-api_gwasdata_upload}{\code{Dataset$api_gwasdata_upload()}}
-\item \href{#method-api_gwasdata_check}{\code{Dataset$api_gwasdata_check()}}
-\item \href{#method-api_gwasdata_delete}{\code{Dataset$api_gwasdata_delete()}}
-\item \href{#method-api_qc_status}{\code{Dataset$api_qc_status()}}
-\item \href{#method-api_report}{\code{Dataset$api_report()}}
-\item \href{#method-api_gwas_release}{\code{Dataset$api_gwas_release()}}
-\item \href{#method-clone}{\code{Dataset$clone()}}
+\item \href{#method-Dataset-new}{\code{Dataset$new()}}
+\item \href{#method-Dataset-is_new_id}{\code{Dataset$is_new_id()}}
+\item \href{#method-Dataset-delete_wd}{\code{Dataset$delete_wd()}}
+\item \href{#method-Dataset-set_wd}{\code{Dataset$set_wd()}}
+\item \href{#method-Dataset-se_from_bp}{\code{Dataset$se_from_bp()}}
+\item \href{#method-Dataset-determine_columns}{\code{Dataset$determine_columns()}}
+\item \href{#method-Dataset-format_dataset}{\code{Dataset$format_dataset()}}
+\item \href{#method-Dataset-view_metadata_options}{\code{Dataset$view_metadata_options()}}
+\item \href{#method-Dataset-get_gwasdata_fields}{\code{Dataset$get_gwasdata_fields()}}
+\item \href{#method-Dataset-get_metadata_fields}{\code{Dataset$get_metadata_fields()}}
+\item \href{#method-Dataset-collect_metadata}{\code{Dataset$collect_metadata()}}
+\item \href{#method-Dataset-check_meta_data}{\code{Dataset$check_meta_data()}}
+\item \href{#method-Dataset-write_metadata}{\code{Dataset$write_metadata()}}
+\item \href{#method-Dataset-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
+\item \href{#method-Dataset-api_metadata_edit}{\code{Dataset$api_metadata_edit()}}
+\item \href{#method-Dataset-api_metadata_check}{\code{Dataset$api_metadata_check()}}
+\item \href{#method-Dataset-api_metadata_delete}{\code{Dataset$api_metadata_delete()}}
+\item \href{#method-Dataset-api_gwasdata_upload}{\code{Dataset$api_gwasdata_upload()}}
+\item \href{#method-Dataset-api_gwasdata_check}{\code{Dataset$api_gwasdata_check()}}
+\item \href{#method-Dataset-api_gwasdata_delete}{\code{Dataset$api_gwasdata_delete()}}
+\item \href{#method-Dataset-api_qc_status}{\code{Dataset$api_qc_status()}}
+\item \href{#method-Dataset-api_report}{\code{Dataset$api_report()}}
+\item \href{#method-Dataset-api_gwas_release}{\code{Dataset$api_gwas_release()}}
+\item \href{#method-Dataset-clone}{\code{Dataset$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Dataset-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-new}{}}}
 \subsection{Method \code{new()}}{
 Initialise
 \subsection{Usage}{
@@ -97,8 +99,8 @@ new ObtainEbiDataset object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-is_new_id"></a>}}
-\if{latex}{\out{\hypertarget{method-is_new_id}{}}}
+\if{html}{\out{<a id="method-Dataset-is_new_id"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-is_new_id}{}}}
 \subsection{Method \code{is_new_id()}}{
 Check if the specified ID is unique within the database. It checks published GWASs and those currently being processed
 \subsection{Usage}{
@@ -114,8 +116,8 @@ Check if the specified ID is unique within the database. It checks published GWA
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-delete_wd"></a>}}
-\if{latex}{\out{\hypertarget{method-delete_wd}{}}}
+\if{html}{\out{<a id="method-Dataset-delete_wd"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-delete_wd}{}}}
 \subsection{Method \code{delete_wd()}}{
 Delete working directory
 \subsection{Usage}{
@@ -124,8 +126,8 @@ Delete working directory
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_wd"></a>}}
-\if{latex}{\out{\hypertarget{method-set_wd}{}}}
+\if{html}{\out{<a id="method-Dataset-set_wd"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-set_wd}{}}}
 \subsection{Method \code{set_wd()}}{
 Set working directory (creates)
 \subsection{Usage}{
@@ -141,8 +143,8 @@ Set working directory (creates)
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-se_from_bp"></a>}}
-\if{latex}{\out{\hypertarget{method-se_from_bp}{}}}
+\if{html}{\out{<a id="method-Dataset-se_from_bp"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-se_from_bp}{}}}
 \subsection{Method \code{se_from_bp()}}{
 Estimate standard error from beta and p-value
 \subsection{Usage}{
@@ -162,8 +164,8 @@ Estimate standard error from beta and p-value
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-determine_columns"></a>}}
-\if{latex}{\out{\hypertarget{method-determine_columns}{}}}
+\if{html}{\out{<a id="method-Dataset-determine_columns"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-determine_columns}{}}}
 \subsection{Method \code{determine_columns()}}{
 Specify which columns in the dataset correspond to which fields.
 \subsection{Usage}{
@@ -185,8 +187,8 @@ Specify which columns in the dataset correspond to which fields.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_dataset"></a>}}
-\if{latex}{\out{\hypertarget{method-format_dataset}{}}}
+\if{html}{\out{<a id="method-Dataset-format_dataset"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-format_dataset}{}}}
 \subsection{Method \code{format_dataset()}}{
 Process dataset ready for uploading. Determins build and lifts over to hg19/b37 if necessary.
 \subsection{Usage}{
@@ -194,6 +196,7 @@ Process dataset ready for uploading. Determins build and lifts over to hg19/b37 
   gwas_file = self$filename,
   gwas_out = file.path(self$wd, "format.txt.gz"),
   params = self$params,
+  metadata_test = self$metadata_test,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -207,14 +210,16 @@ Process dataset ready for uploading. Determins build and lifts over to hg19/b37 
 
 \item{\code{params}}{Column specifications (see determine_columns for more info)}
 
+\item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
+
 \item{\code{...}}{Further arguments to pass to data.table::fread in order to correctly read the dataset}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-view_metadata_options"></a>}}
-\if{latex}{\out{\hypertarget{method-view_metadata_options}{}}}
+\if{html}{\out{<a id="method-Dataset-view_metadata_options"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-view_metadata_options}{}}}
 \subsection{Method \code{view_metadata_options()}}{
 View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs
 \subsection{Usage}{
@@ -223,8 +228,8 @@ View the specifications for available meta data fields, as taken from http://gwa
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_gwasdata_fields"></a>}}
-\if{latex}{\out{\hypertarget{method-get_gwasdata_fields}{}}}
+\if{html}{\out{<a id="method-Dataset-get_gwasdata_fields"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-get_gwasdata_fields}{}}}
 \subsection{Method \code{get_gwasdata_fields()}}{
 Get a list of GWAS data fields and whether or not they are required
 \subsection{Usage}{
@@ -236,8 +241,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_metadata_fields"></a>}}
-\if{latex}{\out{\hypertarget{method-get_metadata_fields}{}}}
+\if{html}{\out{<a id="method-Dataset-get_metadata_fields"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-get_metadata_fields}{}}}
 \subsection{Method \code{get_metadata_fields()}}{
 Get a list of metadata fields and whether or not they are required
 \subsection{Usage}{
@@ -249,8 +254,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-collect_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-collect_metadata}{}}}
+\if{html}{\out{<a id="method-Dataset-collect_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-collect_metadata}{}}}
 \subsection{Method \code{collect_metadata()}}{
 Input metadata
 \subsection{Usage}{
@@ -268,33 +273,33 @@ Input metadata
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-check_meta_data"></a>}}
-\if{latex}{\out{\hypertarget{method-check_meta_data}{}}}
+\if{html}{\out{<a id="method-Dataset-check_meta_data"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-check_meta_data}{}}}
 \subsection{Method \code{check_meta_data()}}{
-Check effect allele and frequency columns are correct.
+Check that the reported effect allele and effect allele frequency columns are correct.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$check_meta_data(
-  out = NULL,
-  trait = metadata$trait,
-  efo_id = metadata$ontology
+  gwas_file = self$filename,
+  params = self$params,
+  metadata = self$metadata
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{trait}}{the GWAS trait}
+\item{\code{gwas_file}}{Filename to read}
 
-\item{\code{efo_id}}{identifier for GWAS trait in the experimental factor ontology}
+\item{\code{params}}{column names from x$determine_columns(). Required columns are: c("snp_col", "ea_col", "oa_col", "eaf_col" )}
 
-\item{\code{Dataset}}{of GWAS results to check}
+\item{\code{metadata}}{metadata from x$collect_metadata()}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-write_metadata}{}}}
+\if{html}{\out{<a id="method-Dataset-write_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-write_metadata}{}}}
 \subsection{Method \code{write_metadata()}}{
 Write meta data to json file
 \subsection{Usage}{
@@ -318,13 +323,14 @@ Write meta data to json file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_metadata_upload"></a>}}
-\if{latex}{\out{\hypertarget{method-api_metadata_upload}{}}}
+\if{html}{\out{<a id="method-Dataset-api_metadata_upload"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_metadata_upload}{}}}
 \subsection{Method \code{api_metadata_upload()}}{
 Upload meta data to API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_upload(
   metadata = self$metadata,
+  metadata_test = self$metadata_test,
   access_token = ieugwasr::check_access_token()
 )}\if{html}{\out{</div>}}
 }
@@ -334,14 +340,16 @@ Upload meta data to API
 \describe{
 \item{\code{metadata}}{List of meta data fields and their values}
 
+\item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
+
 \item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_metadata_edit"></a>}}
-\if{latex}{\out{\hypertarget{method-api_metadata_edit}{}}}
+\if{html}{\out{<a id="method-Dataset-api_metadata_edit"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_metadata_edit}{}}}
 \subsection{Method \code{api_metadata_edit()}}{
 Upload meta data to API
 \subsection{Usage}{
@@ -362,8 +370,8 @@ Upload meta data to API
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_metadata_check"></a>}}
-\if{latex}{\out{\hypertarget{method-api_metadata_check}{}}}
+\if{html}{\out{<a id="method-Dataset-api_metadata_check"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_metadata_check}{}}}
 \subsection{Method \code{api_metadata_check()}}{
 View meta-data
 \subsection{Usage}{
@@ -384,8 +392,8 @@ View meta-data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_metadata_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-api_metadata_delete}{}}}
+\if{html}{\out{<a id="method-Dataset-api_metadata_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_metadata_delete}{}}}
 \subsection{Method \code{api_metadata_delete()}}{
 Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 \subsection{Usage}{
@@ -406,14 +414,15 @@ Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and rela
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_gwasdata_upload"></a>}}
-\if{latex}{\out{\hypertarget{method-api_gwasdata_upload}{}}}
+\if{html}{\out{<a id="method-Dataset-api_gwasdata_upload"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_gwasdata_upload}{}}}
 \subsection{Method \code{api_gwasdata_upload()}}{
 Upload gwas dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_upload(
   datainfo = self$datainfo,
   gwasfile = self$gwas_out,
+  metadata_test = self$metadata_test,
   access_token = ieugwasr::check_access_token()
 )}\if{html}{\out{</div>}}
 }
@@ -425,14 +434,16 @@ Upload gwas dataset
 
 \item{\code{gwasfile}}{Path to processed gwasfile}
 
+\item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
+
 \item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_gwasdata_check"></a>}}
-\if{latex}{\out{\hypertarget{method-api_gwasdata_check}{}}}
+\if{html}{\out{<a id="method-Dataset-api_gwasdata_check"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_gwasdata_check}{}}}
 \subsection{Method \code{api_gwasdata_check()}}{
 Check status of API processing pipeline
 \subsection{Usage}{
@@ -453,8 +464,8 @@ Check status of API processing pipeline
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_gwasdata_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-api_gwasdata_delete}{}}}
+\if{html}{\out{<a id="method-Dataset-api_gwasdata_delete"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_gwasdata_delete}{}}}
 \subsection{Method \code{api_gwasdata_delete()}}{
 Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 \subsection{Usage}{
@@ -475,8 +486,8 @@ Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and rela
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_qc_status"></a>}}
-\if{latex}{\out{\hypertarget{method-api_qc_status}{}}}
+\if{html}{\out{<a id="method-Dataset-api_qc_status"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_qc_status}{}}}
 \subsection{Method \code{api_qc_status()}}{
 Check the status of the GWAS QC processing pipeline
 \subsection{Usage}{
@@ -497,8 +508,8 @@ Check the status of the GWAS QC processing pipeline
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_report"></a>}}
-\if{latex}{\out{\hypertarget{method-api_report}{}}}
+\if{html}{\out{<a id="method-Dataset-api_report"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_report}{}}}
 \subsection{Method \code{api_report()}}{
 View the html report for a processed dataset
 \subsection{Usage}{
@@ -519,8 +530,8 @@ View the html report for a processed dataset
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-api_gwas_release"></a>}}
-\if{latex}{\out{\hypertarget{method-api_gwas_release}{}}}
+\if{html}{\out{<a id="method-Dataset-api_gwas_release"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-api_gwas_release}{}}}
 \subsection{Method \code{api_gwas_release()}}{
 Release a dataset
 \subsection{Usage}{
@@ -547,8 +558,8 @@ Release a dataset
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Dataset-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
