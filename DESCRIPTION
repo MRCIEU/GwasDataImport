@@ -41,6 +41,7 @@ Remotes:
     bioc::3.11/SummarizedExperiment,
     bioc::3.11/biomaRt,
     github::mrcieu/ieugwasr,
+    github::MRCIEU/CheckSumStats
 Suggests: 
     testthat,
     knitr,
