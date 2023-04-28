@@ -5,3 +5,5 @@ docs
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^index\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
