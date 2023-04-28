@@ -1,4 +1,3 @@
-
 # GwasDataImport
 
 <!-- badges: start -->
@@ -15,4 +14,3 @@ Documentation including tutorials and examples here: https://mrcieu.github.io/Gw
 ``` r
 remotes::install_github("mrcieu/GwasDataImport")
 ```
-
