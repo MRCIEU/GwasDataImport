@@ -169,4 +169,3 @@ table(a$got, a$Status)
 ebi_ignore_list <- a$StudyID[a$Status == "harmonised" & !a$got]
 write.table(ebi_ignore_list, file="ebi_ignore_list.txt", row=F, col=F, qu=F)
 ```
-
