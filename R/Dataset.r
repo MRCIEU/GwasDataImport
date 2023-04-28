@@ -654,13 +654,17 @@ reported_gwas_hits_in_gwascatalog<-function(out=NULL,clump=TRUE,eaf_test=NULL,me
 
 	gc_list<-find_hits_in_gwas_catalog(gwas_hits=gwas_hits,trait=metadata$trait,distance_threshold=50000) 
 	#if no results are found on reported trait, then use the user provided ontology to find associations
-	if(gc_list == "no results found")
-	{
-		metadata$ontology<-gsub(":","_",metadata$ontology) #currently there is a bug in the gwasrapidd code that does not allow EFOs with semicolons. The semicolon must be replaced with an underscore. I have writtent to the developers to see if this can be fixed.  
-		gc_list<-find_hits_in_gwas_catalog(gwas_hits=gwas_hits,efo_id=metadata$ontology,distance_threshold=50000) 
+	if(class(gc_list)!="list"){
+		if(gc_list == "no results found")
+		{
+			metadata$ontology<-gsub(":","_",metadata$ontology) #currently there is a bug in the gwasrapidd code that does not allow EFOs with semicolons. The semicolon must be replaced with an underscore. I have writtent to the developers to see if this can be fixed.  
+			gc_list<-find_hits_in_gwas_catalog(gwas_hits=gwas_hits,efo_id=metadata$ontology,distance_threshold=50000) 
+		}
 	}
 
-	if(gc_list == "no results found") return(gc_list)
+	if(class(gc_list)!="list"){
+		if(gc_list == "no results found") return(gc_list)
+	}
 
 	# metadata$ontology
 
