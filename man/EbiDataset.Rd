@@ -29,44 +29,45 @@ Object that downloads, develops and uploads EBI dataset
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{EbiDataset$new()}}
-\item \href{#method-download_dataset}{\code{EbiDataset$download_dataset()}}
-\item \href{#method-format_ebi_dataset}{\code{EbiDataset$format_ebi_dataset()}}
-\item \href{#method-organise_metadata}{\code{EbiDataset$organise_metadata()}}
-\item \href{#method-pipeline}{\code{EbiDataset$pipeline()}}
-\item \href{#method-clone}{\code{EbiDataset$clone()}}
+\item \href{#method-EbiDataset-new}{\code{EbiDataset$new()}}
+\item \href{#method-EbiDataset-download_dataset}{\code{EbiDataset$download_dataset()}}
+\item \href{#method-EbiDataset-format_ebi_dataset}{\code{EbiDataset$format_ebi_dataset()}}
+\item \href{#method-EbiDataset-organise_metadata}{\code{EbiDataset$organise_metadata()}}
+\item \href{#method-EbiDataset-pipeline}{\code{EbiDataset$pipeline()}}
+\item \href{#method-EbiDataset-clone}{\code{EbiDataset$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwas_release">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwas_release}{\code{GwasDataImport::Dataset$api_gwas_release()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_check">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_check}{\code{GwasDataImport::Dataset$api_gwasdata_check()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_delete">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_delete}{\code{GwasDataImport::Dataset$api_gwasdata_delete()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_upload">}\href{../../GwasDataImport/html/Dataset.html#method-api_gwasdata_upload}{\code{GwasDataImport::Dataset$api_gwasdata_upload()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_check">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_check}{\code{GwasDataImport::Dataset$api_metadata_check()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_delete">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_delete}{\code{GwasDataImport::Dataset$api_metadata_delete()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_edit">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_edit}{\code{GwasDataImport::Dataset$api_metadata_edit()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload">}\href{../../GwasDataImport/html/Dataset.html#method-api_metadata_upload}{\code{GwasDataImport::Dataset$api_metadata_upload()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_qc_status">}\href{../../GwasDataImport/html/Dataset.html#method-api_qc_status}{\code{GwasDataImport::Dataset$api_qc_status()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report">}\href{../../GwasDataImport/html/Dataset.html#method-api_report}{\code{GwasDataImport::Dataset$api_report()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata">}\href{../../GwasDataImport/html/Dataset.html#method-collect_metadata}{\code{GwasDataImport::Dataset$collect_metadata()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd">}\href{../../GwasDataImport/html/Dataset.html#method-delete_wd}{\code{GwasDataImport::Dataset$delete_wd()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns">}\href{../../GwasDataImport/html/Dataset.html#method-determine_columns}{\code{GwasDataImport::Dataset$determine_columns()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="format_dataset">}\href{../../GwasDataImport/html/Dataset.html#method-format_dataset}{\code{GwasDataImport::Dataset$format_dataset()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_gwasdata_fields">}\href{../../GwasDataImport/html/Dataset.html#method-get_gwasdata_fields}{\code{GwasDataImport::Dataset$get_gwasdata_fields()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_metadata_fields">}\href{../../GwasDataImport/html/Dataset.html#method-get_metadata_fields}{\code{GwasDataImport::Dataset$get_metadata_fields()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="is_new_id">}\href{../../GwasDataImport/html/Dataset.html#method-is_new_id}{\code{GwasDataImport::Dataset$is_new_id()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="se_from_bp">}\href{../../GwasDataImport/html/Dataset.html#method-se_from_bp}{\code{GwasDataImport::Dataset$se_from_bp()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="set_wd">}\href{../../GwasDataImport/html/Dataset.html#method-set_wd}{\code{GwasDataImport::Dataset$set_wd()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="view_metadata_options">}\href{../../GwasDataImport/html/Dataset.html#method-view_metadata_options}{\code{GwasDataImport::Dataset$view_metadata_options()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="write_metadata">}\href{../../GwasDataImport/html/Dataset.html#method-write_metadata}{\code{GwasDataImport::Dataset$write_metadata()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwas_release"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_gwas_release'><code>GwasDataImport::Dataset$api_gwas_release()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_check"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_gwasdata_check'><code>GwasDataImport::Dataset$api_gwasdata_check()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_delete"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_gwasdata_delete'><code>GwasDataImport::Dataset$api_gwasdata_delete()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_gwasdata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_gwasdata_upload'><code>GwasDataImport::Dataset$api_gwasdata_upload()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_check"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_metadata_check'><code>GwasDataImport::Dataset$api_metadata_check()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_delete"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_metadata_delete'><code>GwasDataImport::Dataset$api_metadata_delete()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_edit"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_metadata_edit'><code>GwasDataImport::Dataset$api_metadata_edit()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_metadata_upload'><code>GwasDataImport::Dataset$api_metadata_upload()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_qc_status"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_qc_status'><code>GwasDataImport::Dataset$api_qc_status()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_report'><code>GwasDataImport::Dataset$api_report()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="check_meta_data"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-check_meta_data'><code>GwasDataImport::Dataset$check_meta_data()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-collect_metadata'><code>GwasDataImport::Dataset$collect_metadata()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-delete_wd'><code>GwasDataImport::Dataset$delete_wd()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-determine_columns'><code>GwasDataImport::Dataset$determine_columns()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="format_dataset"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-format_dataset'><code>GwasDataImport::Dataset$format_dataset()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_gwasdata_fields"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-get_gwasdata_fields'><code>GwasDataImport::Dataset$get_gwasdata_fields()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="get_metadata_fields"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-get_metadata_fields'><code>GwasDataImport::Dataset$get_metadata_fields()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="is_new_id"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-is_new_id'><code>GwasDataImport::Dataset$is_new_id()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="se_from_bp"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-se_from_bp'><code>GwasDataImport::Dataset$se_from_bp()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="set_wd"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-set_wd'><code>GwasDataImport::Dataset$set_wd()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="view_metadata_options"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-view_metadata_options'><code>GwasDataImport::Dataset$view_metadata_options()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="write_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-write_metadata'><code>GwasDataImport::Dataset$write_metadata()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EbiDataset-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-new}{}}}
 \subsection{Method \code{new()}}{
 Initialise object
 \subsection{Usage}{
@@ -99,8 +100,8 @@ A new EbiDataset object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-download_dataset"></a>}}
-\if{latex}{\out{\hypertarget{method-download_dataset}{}}}
+\if{html}{\out{<a id="method-EbiDataset-download_dataset"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-download_dataset}{}}}
 \subsection{Method \code{download_dataset()}}{
 Download
 \subsection{Usage}{
@@ -124,8 +125,8 @@ Download
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_ebi_dataset"></a>}}
-\if{latex}{\out{\hypertarget{method-format_ebi_dataset}{}}}
+\if{html}{\out{<a id="method-EbiDataset-format_ebi_dataset"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-format_ebi_dataset}{}}}
 \subsection{Method \code{format_ebi_dataset()}}{
 organise data before formatting. This is slow but doesn't really matter
 \subsection{Usage}{
@@ -146,8 +147,8 @@ organise data before formatting. This is slow but doesn't really matter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-organise_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-organise_metadata}{}}}
+\if{html}{\out{<a id="method-EbiDataset-organise_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-organise_metadata}{}}}
 \subsection{Method \code{organise_metadata()}}{
 Download and parse metadata
 \subsection{Usage}{
@@ -192,8 +193,8 @@ Download and parse metadata
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pipeline"></a>}}
-\if{latex}{\out{\hypertarget{method-pipeline}{}}}
+\if{html}{\out{<a id="method-EbiDataset-pipeline"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-pipeline}{}}}
 \subsection{Method \code{pipeline()}}{
 Once initialised this function will string together everything i.e. downloading, processing and uploading
 \subsection{Usage}{
@@ -202,8 +203,8 @@ Once initialised this function will string together everything i.e. downloading,
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EbiDataset-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EbiDataset-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

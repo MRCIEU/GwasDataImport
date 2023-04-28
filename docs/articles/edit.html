@@ -56,7 +56,7 @@
 
       
 
-      </header><script src="edit_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Edit existing GWAS meta data</h1>
@@ -70,6 +70,20 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
+<span><span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span></span>
+<span><span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span></span></code></pre></div>
+<p>Create meta</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"updated trait"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_edit</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"updated trait again"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_edit</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+=======
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
 <span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span>
 <span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span></code></pre></div>
@@ -82,6 +96,7 @@
 <span class="va">y</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"updated trait again"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span>
 <span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_edit</span><span class="op">(</span><span class="op">)</span>
 <span class="va">y</span><span class="op">$</span><span class="fu">api_metadata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/httr/man/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -99,7 +114,11 @@
 
 <div class="pkgdown">
   <p></p>
+<<<<<<< HEAD
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+=======
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+>>>>>>> master
 </div>
 
       </footer>

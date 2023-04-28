@@ -25,13 +25,14 @@ This package provides some simple tools to import a summary dataset into the Ope
 
 1. Download the summary dataset
 2. Initialise
-2. Specify which columns in the summary dataset correspond to which fields
-3. Process the summary dataset
+3. Specify which columns in the summary dataset correspond to which fields
 4. Input the meta-data
-5. Upload meta-data and processed summary dataset
-6. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
-7. Check report and release the dataset
-8. [Wait for the data to be uploaded to the OpenGWAS database]
+5. Check that the meta-data are correct
+6. Process the summary dataset
+7. Upload meta-data and processed summary dataset
+8. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+9. Check report and release the dataset
+10. [Wait for the data to be uploaded to the OpenGWAS database]
 
 This may look like a lot but it's only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:
 
@@ -46,11 +47,15 @@ x <- Dataset$new(filename=filename, igd_id=id)
 
 # Specify columns
 x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
-# Process dataset
-x$format_dataset()
-
 # Input metadata
 x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd', ontology="EFO:1234;EFO:2345"))
+
+#Check the meta-data. This compares the provided effect allele column to the GWAS catalog and effect allele frequency column to the 1000 genomes super populations. Conflicts or test failures may indicate that the columns have been mis-specified in the collect_metadata function. The function also compares "GWAS hits" in the dataset (by convention we define this as 5e-8) to reported associations in the GWAS catalog. 
+
+x$check_meta_data(gwas_file=x$filename,params=x$params,metadata=x$metadata)
+
+# Process dataset
+x$format_dataset()
 
 # Upload metadata
 x$api_metadata_upload()
@@ -186,28 +191,26 @@ x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, ea
 Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are 
 
 
-## 4. Process the summary dataset
+## 4. Input the meta-data
 
-Once you are happy with how the columns are being parsed, the dataset can now be processed. This involves
-
-1. Reading in the dataset
-2. Checking that the fields are as they should be (quite a light check)
-3. Removing any rows that have missing values in any required fields
-4. Updating build to hg19/b37 if necessary
-5. Writing processed dataset to file, ready for upload
-6. Calculate the md5 checksum
-
-This is achieved using:
+Specify the metadata. e.g. here is a minimal example:
 
 ```{r}
-x$format_dataset()
+x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
 ```
 
-## 5. Input the meta-data
-
-While you are waiting for `format_dataset()` to run, you can specify metadata. e.g. here is a minimal example:
+But more fields can be specified. You can see a detailed list of them here: http://gwas-api.mrcieu.ac.uk/docs or running this command:
 
 ```{r}
+x$view_metadata_options()
+```
+
+To see a simplified version of this, see:
+
+```{r}
+<<<<<<< HEAD
+x$get_metadata_fields()
+=======
 x$collect_metadata(list(
   trait="hello",
   build="HG19/GRCh37",
@@ -223,18 +226,46 @@ x$collect_metadata(list(
   author="Anon",
   unit="SD")
 )
+>>>>>>> master
 ```
 
-But more fields can be specified. You can see a detailed list of them here: http://gwas-api.mrcieu.ac.uk/docs or running this command:
+## 5. Check that the meta-data are correct
+
+This does the following tests:
+
+1. Compares the reported effect allele frequency (eaf) column to the 1000 genomes super populations. Test failure indicates that the eaf column has been mis-specified. For example, the eaf column refers to the non-effect allele or minor allele.
+2. Compares the reported effect allele to the GWAS catalog. Test failure indicates that the effect allele column has been mis-specified. For example, that the provided effect allele column is actually the non-effect allele column.   
+3. Compares the GWAS hits in the dataset to reported associations in the GWAS catalog. Test failure indicates that a large number of GWAS hits in the dataset are absent from the GWAS catalog. This could be indicative of a dataset that has not been through post GWAS QC procedures (i.e. with unreliable genetic variants removed). An alternative explanation is that the new dataset is just much better powered than any previously conducted GWAS in the GWAS catalog. 
 
 ```{r}
-x$view_metadata_options()
+x$check_meta_data(gwas_file=x$filename,params=x$params,metadata=x$metadata)
+x$metadata_test$eaf_conflicts
+x$metadata_test$eaf_conflicts_plot
+x$metadata_test$gc_conflicts
+x$metadata_test$gc_conflicts_plot
+x$metadata_test$false_positive_hits
 ```
 
-To see a simplified version of this, see:
+## 6. Process the summary dataset
+
+Once you are happy with how the columns have been parsed (step 3) and are confident that the meta-data are correct (steps 4 & 5), the dataset can be processed. This involves
+
+1. Checking that none of the meta-data tests failed. Will stop if effect allele frequency or effect alleles columns look wrong. 
+2. Reading in the dataset
+3. Checking that the fields are as they should be (quite a light check)
+4. Removing any rows that have missing values in any required fields
+5. Updating build to hg19/b37 if necessary
+6. Writing processed dataset to file, ready for upload
+7. Calculate the md5 checksum
+
+This is achieved using:
 
 ```{r}
+<<<<<<< HEAD
+x$format_dataset()
+=======
 x$get_metadata_fields() %>% as.data.frame()
+>>>>>>> master
 ```
 
 Please provide as much accurate metadata as possible
@@ -260,11 +291,13 @@ Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/add]
 
 Note that the `Status` is 200 - this indicates that the upload was successful. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
 
+Another thing to note is that the meta-data upload won't work if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong. 
+
 ```{r}
 x$metadata_upload_status %>% httr::content()
 ```
 
-Anothing thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the `collect_metadata` method with the updated metadata, and then to re-upload the data you must use the `api_metadata_edit` function. If you try to re-run the `api_metadata_upload` function it will give you an error saying that the ID already exists.
+Another thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the `collect_metadata` method with the updated metadata, and then to re-upload the data you must use the `api_metadata_edit` function. If you try to re-run the `api_metadata_upload` function it will give you an error saying that the ID already exists.
 
 If there was an error in your metadata perhaps the easiest thing to do is just delete it and re-upload
 
@@ -305,6 +338,8 @@ x$api_gwasdata_upload()
 ```
 
 This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.
+
+Another thing to note is that the gwasdata upload will stop if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong. 
 
 You should see something like this printed to the screen:
 
