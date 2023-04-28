@@ -45,9 +45,6 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -73,7 +70,11 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
 <div class="section level2">
 <h2 id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
 </h2>
@@ -87,6 +88,7 @@
 <h2 id="complete-workflow-for-one-dataset">Complete workflow for one dataset<a class="anchor" aria-label="anchor" href="#complete-workflow-for-one-dataset"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span></span>
 <span><span class="co"># library(devtools)</span></span>
 <span><span class="co"># load_all()</span></span>
@@ -107,11 +109,34 @@
 <p>Now delete:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R">
+<span class="co"># library(devtools)</span>
+<span class="co"># load_all()</span>
+<span class="co"># ieugwasr::select_api("dev2")</span>
+
+<span class="co"># Authorise</span>
+<span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html" class="external-link">get_access_token</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># This is a small file, good for testing</span>
+<span class="va">ebi_id</span> <span class="op">&lt;-</span> <span class="st">"GCST005522"</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+    ebi_id <span class="op">=</span> <span class="va">ebi_id</span>, 
+    ftp_path <span class="op">=</span> <span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span><span class="op">(</span><span class="va">ebi_id</span><span class="op">)</span>,
+    igd_id <span class="op">=</span> <span class="st">"ebi-a-EBITEST"</span>,
+    wd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uploads/"</span>, <span class="va">ebi_id</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">pipeline</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Now delete:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="running-each-step-individually">Running each step individually<a class="anchor" aria-label="anchor" href="#running-each-step-individually"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">ebi_id</span> <span class="op">&lt;-</span> <span class="st">"GCST005522"</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>    ebi_id <span class="op">=</span> <span class="va">ebi_id</span>, </span>
@@ -127,12 +152,30 @@
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="va">ebi_id</span> <span class="op">&lt;-</span> <span class="st">"GCST005522"</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+    ebi_id <span class="op">=</span> <span class="va">ebi_id</span>, 
+    ftp_path <span class="op">=</span> <span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span><span class="op">(</span><span class="va">ebi_id</span><span class="op">)</span>,
+    igd_id <span class="op">=</span> <span class="st">"ebi-a-EBITEST"</span>,
+    wd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uploads/"</span>, <span class="va">ebi_id</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">download_dataset</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">format_ebi_dataset</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span>params<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span>, gwas_file<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">gwas_out1</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span>gwas_file<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">gwas_out1</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">organise_metadata</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="workflow-for-all-datasets">Workflow for all datasets<a class="anchor" aria-label="anchor" href="#workflow-for-all-datasets"></a>
 </h2>
 <p>To get a list of datasets that need to be imported:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">ignore_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span><span class="op">(</span>blacklist<span class="op">=</span><span class="va">ignore_list</span><span class="op">)</span></span>
 <span><span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/being_processed.html">being_processed</a></span><span class="op">(</span><span class="va">newdats</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">need</span><span class="op">)</span></span></code></pre></div>
@@ -153,19 +196,48 @@
 <span>    <span class="op">}</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="va">ignore_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span><span class="op">(</span>blacklist<span class="op">=</span><span class="va">ignore_list</span><span class="op">)</span>
+<span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/being_processed.html">being_processed</a></span><span class="op">(</span><span class="va">newdats</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">need</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ignore</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">newdats</span><span class="op">)</span><span class="op">)</span>
+<span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">newdats</span><span class="op">$</span><span class="va">ebi_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+        ebi_id <span class="op">=</span> <span class="va">newdats</span><span class="op">$</span><span class="va">ebi_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, 
+        ftp_path <span class="op">=</span> <span class="va">newdats</span><span class="op">$</span><span class="va">path</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+        wd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"uploads/"</span>, <span class="va">newdats</span><span class="op">$</span><span class="va">ebi_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
+    <span class="op">)</span>
+    <span class="va">o</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="fu">pipeline</span><span class="op">(</span><span class="op">)</span>
+    <span class="kw">if</span><span class="op">(</span><span class="op">!</span> <span class="st">"NULL"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">{</span>
+        <span class="va">ignore</span><span class="op">[[</span><span class="va">newdats</span><span class="op">$</span><span class="va">ebi_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">o</span>
+    <span class="op">}</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+>>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="lookup-build">Lookup build<a class="anchor" aria-label="anchor" href="#lookup-build"></a>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"GCST000755"</span>, ftp_path<span class="op">=</span><span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span><span class="op">(</span><span class="st">"GCST000755"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">download_dataset</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"GCST000755"</span>, ftp_path<span class="op">=</span><span class="fu"><a href="../reference/get_ftp_path.html">get_ftp_path</a></span><span class="op">(</span><span class="st">"GCST000755"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">download_dataset</span><span class="op">(</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="suhre-proteins">Suhre proteins<a class="anchor" aria-label="anchor" href="#suhre-proteins"></a>
 </h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">ignore_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span><span class="op">(</span>blacklist<span class="op">=</span><span class="va">ignore_list</span>, exclude <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">suhre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">newdats</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Suhr"</span>, <span class="va">path</span><span class="op">)</span><span class="op">)</span></span>
@@ -192,6 +264,34 @@
 <span>    <span class="va">x</span><span class="op">$</span><span class="fu">download_dataset</span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="va">x</span><span class="op">$</span><span class="fu">pipeline</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="va">ignore_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"EbiDataImport"</span>, <span class="st">"extdata/ebi_ignore_list.txt"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">newdats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/determine_new_datasets.html">determine_new_datasets</a></span><span class="op">(</span>blacklist<span class="op">=</span><span class="va">ignore_list</span>, exclude <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">suhre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">newdats</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Suhr"</span>, <span class="va">path</span><span class="op">)</span><span class="op">)</span>
+<span class="va">suhre</span> <span class="op">&lt;-</span> <span class="fu">separate</span><span class="op">(</span><span class="va">suhre</span>, <span class="va">path</span>, sep<span class="op">=</span><span class="st">"/"</span>, into<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p1"</span>,<span class="st">"p2"</span>,<span class="st">"p3"</span><span class="op">)</span>, remove<span class="op">=</span><span class="cn">F</span><span class="op">)</span>
+<span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">suhre</span><span class="op">$</span><span class="va">p3</span>, split<span class="op">=</span><span class="st">"_"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">suhre</span><span class="op">$</span><span class="va">igd_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"prot-c-"</span>, <span class="va">temp</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, <span class="st">"_"</span>, <span class="va">temp</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>
+<span class="va">suhre</span><span class="op">$</span><span class="va">igd_id</span>
+
+<span class="va">traitinfo</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"http://metabolomics.helmholtz-muenchen.de/pgwas/download/probeanno.tsv"</span>, sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span>
+<span class="va">traitinfo</span><span class="op">$</span><span class="va">igd_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"prot-c-"</span>, <span class="va">traitinfo</span><span class="op">$</span><span class="va">seqid</span><span class="op">)</span>
+
+<span class="va">suhre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">suhre</span>, <span class="va">traitinfo</span>, by<span class="op">=</span><span class="st">"igd_id"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">suhre</span>, file<span class="op">=</span><span class="st">"suhre.rdata"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"suhre.rdata"</span><span class="op">)</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">suhre</span><span class="op">)</span><span class="op">)</span>
+<span class="op">{</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/EbiDataset.html">EbiDataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+        ebi_id<span class="op">=</span><span class="va">suhre</span><span class="op">$</span><span class="va">ebi_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+        ftp_path<span class="op">=</span><span class="va">suhre</span><span class="op">$</span><span class="va">path</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+        igd_id<span class="op">=</span><span class="va">suhre</span><span class="op">$</span><span class="va">igd_id</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+        traitname<span class="op">=</span><span class="va">suhre</span><span class="op">$</span><span class="va">target</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
+    <span class="op">)</span>
+    <span class="va">x</span><span class="op">$</span><span class="fu">download_dataset</span><span class="op">(</span><span class="op">)</span>
+    <span class="va">x</span><span class="op">$</span><span class="fu">pipeline</span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+>>>>>>> master
 <p>Conclusion - they seem to be missing standard errors? Need to do this through the batch processing.</p>
 </div>
 <div class="section level2">
@@ -199,6 +299,7 @@
 </h2>
 <p>Need to figure out a solution for storing this. Many EBI datasets don’t have sufficient info to be included, so we need to ignore them instead of trying to upload them each time we look for new studies.</p>
 <p>On the <code>ieu-ssd</code> machine where the original set of EBI datasets was downloaded and processed, this is how the first ignore list was determined:</p>
+<<<<<<< HEAD
 <pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"/data/ebi_gwascatalog/pmids.txt"</span><span class="op">)</span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="st">"/data/ebi_gwascatalog/study_ids.txt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -209,6 +310,18 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">got</span>, <span class="va">a</span><span class="op">$</span><span class="va">Status</span><span class="op">)</span></span>
 <span><span class="va">ebi_ignore_list</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">StudyID</span><span class="op">[</span><span class="va">a</span><span class="op">$</span><span class="va">Status</span> <span class="op">==</span> <span class="st">"harmonised"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">a</span><span class="op">$</span><span class="va">got</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">ebi_ignore_list</span>, file<span class="op">=</span><span class="st">"ebi_ignore_list.txt"</span>, row<span class="op">=</span><span class="cn">F</span>, col<span class="op">=</span><span class="cn">F</span>, qu<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span></code></pre>
+=======
+<pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"/data/ebi_gwascatalog/pmids.txt"</span><span class="op">)</span>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="st">"/data/ebi_gwascatalog/study_ids.txt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">got</span> <span class="op">&lt;-</span> <span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/gwasinfo.html" class="external-link">gwasinfo</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"ebi-a"</span>, <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="op">{</span><span class="va">.</span><span class="op">$</span><span class="va">id</span><span class="op">}</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"ebi-a-"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span>
+<span class="va">a</span><span class="op">$</span><span class="va">got</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">StudyID</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">got</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">got</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">got</span>, <span class="va">a</span><span class="op">$</span><span class="va">Status</span><span class="op">)</span>
+<span class="va">ebi_ignore_list</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">$</span><span class="va">StudyID</span><span class="op">[</span><span class="va">a</span><span class="op">$</span><span class="va">Status</span> <span class="op">==</span> <span class="st">"harmonised"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">a</span><span class="op">$</span><span class="va">got</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">ebi_ignore_list</span>, file<span class="op">=</span><span class="st">"ebi_ignore_list.txt"</span>, row<span class="op">=</span><span class="cn">F</span>, col<span class="op">=</span><span class="cn">F</span>, qu<span class="op">=</span><span class="cn">F</span><span class="op">)</span></code></pre>
+>>>>>>> master
 </div>
   </div>
 
@@ -229,7 +342,11 @@
 
 <div class="pkgdown">
   <p></p>
+<<<<<<< HEAD
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+=======
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+>>>>>>> master
 </div>
 
       </footer>

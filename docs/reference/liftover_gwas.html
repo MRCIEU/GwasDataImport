@@ -28,9 +28,12 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<<<<<<< HEAD
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
+=======
+>>>>>>> master
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -50,6 +53,7 @@
     </div>
 
     <div id="ref-usage">
+<<<<<<< HEAD
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">liftover_gwas</span><span class="op">(</span></span>
 <span>  <span class="va">dat</span>,</span>
 <span>  build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">37</span>, <span class="fl">38</span>, <span class="fl">36</span><span class="op">)</span>,</span>
@@ -61,12 +65,26 @@
 <span>  oa_col <span class="op">=</span> <span class="st">"oa"</span>,</span>
 <span>  build_fallback <span class="op">=</span> <span class="st">"position"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+=======
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">liftover_gwas</span><span class="op">(</span>
+  <span class="va">dat</span>,
+  build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">37</span>, <span class="fl">38</span>, <span class="fl">36</span><span class="op">)</span>,
+  to <span class="op">=</span> <span class="fl">37</span>,
+  chr_col <span class="op">=</span> <span class="st">"chr"</span>,
+  pos_col <span class="op">=</span> <span class="st">"pos"</span>,
+  snp_col <span class="op">=</span> <span class="st">"snp"</span>,
+  ea_col <span class="op">=</span> <span class="st">"ea"</span>,
+  oa_col <span class="op">=</span> <span class="st">"oa"</span>,
+  build_fallback <span class="op">=</span> <span class="st">"position"</span>
+<span class="op">)</span></code></pre></div>
+>>>>>>> master
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
 <dd><p>Data frame with chr, pos, snp name, effect allele, non-effect allele columns</p></dd>
+<<<<<<< HEAD
 
 
 <dt>build</dt>
@@ -102,6 +120,26 @@
     
 
 <p>Data frame</p>
+=======
+<dt>build</dt>
+<dd><p>The possible builds to check data against Default = c(37,38,26)</p></dd>
+<dt>to</dt>
+<dd><p>Which build to lift over to. Default=37</p></dd>
+<dt>chr_col</dt>
+<dd><p>Name of chromosome column name. Required</p></dd>
+<dt>pos_col</dt>
+<dd><p>Name of position column name. Required</p></dd>
+<dt>snp_col</dt>
+<dd><p>Name of SNP column name. Optional. Uses less certain method of matching if not available</p></dd>
+<dt>ea_col</dt>
+<dd><p>Name of effect allele column name. Optional. Might lead to duplicated rows if not presented</p></dd>
+<dt>oa_col</dt>
+<dd><p>Name of other allele column name. Optional. Might lead to duplicated rows if not presented</p></dd>
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>Data frame</p>
+>>>>>>> master
     </div>
 
   </div>
@@ -116,7 +154,11 @@
 </div>
 
 <div class="pkgdown">
+<<<<<<< HEAD
   <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+=======
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+>>>>>>> master
 </div>
 
       </footer></div>

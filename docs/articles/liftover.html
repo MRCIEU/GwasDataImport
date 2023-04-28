@@ -45,9 +45,6 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -73,10 +70,17 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
 <span><span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span></span>
 <span><span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
+<span class="co">#&gt; API: public: http://gwas-api.mrcieu.ac.uk/</span>
+<span class="co">#&gt; API: private: http://ieu-db-interface.epi.bris.ac.uk:8082/</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></code></pre></div>
+>>>>>>> master
 <p>There are three ways to determine the build of a dataset:</p>
 <ul>
 <li>
@@ -88,6 +92,7 @@
 </ul>
 <p>The <code>liftover_gwas</code> function determines the build using each of those options, and then performs the liftover automatically.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span><span class="op">)</span></span>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/liftover_gwas.html">liftover_gwas</a></span><span class="op">(</span><span class="va">dat</span>, to<span class="op">=</span><span class="fl">38</span>, chr_col<span class="op">=</span><span class="st">"CHROM"</span>, pos_col<span class="op">=</span><span class="st">"POS"</span>, snp_col<span class="op">=</span><span class="st">"RSID"</span>, ea_col<span class="op">=</span><span class="st">"ALT"</span>, oa_col<span class="op">=</span><span class="st">"REF"</span><span class="op">)</span></span>
@@ -99,6 +104,19 @@
 <span><span class="co">#&gt; Lifting</span></span>
 <span><span class="co">#&gt; Organising again</span></span>
 <span><span class="co">#&gt; Done</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span><span class="op">)</span>
+<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/liftover_gwas.html">liftover_gwas</a></span><span class="op">(</span><span class="va">dat</span>, to<span class="op">=</span><span class="fl">38</span>, chr_col<span class="op">=</span><span class="st">"CHROM"</span>, pos_col<span class="op">=</span><span class="st">"POS"</span>, snp_col<span class="op">=</span><span class="st">"RSID"</span>, ea_col<span class="op">=</span><span class="st">"ALT"</span>, oa_col<span class="op">=</span><span class="st">"REF"</span><span class="op">)</span>
+<span class="co">#&gt; Using rsid</span>
+<span class="co">#&gt; Lifting build: 37 to 38</span>
+<span class="co">#&gt; Loading chainfile</span>
+<span class="co">#&gt; Converting chromosome codings</span>
+<span class="co">#&gt; Organising</span>
+<span class="co">#&gt; Lifting</span>
+<span class="co">#&gt; Organising again</span>
+<span class="co">#&gt; Done</span></code></pre></div>
+>>>>>>> master
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -116,7 +134,11 @@
 
 <div class="pkgdown">
   <p></p>
+<<<<<<< HEAD
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+=======
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+>>>>>>> master
 </div>
 
       </footer>

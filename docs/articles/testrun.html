@@ -45,9 +45,6 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -73,6 +70,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MRCIEU/ieugwasr" class="external-link">ieugwasr</a></span><span class="op">)</span></span>
@@ -116,6 +114,51 @@
 <span></span>
 <span><span class="co"># Delete everything</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+=======
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mrcieu/ieugwasr" class="external-link">ieugwasr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+
+<span class="co"># get access</span>
+<span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html" class="external-link">get_access_token</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Initialise</span>
+<span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/pos_0002.txt.gz"</span>, package<span class="op">=</span><span class="st">"GwasDataImport"</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">fn</span>, igd_id<span class="op">=</span><span class="st">"ieu-b-test2"</span><span class="op">)</span>
+
+<span class="co"># Specify columns</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Process dataset</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Input metadata</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+    trait<span class="op">=</span><span class="st">"whatever"</span>,
+    build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,
+    category<span class="op">=</span><span class="st">"Continuous"</span>,
+    subcategory<span class="op">=</span><span class="st">"NA"</span>,
+    group_name<span class="op">=</span><span class="st">"public"</span>,
+    population<span class="op">=</span><span class="st">"European"</span>,
+    sex<span class="op">=</span><span class="st">"Males and Females"</span>
+<span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Upload metadata</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Upload summary data</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Check status</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Check existing files</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/httr/man/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># Delete everything</span>
+<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+>>>>>>> master
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -133,7 +176,11 @@
 
 <div class="pkgdown">
   <p></p>
+<<<<<<< HEAD
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+=======
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+>>>>>>> master
 </div>
 
       </footer>

@@ -16,7 +16,7 @@ library(GwasDataImport)
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  eval=FALSE,
+  eval = FALSE,
   comment = "#>"
 )
 ```
@@ -69,6 +69,12 @@ x$api_report()
 # Release dataset
 x$api_gwas_release()
 
+# Check that it's available on OpenGWAS e.g. can you get its tophits:
+ieugwasr::tophits(id)
+
+# Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)
+ieugwasr::associations(tophits('ieu-a-2')$rsid, id)
+
 # Delete wd
 x$delete_wd()
 ```
@@ -106,12 +112,17 @@ filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 
 but you would define the `filename` object as just a path to your data file.
 
-Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. Going to create a random testing id here:
+Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. 
+
+
+For the purposes of this demonstration I'm going to create a random ID here
 
 
 ```{r}
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
+
+But just when you're uploading a dataset for real, don't do this, in most circumstances you can just leave the ID blank and the API will choose the next available one for you (then make a note of what it has chosen for you).
 
 Authenticate:
 
@@ -134,6 +145,8 @@ This has done the following things
 
 NOTE: at the end of this process that temporary directory will be automatically deleted.
 
+NOTE: Just to reiterate - you can run `x <- Dataset$new(filename=filename)` without specifying the `igd_id` argument and it will choose the next `ieu-b-*` ID for you automatically - this is recommended.
+
 Let's look at the object:
 
 ```{r}
@@ -150,7 +163,6 @@ x$wd
 Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)
 
 ```{r}
-
 x$is_new_id()
 ```
 
@@ -196,7 +208,25 @@ x$view_metadata_options()
 To see a simplified version of this, see:
 
 ```{r}
+<<<<<<< HEAD
 x$get_metadata_fields()
+=======
+x$collect_metadata(list(
+  trait="hello",
+  build="HG19/GRCh37",
+  category="NA",
+  subcategory="NA",
+  group_name="public",
+  population="European",
+  sex="Males",
+  note='asdasd',
+  year='2022',
+  ontology='EFO:1234',
+  sample_size=10000,
+  author="Anon",
+  unit="SD")
+)
+>>>>>>> master
 ```
 
 ## 5. Check that the meta-data are correct
@@ -231,8 +261,14 @@ Once you are happy with how the columns have been parsed (step 3) and are confid
 This is achieved using:
 
 ```{r}
+<<<<<<< HEAD
 x$format_dataset()
+=======
+x$get_metadata_fields() %>% as.data.frame()
+>>>>>>> master
 ```
+
+Please provide as much accurate metadata as possible
 
 ## 6. Upload meta-data
 
@@ -263,11 +299,41 @@ x$metadata_upload_status %>% httr::content()
 
 Another thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the `collect_metadata` method with the updated metadata, and then to re-upload the data you must use the `api_metadata_edit` function. If you try to re-run the `api_metadata_upload` function it will give you an error saying that the ID already exists.
 
+If there was an error in your metadata perhaps the easiest thing to do is just delete it and re-upload
+
+e.g. 
+
+```{r}
+x$api_metadata_delete()
+```
+
+Then make edits to your metadata e.g. I'm going to change the author
+
+```{r}
+x$collect_metadata(list(
+  trait="hello",
+  build="HG19/GRCh37",
+  category="NA",
+  subcategory="NA",
+  group_name="public",
+  population="European",
+  sex="Males",
+  note='asdasd',
+  year='2022',
+  ontology='EFO:1234',
+  sample_size=10000,
+  author="Mous A",
+  unit="SD")
+)
+```
+
+And then reupload etc using `x$api_metadata_upload()`
+
 ## 7. Upload processed summary dataset
 
 Similar to the step above, upload the actual GWAS data:
 
-```{r}
+```{r, eval=FALSE}
 x$api_gwasdata_upload()
 ```
 
@@ -289,7 +355,7 @@ Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
 
 Note again the `Status` here - it is `201` meaning a successful upload. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
 
-```{r}
+```{r, eval=FALSE}
 x$gwasdata_upload_status %>% httr::content()
 ```
 
@@ -299,13 +365,13 @@ Once uploaded, the dataset will go through a processing pipeline on the server. 
 
 You can check the status of the pipeline by running:
 
-```{r}
+```{r, eval=FALSE}
 x$api_qc_status()
 ```
 
 You can also check the status of the files being generated on the server side for this dataset:
 
-```{r}
+```{r, eval=FALSE}
 x$api_gwasdata_check() %>% httr::content()
 ```
 
@@ -342,14 +408,31 @@ x$api_gwas_release(comments="Some comments here")
 
 Alternatively, you can delete the data that has been uploaded:
 
-```{r}
+```{r, eval=FALSE}
 x$api_gwasdata_delete()
 ```
 
-## 10. [Wait for the data to be uploaded to the OpenGWAS database]
+## 10. Check that it can be queried
 
-Now the GWAS data should be uploaded to the OpenGWAS database
+Now the GWAS data should be uploaded to the OpenGWAS database. It could take an hour or two for this to happen complete, which you can check again with 
 
+```{r}
+x$api_qc_status()
+```
+
+Once it's uploaded (i.e. the above command returns `Succeeded` for the elasticsearch pipeline) you should be able to query it. e.g. can you get its tophits:
+
+```{r}
+ieugwasr::tophits(id)
+```
+
+Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)
+
+```{r}
+ieugwasr::associations(tophits('ieu-a-2')$rsid, id)
+```
+
+The dataset will appear on https://gwas.mrcieu.ac.uk/ within a day or two, the synchronisation between API and website isn't immediate.
 
 ## Summary
 
