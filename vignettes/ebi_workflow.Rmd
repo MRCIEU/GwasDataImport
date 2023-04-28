@@ -157,7 +157,7 @@ Need to figure out a solution for storing this. Many EBI datasets don't have suf
 
 On the `ieu-ssd` machine where the original set of EBI datasets was downloaded and processed, this is how the first ignore list was determined:
 
-```
+```r
 library(dplyr)
 a <- read.csv("/data/ebi_gwascatalog/pmids.txt")
 b <- scan("/data/ebi_gwascatalog/study_ids.txt", character())
