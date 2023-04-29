@@ -5,10 +5,22 @@ template:
 
 navbar:
   left:
-    - text: "Home"
-      href: index.html
     - text: "Vignettes"
-      href: articles/index.html
+      menu:
+        - text: List of vignettes
+          href: articles/index.html
+        - text: Importing datasets into OpenGWAS
+          href: articles/import_pipeline.html
+        - text: Edit existing GWAS meta data
+          href: articles/edit.html
+        - text: EBI upload pipeline
+          href: articles/ebi_workflow.html
+        - text: Automating liftover
+          href: articles/liftover.html
+        - text: Test run for upload system
+          href: articles/testrun.html
+        - text: Looking up chromosome and position for large sets of rs IDs
+          href: articles/get_positions.html
     - text: "Functions"
       href: reference/index.html
     - text: "Changelog"
