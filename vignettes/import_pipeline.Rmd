@@ -32,7 +32,7 @@ This package provides some simple tools to import a summary dataset into the Ope
 7. Upload meta-data and processed summary dataset
 8. Wait for the API pipeline to convert to VCF format, annotate and create a report
 9. Check report and release the dataset
-10. [Wait for the data to be uploaded to the OpenGWAS database]
+10. (Wait for the data to be uploaded to the OpenGWAS database) Check that it can be queried
 
 This may look like a lot but it's only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:
 
