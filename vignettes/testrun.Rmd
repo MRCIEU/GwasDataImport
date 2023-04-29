@@ -60,4 +60,3 @@ x$api_gwasdata_check() %>% httr::content()
 # Delete everything
 x$api_gwasdata_delete()
 ```
-
