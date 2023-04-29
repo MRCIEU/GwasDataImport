@@ -257,11 +257,8 @@ Once you are happy with how the columns have been parsed (step 3) and are confid
 This is achieved using:
 
 ```{r}
-<<<<<<< HEAD
 x$format_dataset()
-=======
 x$get_metadata_fields() %>% as.data.frame()
->>>>>>> master
 ```
 
 Please provide as much accurate metadata as possible
