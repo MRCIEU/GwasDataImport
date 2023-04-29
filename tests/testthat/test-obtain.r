@@ -1,5 +1,4 @@
 context("EBI upload")
-library(GwasDataImport)
 
 test_that("EBI upload", {
   skip("Tests for GH to run interactively")

@@ -1,5 +1,4 @@
 context("Liftover")
-library(GwasDataImport)
 
 test_that("liftover", {
   skip("Tests for GH to run interactively")

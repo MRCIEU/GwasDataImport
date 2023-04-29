@@ -1,5 +1,4 @@
 context("Standard upload")
-library(GwasDataImport)
 
 test_that("Standard upload", {
   skip("Tests for GH to run interactively")
