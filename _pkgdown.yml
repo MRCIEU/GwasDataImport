@@ -1,3 +1,8 @@
+url: https://mrcieu.github.io/GwasDataImport/
+
+template:
+  bootstrap: 5
+
 navbar:
   left:
     - text: "Home"
