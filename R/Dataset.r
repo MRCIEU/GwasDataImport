@@ -336,7 +336,6 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	check_meta_data = function(gwas_file=self$filename,params=self$params,metadata=self$metadata)
 	{
-		library(CheckSumStats)
 		out<-data.table::fread(self$filename,nrows=Inf)	
 		# out<-data.table::fread(x$filename,nrows=Inf)	
 		
