@@ -52,6 +52,7 @@ create_build_reference <- function()
 #'
 #' @export
 #' @return data frame
+#' @importFrom utils data
 get_positions <- function(rsid, build=37, method=c("opengwas", "biomart")[1], splitsize=50000)
 {
 	if(length(rsid) > 100000)
