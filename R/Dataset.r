@@ -408,6 +408,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param metadata List of meta data fields and their values
 	#' @param metadata_test  List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats
 	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
+	#' @importFrom httr status_code
 	api_metadata_upload = function(metadata=self$metadata, metadata_test =self$metadata_test, access_token=ieugwasr::check_access_token())
 	{
 
