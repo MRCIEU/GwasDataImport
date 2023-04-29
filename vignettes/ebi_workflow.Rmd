@@ -25,12 +25,9 @@ library(GwasDataImport)
 2. Upload the formatted EBI data and metadata to OpenGWAS API
 3. Determine which datasets in EBI are not present in OpenGWAS. Allow a 'blacklist' of EBI datasets to ignore. (TODO)
 
-
-
 ## Complete workflow for one dataset
 
 ```{r, eval=FALSE}
-
 # library(devtools)
 # load_all()
 # ieugwasr::select_api("dev2")
@@ -55,7 +52,6 @@ Now delete:
 x$api_gwasdata_delete()
 ```
 
-
 ## Running each step individually
 
 ```{r, eval=FALSE}
@@ -76,7 +72,6 @@ x$api_gwasdata_upload()
 x$api_gwasdata_delete()
 ```
 
-
 ## Workflow for all datasets
 
 To get a list of datasets that need to be imported:
@@ -86,8 +81,6 @@ ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_lis
 newdats <- determine_new_datasets(blacklist=ignore_list)
 newdats <- being_processed(newdats) %>% subset(., need)
 ```
-
-
 
 ```{r, eval=FALSE}
 ignore <- list()
@@ -148,8 +141,6 @@ for(i in 1:nrow(suhre))
 ```
 
 Conclusion - they seem to be missing standard errors? Need to do this through the batch processing.
-
-
 
 ## EBI Ignore list
 
