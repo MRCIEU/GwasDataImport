@@ -12,5 +12,6 @@ Documentation including tutorials and examples here: https://mrcieu.github.io/Gw
 ## Installation
 
 ``` r
-remotes::install_github("mrcieu/GwasDataImport")
+# install.packages("remotes")
+remotes::install_github("MRCIEU/GwasDataImport")
 ```
