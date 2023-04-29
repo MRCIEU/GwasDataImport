@@ -225,7 +225,6 @@ determine_build <- function(rsid, chr, pos, build=c(37,38,36), fallback="positio
 #'
 #' @param pos Vector of positions
 #' @param build c(37,38,36)
-#' @param threshold how many times more in the true build than the others. default = 50 
 #'
 #' @export
 #' @return build or if not determined then dataframe
