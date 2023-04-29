@@ -339,7 +339,7 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col=
 		if(is.numeric(ea_col)) ea_col <- nom[ea_col]
 		if(is.numeric(oa_col)) oa_col <- nom[oa_col]
 
-		dat <- distinct(dat, .data[[chr_col]], .data[[pos_col]], .data[[ea_col]], .data[[oa_col]], .keep_all=TRUE)
+		dat <- dplyr::distinct(dat, .data[[chr_col]], .data[[pos_col]], .data[[ea_col]], .data[[oa_col]], .keep_all=TRUE)
 	}
 
 	message("Done")
