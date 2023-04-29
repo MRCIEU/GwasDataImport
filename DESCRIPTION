@@ -1,5 +1,5 @@
 Package: GwasDataImport
-Title: Import EBI data to OpenGWAS
+Title: Import EBI Data to OpenGWAS
 Version: 0.1.2
 Authors@R: c(
     person("Gibran", "Hemani", , "g.hemani@bristol.ac.uk", role = c("aut", "cre"),
