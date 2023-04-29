@@ -378,7 +378,7 @@ Gradually more files will be added e.g. expect to see
 
 If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
 
-http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>
+<http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>>
 
 Or run if you are in an interactive session with a browser:
 
