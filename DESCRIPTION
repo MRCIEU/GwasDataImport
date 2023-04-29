@@ -23,7 +23,6 @@ Imports:
     dplyr,
     jsonlite,
     data.table,
-    R.utils,
     httr,
     magrittr,
     rtracklayer,
@@ -42,5 +41,6 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    R.utils
 VignetteBuilder: knitr
