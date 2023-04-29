@@ -114,9 +114,7 @@ but you would define the `filename` object as just a path to your data file.
 
 Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. 
 
-
 For the purposes of this demonstration I'm going to create a random ID here
-
 
 ```{r}
 id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
@@ -155,7 +153,6 @@ x
 
 It is an `R6` object that contains some functions and some data objects. You can access any of these with the `$` operator. e.g. to find out the location of the temporary directory:
 
-
 ```{r}
 x$wd
 ```
@@ -189,7 +186,6 @@ x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, ea
 ```
 
 Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are 
-
 
 ## 4. Input the meta-data
 
@@ -384,9 +380,7 @@ Gradually more files will be added e.g. expect to see
 - `ldsc.txt.log`
 - `<id>_report.html`
 
-
 ## 9. Check report and release the dataset
-
 
 If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
 
@@ -446,7 +440,6 @@ x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subca
 x$api_metadata_upload()
 x$api_gwasdata_upload()
 ```
-
 
 ## Example
 
