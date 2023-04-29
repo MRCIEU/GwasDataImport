@@ -21,11 +21,33 @@ library(GwasDataImport)
 Create meta
 
 ```{r, eval=FALSE}
-y <- Dataset$new(igd_id=id)
-y$collect_metadata(list(trait="updated trait", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+y <- Dataset$new(igd_id = id)
+y$collect_metadata(
+  list(
+    trait = "updated trait",
+    build = "HG19/GRCh37",
+    category = "NA",
+    subcategory = "NA",
+    group_name = "public",
+    population = "European",
+    sex = "Males",
+    note = 'asdasd'
+  )
+)
 y$api_metadata_edit()
 y$api_metadata_check() %>% httr::content()
-y$collect_metadata(list(trait="updated trait again", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
+y$collect_metadata(
+  list(
+    trait = "updated trait again",
+    build = "HG19/GRCh37",
+    category = "NA",
+    subcategory = "NA",
+    group_name = "public",
+    population = "European",
+    sex = "Males",
+    note = 'asdasd'
+  )
+)
 y$api_metadata_edit()
 y$api_metadata_check() %>% httr::content()
 ```
