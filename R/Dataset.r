@@ -114,6 +114,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param nrows How many rows to read to check that parameters have been specified correctly
 	#' @param gwas_file Filename to read
 	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
+	#' @importFrom data.table fread
 	determine_columns = function(params, nrows=100, gwas_file=self$filename, ...)
 	{
 		required_columns <- c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col")
