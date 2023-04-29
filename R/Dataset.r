@@ -1,6 +1,7 @@
 #' Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
 #'
 #' @export
+#' @importFrom R6 R6Class
 Dataset <- R6::R6Class("Dataset", list(
 	
 	#' @field filename Path to raw GWAS summary dataset
