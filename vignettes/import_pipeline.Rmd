@@ -204,9 +204,7 @@ x$view_metadata_options()
 To see a simplified version of this, see:
 
 ```{r}
-<<<<<<< HEAD
 x$get_metadata_fields()
-=======
 x$collect_metadata(list(
   trait="hello",
   build="HG19/GRCh37",
@@ -222,7 +220,6 @@ x$collect_metadata(list(
   author="Anon",
   unit="SD")
 )
->>>>>>> master
 ```
 
 ## 5. Check that the meta-data are correct
