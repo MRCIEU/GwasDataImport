@@ -32,7 +32,8 @@ Imports:
     IRanges,
     SummarizedExperiment,
     biomaRt,
-    CheckSumStats
+    CheckSumStats,
+    gwasvcf
 Remotes:
     bioc::3.11/rtracklayer,
     bioc::3.11/GenomicRanges,
@@ -41,7 +42,8 @@ Remotes:
     bioc::3.11/SummarizedExperiment,
     bioc::3.11/biomaRt,
     github::mrcieu/ieugwasr,
-    github::MRCIEU/CheckSumStats
+    github::MRCIEU/CheckSumStats,
+    github::MRCIEU/gwasvcf
 Suggests: 
     testthat,
     knitr,
