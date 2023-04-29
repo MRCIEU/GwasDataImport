@@ -30,7 +30,7 @@ This package provides some simple tools to import a summary dataset into the Ope
 5. Check that the meta-data are correct
 6. Process the summary dataset
 7. Upload meta-data and processed summary dataset
-8. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+8. Wait for the API pipeline to convert to VCF format, annotate and create a report
 9. Check report and release the dataset
 10. [Wait for the data to be uploaded to the OpenGWAS database]
 
@@ -349,7 +349,7 @@ Note again the `Status` here - it is `201` meaning a successful upload. If you r
 x$gwasdata_upload_status %>% httr::content()
 ```
 
-## 8. [Wait for the API pipeline to convert to VCF format, annotate and create a report]
+## 8. Wait for the API pipeline to convert to VCF format, annotate and create a report
 
 Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour.
 
