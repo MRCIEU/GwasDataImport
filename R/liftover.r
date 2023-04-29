@@ -261,6 +261,7 @@ determine_build_position <- function(pos, build=c(37,38,36))
 #' @param snp_col Name of SNP column name. Optional. Uses less certain method of matching if not available
 #' @param ea_col Name of effect allele column name. Optional. Might lead to duplicated rows if not presented
 #' @param oa_col Name of other allele column name. Optional. Might lead to duplicated rows if not presented
+#' @param build_fallback Whether to try "position" (fast) or "biomart" (more accurate if you have rsids) based approaches instead
 #'
 #' @export
 #' @return Data frame
@@ -272,7 +273,7 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col=
 		from <- determine_build_position(dat[[pos_col]], build=build)
 	} else {
 		message("Using rsid")
-		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback="position")
+		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback=build_fallback)
 	}
 	if(is.data.frame(from))
 	{
@@ -354,7 +355,7 @@ liftover_gwas_old <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_
 		from <- determine_build_position(dat[[pos_col]], build=build)
 	} else {
 		message("Using rsid")
-		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback="position")
+		from <- determine_build(dat[[snp_col]], dat[[chr_col]], dat[[pos_col]], build=build, fallback=build_fallback)
 	}
 	if(is.data.frame(from))
 	{
