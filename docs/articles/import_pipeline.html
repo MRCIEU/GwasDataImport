@@ -4,88 +4,108 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="GwasDataImport">
 <title>Importing datasets into OpenGWAS • GwasDataImport</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Importing datasets into OpenGWAS">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Importing datasets into OpenGWAS">
 <meta property="og:description" content="GwasDataImport">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">GwasDataImport</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">GwasDataImport</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-vignettes">Vignettes</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-vignettes">
+    <a class="dropdown-item" href="../articles/index.html">List of vignettes</a>
+    <a class="dropdown-item" href="../articles/import_pipeline.html">Importing datasets into OpenGWAS</a>
+    <a class="dropdown-item" href="../articles/edit.html">Edit existing GWAS meta data</a>
+    <a class="dropdown-item" href="../articles/ebi_workflow.html">EBI upload pipeline</a>
+    <a class="dropdown-item" href="../articles/liftover.html">Automating liftover</a>
+    <a class="dropdown-item" href="../articles/testrun.html">Test run for upload system</a>
+    <a class="dropdown-item" href="../articles/get_positions.html">Looking up chromosome and position for large sets of rs IDs</a>
+  </div>
 </li>
-<li>
-  <a href="../articles/index.html">Articles</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Functions</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/mrcieu/GwasDataImport">Source</a>
+</li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Importing datasets into OpenGWAS</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Importing datasets into OpenGWAS</h1>
             
       
       
-      <div class="hidden name"><code>import_pipeline.Rmd</code></div>
-
+      <div class="d-none name"><code>import_pipeline.Rmd</code></div>
     </div>
 
     
     
-<p><strong>Before you start, make sure you are connected to the VPN!</strong> i.e. you should be able to access this webpage: <a href="http://ieu-db-interface.epi.bris.ac.uk:8082/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/</a>.</p>
-<p>This package provides some simple tools to import a summary dataset into the OpenGWAS database. Here are the steps:</p>
+<p><strong>Before you start, make sure you are connected to the
+VPN!</strong> i.e. you should be able to access this webpage: <a href="http://ieu-db-interface.epi.bris.ac.uk:8082/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/</a>.</p>
+<p>This package provides some simple tools to import a summary dataset
+into the OpenGWAS database. Here are the steps:</p>
 <ol style="list-style-type: decimal">
 <li>Download the summary dataset</li>
 <li>Initialise</li>
-<li>Specify which columns in the summary dataset correspond to which fields</li>
+<li>Specify which columns in the summary dataset correspond to which
+fields</li>
 <li>Input the meta-data</li>
 <li>Check that the meta-data are correct</li>
 <li>Process the summary dataset</li>
 <li>Upload meta-data and processed summary dataset</li>
-<li>[Wait for the API pipeline to convert to VCF format, annotate and create a report]</li>
+<li>Wait for the API pipeline to convert to VCF format, annotate and
+create a report</li>
 <li>Check report and release the dataset</li>
-<li>[Wait for the data to be uploaded to the OpenGWAS database]</li>
+<li>(Wait for the data to be uploaded to the OpenGWAS database) Check
+that it can be queried</li>
 </ol>
-<p>This may look like a lot but it’s only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:</p>
+<p>This may look like a lot but it’s only a few commands. e.g. here is
+the complete pipeline that we will use to demonstrate:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Authenticate</span></span>
@@ -118,51 +138,20 @@
 <span><span class="co"># Release dataset</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwas_release</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Check that it's available on OpenGWAS e.g. can you get its tophits:</span></span>
+<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</span></span>
+<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Delete wd</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
-
-<span class="co"># Authenticate</span>
-<span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html" class="external-link">get_access_token</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Initialise</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">filename</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span>
-
-<span class="co"># Specify columns</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Process dataset</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Input metadata</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"hello"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span>, ontology<span class="op">=</span><span class="st">"EFO:1234;EFO:2345"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Upload metadata</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Upload summary data</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># View report</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_report</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Release dataset</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_gwas_release</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Check that it's available on OpenGWAS e.g. can you get its tophits:</span>
-<span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
-
-<span class="co"># Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</span>
-<span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span>
-
-<span class="co"># Delete wd</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 <p>The steps are detailed below.</p>
 <div class="section level2">
 <h2 id="download-the-summary-dataset">1. Download the summary dataset<a class="anchor" aria-label="anchor" href="#download-the-summary-dataset"></a>
 </h2>
-<p>Need to have a file that can be read into R. Make sure that you have at least the following columns:</p>
+<p>Need to have a file that can be read into R. Make sure that you have
+at least the following columns:</p>
 <ul>
 <li>chromosome</li>
 <li>position</li>
@@ -185,70 +174,62 @@
 <div class="section level2">
 <h2 id="initialise">2. Initialise<a class="anchor" aria-label="anchor" href="#initialise"></a>
 </h2>
-<p>Need to specify a few things e.g. the dataset filename. Here we’ll use a small example dataset that is bundled within the package</p>
+<p>Need to specify a few things e.g. the dataset filename. Here we’ll
+use a small example dataset that is bundled within the package</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span><span class="op">)</span></span></code></pre></div>
-<p>but you would define the <code>filename</code> object as just a path to your data file.</p>
-<p>Can also specify the <code>id</code> you want to use. If you don’t specify this then it will just use the next available id for the <code>ieu-b</code> data batch. Going to create a random testing id here:</p>
+<p>but you would define the <code>filename</code> object as just a path
+to your data file.</p>
+<p>Can also specify the <code>id</code> you want to use. If you don’t
+specify this then it will just use the next available id for the
+<code>ieu-b</code> data batch.</p>
+<p>For the purposes of this demonstration I’m going to create a random
+ID here</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ieu-b-testing_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"\\."</span>, <span class="st">"_"</span>, <span class="va">.</span><span class="op">)</span></span></code></pre></div>
+<p>But just when you’re uploading a dataset for real, don’t do this, in
+most circumstances you can just leave the ID blank and the API will
+choose the next available one for you (then make a note of what it has
+chosen for you).</p>
 <p>Authenticate:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html" class="external-link">get_access_token</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Also make sure you are on the university network or connected to the VPN. e.g. you should be able to access this page: <a href="http://ieu-db-interface.epi.bris.ac.uk:8082/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/</a></p>
+<p>Also make sure you are on the university network or connected to the
+VPN. e.g. you should be able to access this page: <a href="http://ieu-db-interface.epi.bris.ac.uk:8082/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/</a></p>
 <p>Now create a new instance of the <code>Dataset</code> object.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">filename</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span></span></code></pre></div>
-=======
-<code class="sourceCode R"><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">"GwasDataImport"</span>, <span class="st">"extdata/pos_0002.txt.gz"</span><span class="op">)</span></code></pre></div>
-<p>but you would define the <code>filename</code> object as just a path to your data file.</p>
-<p>Can also specify the <code>id</code> you want to use. If you don’t specify this then it will just use the next available id for the <code>ieu-b</code> data batch.</p>
-<p>For the purposes of this demonstration I’m going to create a random ID here</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ieu-b-testing_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"\\."</span>, <span class="st">"_"</span>, <span class="va">.</span><span class="op">)</span></code></pre></div>
-<p>But just when you’re uploading a dataset for real, don’t do this, in most circumstances you can just leave the ID blank and the API will choose the next available one for you (then make a note of what it has chosen for you).</p>
-<p>Authenticate:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/get_access_token.html" class="external-link">get_access_token</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Also make sure you are on the university network or connected to the VPN. e.g. you should be able to access this page: <a href="http://ieu-db-interface.epi.bris.ac.uk:8082/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/</a></p>
-<p>Now create a new instance of the <code>Dataset</code> object.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">filename</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 <p>This has done the following things</p>
 <ol style="list-style-type: decimal">
 <li>Checked if the ID exists</li>
-<li>Created a new temporary directory in which to store the processed data files.</li>
+<li>Created a new temporary directory in which to store the processed
+data files.</li>
 </ol>
-<p>NOTE: at the end of this process that temporary directory will be automatically deleted.</p>
-<p>NOTE: Just to reiterate - you can run <code>x &lt;- Dataset$new(filename=filename)</code> without specifying the <code>igd_id</code> argument and it will choose the next <code>ieu-b-*</code> ID for you automatically - this is recommended.</p>
+<p>NOTE: at the end of this process that temporary directory will be
+automatically deleted.</p>
+<p>NOTE: Just to reiterate - you can run
+<code>x &lt;- Dataset$new(filename=filename)</code> without specifying
+the <code>igd_id</code> argument and it will choose the next
+<code>ieu-b-*</code> ID for you automatically - this is recommended.</p>
 <p>Let’s look at the object:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">x</span></span></code></pre></div>
-<p>It is an <code>R6</code> object that contains some functions and some data objects. You can access any of these with the <code>$</code> operator. e.g. to find out the location of the temporary directory:</p>
+<p>It is an <code>R6</code> object that contains some functions and some
+data objects. You can access any of these with the <code>$</code>
+operator. e.g. to find out the location of the temporary directory:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">wd</span></span></code></pre></div>
-<p>Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)</p>
+<p>Or to check if the id is already present in the database (i.e. the
+function that is called when the object is being initialised)</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">x</span><span class="op">$</span><span class="fu">is_new_id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<code class="sourceCode R"><span class="va">x</span></code></pre></div>
-<p>It is an <code>R6</code> object that contains some functions and some data objects. You can access any of these with the <code>$</code> operator. e.g. to find out the location of the temporary directory:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">wd</span></code></pre></div>
-<p>Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">is_new_id</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">is_new_id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You can now specify</p>
 </div>
 <div class="section level2">
 <h2 id="specify-columns-in-dataset">3. Specify columns in dataset<a class="anchor" aria-label="anchor" href="#specify-columns-in-dataset"></a>
 </h2>
-<p>To read the data correctly, need to specify which column corresponds to which field. The data looks like this:</p>
+<p>To read the data correctly, need to specify which column corresponds
+to which field. The data looks like this:</p>
 <pre><code>CHROM   RSID    POS     REF     ALT     MAF     BETA    SEBETA  PVAL
 1       rs2462492       54676   C       T       0.399665        -0.0036 0.0197  0.07
 1       rs3107975       55326   T       C       0.0089751       0.0234  0.1004  0.09
@@ -256,11 +237,13 @@
 1       rs114608975     86028   T       C       0.10448 -0.0372 0.0316  0.62
 1       rs6702460       91536   G       T       0.45422 0.0088  0.0193  0.19
 1       rs8179466       234313  C       T       0.074974        -0.017  0.0385  0.18</code></pre>
-<p>You can specify the columns either by numeric position or by the column name. e.g.</p>
+<p>You can specify the columns either by numeric position or by the
+column name. e.g.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<<<<<<< HEAD
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are</p>
+<p>Having specified the columns, this function reads in the first 100
+rows of the dataset and prints a summary of them so you can check they
+look right. Other options are</p>
 </div>
 <div class="section level2">
 <h2 id="input-the-meta-data">4. Input the meta-data<a class="anchor" aria-label="anchor" href="#input-the-meta-data"></a>
@@ -268,31 +251,51 @@
 <p>Specify the metadata. e.g. here is a minimal example:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"hello"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>But more fields can be specified. You can see a detailed list of them here: <a href="http://gwas-api.mrcieu.ac.uk/docs" class="external-link uri">http://gwas-api.mrcieu.ac.uk/docs</a> or running this command:</p>
+<p>But more fields can be specified. You can see a detailed list of them
+here: <a href="http://gwas-api.mrcieu.ac.uk/docs" class="external-link uri">http://gwas-api.mrcieu.ac.uk/docs</a> or running this
+command:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">view_metadata_options</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>To see a simplified version of this, see:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">get_metadata_fields</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">get_metadata_fields</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  trait<span class="op">=</span><span class="st">"hello"</span>,</span>
+<span>  build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,</span>
+<span>  category<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span>  subcategory<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span>  group_name<span class="op">=</span><span class="st">"public"</span>,</span>
+<span>  population<span class="op">=</span><span class="st">"European"</span>,</span>
+<span>  sex<span class="op">=</span><span class="st">"Males"</span>,</span>
+<span>  note<span class="op">=</span><span class="st">'asdasd'</span>,</span>
+<span>  year<span class="op">=</span><span class="st">'2022'</span>,</span>
+<span>  ontology<span class="op">=</span><span class="st">'EFO:1234'</span>,</span>
+<span>  sample_size<span class="op">=</span><span class="fl">10000</span>,</span>
+<span>  author<span class="op">=</span><span class="st">"Anon"</span>,</span>
+<span>  unit<span class="op">=</span><span class="st">"SD"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="check-that-the-meta-data-are-correct">5. Check that the meta-data are correct<a class="anchor" aria-label="anchor" href="#check-that-the-meta-data-are-correct"></a>
 </h2>
 <p>This does the following tests:</p>
-=======
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are</p>
-</div>
-<div class="section level2">
-<h2 id="process-the-summary-dataset">4. Process the summary dataset<a class="anchor" aria-label="anchor" href="#process-the-summary-dataset"></a>
-</h2>
-<p>Once you are happy with how the columns are being parsed, the dataset can now be processed. This involves</p>
->>>>>>> master
 <ol style="list-style-type: decimal">
-<li>Compares the reported effect allele frequency (eaf) column to the 1000 genomes super populations. Test failure indicates that the eaf column has been mis-specified. For example, the eaf column refers to the non-effect allele or minor allele.</li>
-<li>Compares the reported effect allele to the GWAS catalog. Test failure indicates that the effect allele column has been mis-specified. For example, that the provided effect allele column is actually the non-effect allele column.<br>
+<li>Compares the reported effect allele frequency (eaf) column to the
+1000 genomes super populations. Test failure indicates that the eaf
+column has been mis-specified. For example, the eaf column refers to the
+non-effect allele or minor allele.</li>
+<li>Compares the reported effect allele to the GWAS catalog. Test
+failure indicates that the effect allele column has been mis-specified.
+For example, that the provided effect allele column is actually the
+non-effect allele column.<br>
 </li>
-<li>Compares the GWAS hits in the dataset to reported associations in the GWAS catalog. Test failure indicates that a large number of GWAS hits in the dataset are absent from the GWAS catalog. This could be indicative of a dataset that has not been through post GWAS QC procedures (i.e. with unreliable genetic variants removed). An alternative explanation is that the new dataset is just much better powered than any previously conducted GWAS in the GWAS catalog.</li>
+<li>Compares the GWAS hits in the dataset to reported associations in
+the GWAS catalog. Test failure indicates that a large number of GWAS
+hits in the dataset are absent from the GWAS catalog. This could be
+indicative of a dataset that has not been through post GWAS QC
+procedures (i.e. with unreliable genetic variants removed). An
+alternative explanation is that the new dataset is just much better
+powered than any previously conducted GWAS in the GWAS catalog.</li>
 </ol>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">check_meta_data</span><span class="op">(</span>gwas_file<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">filename</span>,params<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">params</span>,metadata<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
@@ -305,20 +308,26 @@
 <div class="section level2">
 <h2 id="process-the-summary-dataset">6. Process the summary dataset<a class="anchor" aria-label="anchor" href="#process-the-summary-dataset"></a>
 </h2>
-<p>Once you are happy with how the columns have been parsed (step 3) and are confident that the meta-data are correct (steps 4 &amp; 5), the dataset can be processed. This involves</p>
+<p>Once you are happy with how the columns have been parsed (step 3) and
+are confident that the meta-data are correct (steps 4 &amp; 5), the
+dataset can be processed. This involves</p>
 <ol style="list-style-type: decimal">
-<li>Checking that none of the meta-data tests failed. Will stop if effect allele frequency or effect alleles columns look wrong.</li>
+<li>Checking that none of the meta-data tests failed. Will stop if
+effect allele frequency or effect alleles columns look wrong.</li>
 <li>Reading in the dataset</li>
-<li>Checking that the fields are as they should be (quite a light check)</li>
-<li>Removing any rows that have missing values in any required fields</li>
+<li>Checking that the fields are as they should be (quite a light
+check)</li>
+<li>Removing any rows that have missing values in any required
+fields</li>
 <li>Updating build to hg19/b37 if necessary</li>
 <li>Writing processed dataset to file, ready for upload</li>
 <li>Calculate the md5 checksum</li>
 </ol>
 <p>This is achieved using:</p>
-<<<<<<< HEAD
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="fu">get_metadata_fields</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Please provide as much accurate metadata as possible</p>
 </div>
 <div class="section level2">
 <h2 id="upload-meta-data">6. Upload meta-data<a class="anchor" aria-label="anchor" href="#upload-meta-data"></a>
@@ -326,45 +335,6 @@
 <p>Once the meta-data is entered, it can be uploaded:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="input-the-meta-data">5. Input the meta-data<a class="anchor" aria-label="anchor" href="#input-the-meta-data"></a>
-</h2>
-<p>While you are waiting for <code>format_dataset()</code> to run, you can specify metadata. e.g. here is a minimal example:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  trait<span class="op">=</span><span class="st">"hello"</span>,
-  build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,
-  category<span class="op">=</span><span class="st">"NA"</span>,
-  subcategory<span class="op">=</span><span class="st">"NA"</span>,
-  group_name<span class="op">=</span><span class="st">"public"</span>,
-  population<span class="op">=</span><span class="st">"European"</span>,
-  sex<span class="op">=</span><span class="st">"Males"</span>,
-  note<span class="op">=</span><span class="st">'asdasd'</span>,
-  year<span class="op">=</span><span class="st">'2022'</span>,
-  ontology<span class="op">=</span><span class="st">'EFO:1234'</span>,
-  sample_size<span class="op">=</span><span class="fl">10000</span>,
-  author<span class="op">=</span><span class="st">"Anon"</span>,
-  unit<span class="op">=</span><span class="st">"SD"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<p>But more fields can be specified. You can see a detailed list of them here: <a href="http://gwas-api.mrcieu.ac.uk/docs" class="external-link uri">http://gwas-api.mrcieu.ac.uk/docs</a> or running this command:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">view_metadata_options</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>To see a simplified version of this, see:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">get_metadata_fields</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Please provide as much accurate metadata as possible</p>
-</div>
-<div class="section level2">
-<h2 id="upload-meta-data">6. Upload meta-data<a class="anchor" aria-label="anchor" href="#upload-meta-data"></a>
-</h2>
-<p>Once the meta-data is entered, it can be uploaded:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 <p>You should see something like this printed to the screen:</p>
 <pre><code>Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/add]
   Date: 2020-10-21 17:43
@@ -372,53 +342,61 @@
   Content-Type: application/json
   Size: 19 B
 {"id": "ieu-b-testing_1603302296_67257"}</code></pre>
-<p>Note that the <code>Status</code> is 200 - this indicates that the upload was successful. If you receive a <code>4xx</code> or <code>5xx</code> number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:</p>
-<<<<<<< HEAD
-<p>Another thing to note is that the meta-data upload won’t work if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong.</p>
+<p>Note that the <code>Status</code> is 200 - this indicates that the
+upload was successful. If you receive a <code>4xx</code> or
+<code>5xx</code> number then something has gone wrong, and you should
+check your VPN connection, or if there are any formatting errors with
+the data. You might get more information by running:</p>
+<p>Another thing to note is that the meta-data upload won’t work if the
+meta-data tests failed (you should get an error message if this
+happens). This only happens if the effect allele or effect allele
+frequency columns look wrong.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">metadata_upload_status</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Another thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the <code>collect_metadata</code> method with the updated metadata, and then to re-upload the data you must use the <code>api_metadata_edit</code> function. If you try to re-run the <code>api_metadata_upload</code> function it will give you an error saying that the ID already exists.</p>
-=======
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">metadata_upload_status</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/httr/man/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Anothing thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the <code>collect_metadata</code> method with the updated metadata, and then to re-upload the data you must use the <code>api_metadata_edit</code> function. If you try to re-run the <code>api_metadata_upload</code> function it will give you an error saying that the ID already exists.</p>
-<p>If there was an error in your metadata perhaps the easiest thing to do is just delete it and re-upload</p>
+<p>Another thing to note is that you might want to edit the meta data
+after you have already uploaded it. Re-run the
+<code>collect_metadata</code> method with the updated metadata, and then
+to re-upload the data you must use the <code>api_metadata_edit</code>
+function. If you try to re-run the <code>api_metadata_upload</code>
+function it will give you an error saying that the ID already
+exists.</p>
+<p>If there was an error in your metadata perhaps the easiest thing to
+do is just delete it and re-upload</p>
 <p>e.g. </p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_delete</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Then make edits to your metadata e.g. I’m going to change the author</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  trait<span class="op">=</span><span class="st">"hello"</span>,
-  build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,
-  category<span class="op">=</span><span class="st">"NA"</span>,
-  subcategory<span class="op">=</span><span class="st">"NA"</span>,
-  group_name<span class="op">=</span><span class="st">"public"</span>,
-  population<span class="op">=</span><span class="st">"European"</span>,
-  sex<span class="op">=</span><span class="st">"Males"</span>,
-  note<span class="op">=</span><span class="st">'asdasd'</span>,
-  year<span class="op">=</span><span class="st">'2022'</span>,
-  ontology<span class="op">=</span><span class="st">'EFO:1234'</span>,
-  sample_size<span class="op">=</span><span class="fl">10000</span>,
-  author<span class="op">=</span><span class="st">"Mous A"</span>,
-  unit<span class="op">=</span><span class="st">"SD"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Then make edits to your metadata e.g. I’m going to change the
+author</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  trait<span class="op">=</span><span class="st">"hello"</span>,</span>
+<span>  build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,</span>
+<span>  category<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span>  subcategory<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span>  group_name<span class="op">=</span><span class="st">"public"</span>,</span>
+<span>  population<span class="op">=</span><span class="st">"European"</span>,</span>
+<span>  sex<span class="op">=</span><span class="st">"Males"</span>,</span>
+<span>  note<span class="op">=</span><span class="st">'asdasd'</span>,</span>
+<span>  year<span class="op">=</span><span class="st">'2022'</span>,</span>
+<span>  ontology<span class="op">=</span><span class="st">'EFO:1234'</span>,</span>
+<span>  sample_size<span class="op">=</span><span class="fl">10000</span>,</span>
+<span>  author<span class="op">=</span><span class="st">"Mous A"</span>,</span>
+<span>  unit<span class="op">=</span><span class="st">"SD"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>And then reupload etc using <code>x$api_metadata_upload()</code></p>
->>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="upload-processed-summary-dataset">7. Upload processed summary dataset<a class="anchor" aria-label="anchor" href="#upload-processed-summary-dataset"></a>
 </h2>
 <p>Similar to the step above, upload the actual GWAS data:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
-<p>This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.</p>
-<p>Another thing to note is that the gwasdata upload will stop if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong.</p>
+<p>This does a number of checks including verifying that the dataset
+received has the same md5 checksum as stated in the upload.</p>
+<p>Another thing to note is that the gwasdata upload will stop if the
+meta-data tests failed (you should get an error message if this
+happens). This only happens if the effect allele or effect allele
+frequency columns look wrong.</p>
 <p>You should see something like this printed to the screen:</p>
 <pre><code>Successfully uploaded GWAS data
 Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
@@ -427,33 +405,27 @@ Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
   Content-Type: application/json
   Size: 83 B
 {"message": "Upload successful", "job_id": "5db0e832-df20-4fb9-a1ce-d829af7a7...</code></pre>
-<p>Note again the <code>Status</code> here - it is <code>201</code> meaning a successful upload. If you receive a <code>4xx</code> or <code>5xx</code> number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<p>Note again the <code>Status</code> here - it is <code>201</code>
+meaning a successful upload. If you receive a <code>4xx</code> or
+<code>5xx</code> number then something has gone wrong, and you should
+check your VPN connection, or if there are any formatting errors with
+the data. You might get more information by running:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">gwasdata_upload_status</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">gwasdata_upload_status</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/httr/man/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 </div>
 <div class="section level2">
-<h2 id="wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report">8. [Wait for the API pipeline to convert to VCF format, annotate and create a report]<a class="anchor" aria-label="anchor" href="#wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report"></a>
+<h2 id="wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report">8. Wait for the API pipeline to convert to VCF format, annotate and
+create a report<a class="anchor" aria-label="anchor" href="#wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report"></a>
 </h2>
-<p>Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour.</p>
+<p>Once uploaded, the dataset will go through a processing pipeline on
+the server. For large datasets this will take about 1 hour.</p>
 <p>You can check the status of the pipeline by running:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>You can also check the status of the files being generated on the server side for this dataset:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>You can also check the status of the files being generated on the server side for this dataset:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/httr/man/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>You can also check the status of the files being generated on the
+server side for this dataset:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_check</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content.html" class="external-link">content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Gradually more files will be added e.g. expect to see</p>
 <ul>
 <li><code>upload.txt.gz</code></li>
@@ -467,77 +439,59 @@ Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
 <div class="section level2">
 <h2 id="check-report-and-release-the-dataset">9. Check report and release the dataset<a class="anchor" aria-label="anchor" href="#check-report-and-release-the-dataset"></a>
 </h2>
-<p>If you see a file called <code>&lt;id&gt;_report.html</code> then the pipeline is complete. To view the report, go to:</p>
-<p><a href="http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/</a><id></id></p>
+<p>If you see a file called <code>&lt;id&gt;_report.html</code> then the
+pipeline is complete. To view the report, go to:</p>
+<p><a href="http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/%3Cid" class="external-link uri">http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/&lt;id</a>&gt;</p>
 <p>Or run if you are in an interactive session with a browser:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>If it hasn’t been reported yet you’ll get a message. But if it is there, it should open a browser and you can view the report. It has various QC and Manhattan plots, and other metrics comparing the data against reference data etc.</p>
-<p>If you are happy with the dataset then you can next release the dataset using the following command:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p>If it hasn’t been reported yet you’ll get a message. But if it is
+there, it should open a browser and you can view the report. It has
+various QC and Manhattan plots, and other metrics comparing the data
+against reference data etc.</p>
+<p>If you are happy with the dataset then you can next release the
+dataset using the following command:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwas_release</span><span class="op">(</span>comments<span class="op">=</span><span class="st">"Some comments here"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can delete the data that has been uploaded:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="wait-for-the-data-to-be-uploaded-to-the-opengwas-database">10. [Wait for the data to be uploaded to the OpenGWAS database]<a class="anchor" aria-label="anchor" href="#wait-for-the-data-to-be-uploaded-to-the-opengwas-database"></a>
-</h2>
-<p>Now the GWAS data should be uploaded to the OpenGWAS database</p>
-=======
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_report</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>If it hasn’t been reported yet you’ll get a message. But if it is there, it should open a browser and you can view the report. It has various QC and Manhattan plots, and other metrics comparing the data against reference data etc.</p>
-<p>If you are happy with the dataset then you can next release the dataset using the following command:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_gwas_release</span><span class="op">(</span>comments<span class="op">=</span><span class="st">"Some comments here"</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, you can delete the data that has been uploaded:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_delete</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="check-that-it-can-be-queried">10. Check that it can be queried<a class="anchor" aria-label="anchor" href="#check-that-it-can-be-queried"></a>
 </h2>
-<p>Now the GWAS data should be uploaded to the OpenGWAS database. It could take an hour or two for this to happen complete, which you can check again with</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Once it’s uploaded (i.e. the above command returns <code>Succeeded</code> for the elasticsearch pipeline) you should be able to query it. e.g. can you get its tophits:</p>
+<p>Now the GWAS data should be uploaded to the OpenGWAS database. It
+could take an hour or two for this to happen complete, which you can
+check again with</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
-<p>Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</p>
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_qc_status</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Once it’s uploaded (i.e. the above command returns
+<code>Succeeded</code> for the elasticsearch pipeline) you should be
+able to query it. e.g. can you get its tophits:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></code></pre></div>
-<p>The dataset will appear on <a href="https://gwas.mrcieu.ac.uk/" class="external-link uri">https://gwas.mrcieu.ac.uk/</a> within a day or two, the synchronisation between API and website isn’t immediate.</p>
->>>>>>> master
+<code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></code></pre></div>
+<p>Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ieugwasr/man/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span></code></pre></div>
+<p>The dataset will appear on <a href="https://gwas.mrcieu.ac.uk/" class="external-link uri">https://gwas.mrcieu.ac.uk/</a> within a day or two, the
+synchronisation between API and website isn’t immediate.</p>
 </div>
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>Run pipeline:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">fn</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"hello"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">fn</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, snp_col<span class="op">=</span><span class="fl">2</span>, pos_col<span class="op">=</span><span class="fl">3</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">5</span>, eaf_col<span class="op">=</span><span class="fl">6</span>, beta_col<span class="op">=</span><span class="fl">7</span>, se_col<span class="op">=</span><span class="fl">8</span>, pval_col<span class="op">=</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"hello"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"NA"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males"</span>, note<span class="op">=</span><span class="st">'asdasd'</span><span class="op">)</span><span class="op">)</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
@@ -577,80 +531,27 @@ Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
 <span></span>
 <span><span class="co"># delete wd</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-=======
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
-
-<span class="va">fn</span> <span class="op">&lt;-</span> <span class="st">"~/Downloads/1KG_CRP_GWAS_AJHG_2018.txt.gz"</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="va">fn</span>, he<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tidyr/man/separate.html" class="external-link">separate</a></span><span class="op">(</span><span class="va">a</span>, <span class="st">"MarkerName"</span>, sep<span class="op">=</span><span class="st">":"</span>, into<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="st">"pos"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">a</span><span class="op">$</span><span class="va">pval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">Effect</span><span class="op">)</span> <span class="op">/</span> <span class="va">a</span><span class="op">$</span><span class="va">StdErr</span>, lower.tail<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>
-
-<span class="co"># Note that if your dataset doesn't have chr/pos then you can look them up using</span>
-<span class="co"># cp &lt;- get_positions(a$MarkerName)</span>
-<span class="co"># it's a bit slow though</span>
-
-<span class="va">a</span><span class="op">$</span><span class="va">Allele2</span><span class="op">[</span><span class="va">a</span><span class="op">$</span><span class="va">Allele1</span><span class="op">==</span><span class="st">"d"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"i"</span>
-<span class="va">a</span><span class="op">$</span><span class="va">Allele2</span><span class="op">[</span><span class="va">a</span><span class="op">$</span><span class="va">Allele1</span><span class="op">==</span><span class="st">"i"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"d"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">Allele1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">Allele2</span><span class="op">)</span>
-
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dplyr/man/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">chr</span>, <span class="va">pos</span>, <span class="va">Allele1</span>, <span class="va">Allele2</span>, <span class="va">Effect</span>, <span class="va">StdErr</span>, <span class="va">pval</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span>, file<span class="op">=</span><span class="st">"crp.txt"</span>, row<span class="op">=</span><span class="cn">F</span>, col<span class="op">=</span><span class="cn">T</span>, qu<span class="op">=</span><span class="cn">F</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"crp.txt"</span><span class="op">)</span>
-
-<span class="co"># Specify columns</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>chr_col<span class="op">=</span><span class="fl">1</span>, pos_col<span class="op">=</span><span class="fl">2</span>, oa_col<span class="op">=</span><span class="fl">4</span>, ea_col<span class="op">=</span><span class="fl">3</span>, beta_col<span class="op">=</span><span class="fl">5</span>, se_col<span class="op">=</span><span class="fl">6</span>, pval_col<span class="op">=</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Process dataset</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Input metadata</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trait<span class="op">=</span><span class="st">"C-reactive protein"</span>, build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>, category<span class="op">=</span><span class="st">"Continuous"</span>, subcategory<span class="op">=</span><span class="st">"NA"</span>, group_name<span class="op">=</span><span class="st">"public"</span>, population<span class="op">=</span><span class="st">"European"</span>, sex<span class="op">=</span><span class="st">"Males and Females"</span>, ontology<span class="op">=</span><span class="st">"EFO_0004458"</span>, pmid<span class="op">=</span><span class="st">"30388399"</span>, sample_size<span class="op">=</span><span class="fl">204402</span>, priority<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Upload metadata</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Upload summary data</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># delete wd</span>
-<span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></code></pre></div>
->>>>>>> master
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Gibran Hemani.</p>
+<p>Developed by Gibran Hemani, Philip Haycock, Tom Palmer.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
-<<<<<<< HEAD
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
-=======
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
->>>>>>> master
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 

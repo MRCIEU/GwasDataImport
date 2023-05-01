@@ -19,7 +19,6 @@ Often GWAS datasets are shared with only the rs ID. To upload to the OpenGWAS da
 
 The `get_positions()` function provides a convenient way to just lookup the chromosome and position from rs ID, though be warned it is quite slow, e.g. might take up to 30 minutes for 10 million SNPs.
 
-
 ```{r setup}
 library(GwasDataImport)
 library(data.table)
@@ -34,4 +33,3 @@ rsid <- a$RSID
 # get positions
 pos <- get_positions(rsid)
 ```
-

@@ -1,6 +1,7 @@
 #' Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
 #'
 #' @export
+#' @importFrom R6 R6Class
 Dataset <- R6::R6Class("Dataset", list(
 	
 	#' @field filename Path to raw GWAS summary dataset
@@ -113,6 +114,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param nrows How many rows to read to check that parameters have been specified correctly
 	#' @param gwas_file Filename to read
 	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
+	#' @importFrom data.table fread
 	determine_columns = function(params, nrows=100, gwas_file=self$filename, ...)
 	{
 		required_columns <- c("chr_col", "pos_col", "ea_col", "oa_col", "beta_col", "se_col", "pval_col")
@@ -249,7 +251,8 @@ Dataset <- R6::R6Class("Dataset", list(
 
 
 	#' @description
-	#' View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs 
+	#' View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs
+	#' @importFrom jsonlite read_json
 	view_metadata_options = function()
 	{
 		swagger <- jsonlite::read_json(paste0(options()$ieugwasr_api, "swagger.json"))
@@ -333,7 +336,6 @@ Dataset <- R6::R6Class("Dataset", list(
 
 	check_meta_data = function(gwas_file=self$filename,params=self$params,metadata=self$metadata)
 	{
-		library(CheckSumStats)
 		out<-data.table::fread(self$filename,nrows=Inf)	
 		# out<-data.table::fread(x$filename,nrows=Inf)	
 		
@@ -405,6 +407,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param metadata List of meta data fields and their values
 	#' @param metadata_test  List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats
 	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
+	#' @importFrom httr status_code
 	api_metadata_upload = function(metadata=self$metadata, metadata_test =self$metadata_test, access_token=ieugwasr::check_access_token())
 	{
 
@@ -654,7 +657,7 @@ reported_gwas_hits_in_gwascatalog<-function(out=NULL,clump=TRUE,eaf_test=NULL,me
 
 	gc_list<-find_hits_in_gwas_catalog(gwas_hits=gwas_hits,trait=metadata$trait,distance_threshold=50000) 
 	#if no results are found on reported trait, then use the user provided ontology to find associations
-	if(class(gc_list)!="list"){
+	if(!is(gc_list, "list")){
 		if(gc_list == "no results found")
 		{
 			metadata$ontology<-gsub(":","_",metadata$ontology) #currently there is a bug in the gwasrapidd code that does not allow EFOs with semicolons. The semicolon must be replaced with an underscore. I have writtent to the developers to see if this can be fixed.  
@@ -662,7 +665,7 @@ reported_gwas_hits_in_gwascatalog<-function(out=NULL,clump=TRUE,eaf_test=NULL,me
 		}
 	}
 
-	if(class(gc_list)!="list"){
+	if(!is(gc_list, "list")){
 		if(gc_list == "no results found") return(gc_list)
 	}
 

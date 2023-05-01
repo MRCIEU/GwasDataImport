@@ -10,8 +10,6 @@ determine_build_position(pos, build = c(37, 38, 36))
 \item{pos}{Vector of positions}
 
 \item{build}{c(37,38,36)}
-
-\item{threshold}{how many times more in the true build than the others. default = 50}
 }
 \value{
 build or if not determined then dataframe

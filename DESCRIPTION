@@ -1,49 +1,51 @@
 Package: GwasDataImport
-Title: Import EBI data to OpenGWAS
-Version: 0.1.1
-Authors@R: 
-    person(given = "Gibran",
-           family = "Hemani",
-           role = c("aut", "cre"),
-           email = "g.hemani@bristol.ac.uk",
-           comment = c(ORCID = "0000-0003-0920-1055"))
-Description: Determine the new EBI data not present in OpenGWAS. Download dataset and import metadata. Upload processed data and metadata to OpenGWAS.
+Title: Import EBI Data to OpenGWAS
+Version: 0.1.2
+Authors@R: c(
+    person("Gibran", "Hemani", , "g.hemani@bristol.ac.uk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0920-1055")),
+    person("Philip", "Haycock", , "philip.haycock@bristol.ac.uk", role = "aut",
+           comment = c(ORCID = "0000-0001-5001-3350")),
+    person("Tom", "Palmer", , "tom.palmer@bristol.ac.uk", role = "aut",
+           comment = c(ORCID = "0000-0003-4655-4511"))
+  )
+Description: Determine the new EBI data not present in OpenGWAS. Download
+    dataset and import metadata. Upload processed data and metadata to
+    OpenGWAS.
 License: MIT + file LICENSE
+Depends:
+    R (>= 3.6.0)
+Imports: 
+    biomaRt,
+    CheckSumStats,
+    data.table,
+    dplyr,
+    GenomeInfoDb,
+    GenomicRanges,
+    glue,
+    gwasvcf,
+    httr,
+    ieugwasr,
+    IRanges,
+    jsonlite,
+    magrittr,
+    R6,
+    rtracklayer,
+    SummarizedExperiment,
+    tidyr
+Suggests: 
+    covr,
+    knitr,
+    R.utils,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
+Remotes:
+    github::MRCIEU/CheckSumStats,
+    github::MRCIEU/gwasvcf,
+    github::mrcieu/ieugwasr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Required:
-    R>=3.6.0
-Imports: 
-    R6,
-    ieugwasr,
-    glue,
-    tidyr,
-    dplyr,
-    jsonlite,
-    data.table,
-    R.utils,
-    httr,
-    magrittr,
-    rtracklayer,
-    GenomeInfoDb,
-    GenomicRanges,
-    IRanges,
-    SummarizedExperiment,
-    biomaRt,
-    CheckSumStats
-Remotes:
-    bioc::3.11/rtracklayer,
-    bioc::3.11/GenomicRanges,
-    bioc::3.11/GenomeInfoDb,
-    bioc::3.11/IRanges,
-    bioc::3.11/SummarizedExperiment,
-    bioc::3.11/biomaRt,
-    github::mrcieu/ieugwasr,
-Suggests: 
-    testthat,
-    knitr,
-    rmarkdown,
-    covr
-VignetteBuilder: knitr

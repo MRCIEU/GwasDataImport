@@ -1,7 +1,10 @@
 ^LICENSE\.md$
 ^ieugwasr_oauth$
-docs
+^docs$
 ^\.travis\.yml$
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^index\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
+^pkgdown$

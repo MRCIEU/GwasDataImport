@@ -1,8 +1,6 @@
-
 # GwasDataImport
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/MRCIEU/GwasDataImport.svg?branch=master)](https://travis-ci.com/MRCIEU/GwasDataImport)
 [![Codecov test coverage](https://codecov.io/gh/MRCIEU/GwasDataImport/branch/master/graph/badge.svg)](https://codecov.io/gh/MRCIEU/GwasDataImport?branch=master)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
@@ -14,6 +12,6 @@ Documentation including tutorials and examples here: https://mrcieu.github.io/Gw
 ## Installation
 
 ``` r
-remotes::install_github("mrcieu/GwasDataImport")
+# install.packages("remotes")
+remotes::install_github("MRCIEU/GwasDataImport")
 ```
-

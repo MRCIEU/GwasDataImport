@@ -25,12 +25,9 @@ library(GwasDataImport)
 2. Upload the formatted EBI data and metadata to OpenGWAS API
 3. Determine which datasets in EBI are not present in OpenGWAS. Allow a 'blacklist' of EBI datasets to ignore. (TODO)
 
-
-
 ## Complete workflow for one dataset
 
 ```{r, eval=FALSE}
-
 # library(devtools)
 # load_all()
 # ieugwasr::select_api("dev2")
@@ -55,7 +52,6 @@ Now delete:
 x$api_gwasdata_delete()
 ```
 
-
 ## Running each step individually
 
 ```{r, eval=FALSE}
@@ -76,7 +72,6 @@ x$api_gwasdata_upload()
 x$api_gwasdata_delete()
 ```
 
-
 ## Workflow for all datasets
 
 To get a list of datasets that need to be imported:
@@ -86,8 +81,6 @@ ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_lis
 newdats <- determine_new_datasets(blacklist=ignore_list)
 newdats <- being_processed(newdats) %>% subset(., need)
 ```
-
-
 
 ```{r, eval=FALSE}
 ignore <- list()
@@ -149,15 +142,13 @@ for(i in 1:nrow(suhre))
 
 Conclusion - they seem to be missing standard errors? Need to do this through the batch processing.
 
-
-
 ## EBI Ignore list
 
 Need to figure out a solution for storing this. Many EBI datasets don't have sufficient info to be included, so we need to ignore them instead of trying to upload them each time we look for new studies.
 
 On the `ieu-ssd` machine where the original set of EBI datasets was downloaded and processed, this is how the first ignore list was determined:
 
-```
+```r
 library(dplyr)
 a <- read.csv("/data/ebi_gwascatalog/pmids.txt")
 b <- scan("/data/ebi_gwascatalog/study_ids.txt", character())
@@ -169,4 +160,3 @@ table(a$got, a$Status)
 ebi_ignore_list <- a$StudyID[a$Status == "harmonised" & !a$got]
 write.table(ebi_ignore_list, file="ebi_ignore_list.txt", row=F, col=F, qu=F)
 ```
-

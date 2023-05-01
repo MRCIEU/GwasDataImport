@@ -32,6 +32,8 @@ liftover_gwas(
 \item{ea_col}{Name of effect allele column name. Optional. Might lead to duplicated rows if not presented}
 
 \item{oa_col}{Name of other allele column name. Optional. Might lead to duplicated rows if not presented}
+
+\item{build_fallback}{Whether to try "position" (fast) or "biomart" (more accurate if you have rsids) based approaches instead}
 }
 \value{
 Data frame

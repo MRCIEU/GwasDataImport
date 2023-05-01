@@ -1,7 +1,7 @@
 context("Liftover")
-library(GwasDataImport)
 
 test_that("liftover", {
+  skip("Tests for GH to run interactively")
 	filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 	dat <- data.table::fread(filename)
 	a <- liftover_gwas(dat, to=38, chr_col="CHROM", pos_col="POS", snp_col="RSID", ea_col="ALT", oa_col="REF")

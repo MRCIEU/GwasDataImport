@@ -43,6 +43,7 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 	#' @param ftp_path  Pre-specified path to data. Default=self$ftp_path
 	#' @param ftp_url Default=options()$ebi_ftp_url
 	#' @param outdir Default=self$wd
+	#' @importFrom glue glue
 	download_dataset = function(ftp_path=self$ftp_path, ftp_url=options()$ebi_ftp_url, outdir=self$wd)
 	{
 		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
