@@ -11,8 +11,6 @@ vignette: >
 library(GwasDataImport)
 ```
 
-**Before you start, make sure you are connected to the VPN!** i.e. you should be able to access this webpage: `r options()$ieugwasr_api`.
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -25,8 +23,8 @@ This package provides some simple tools to import a summary dataset into the Ope
 
 1. Download the summary dataset
 2. Initialise
-3. Specify which columns in the summary dataset correspond to which fields
-4. Input the meta-data
+3. Input the meta-data
+4. Specify which columns in the summary dataset correspond to which fields
 5. Check that the meta-data are correct
 6. Process the summary dataset
 7. Upload meta-data and processed summary dataset
@@ -112,7 +110,7 @@ filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
 
 but you would define the `filename` object as just a path to your data file.
 
-Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. 
+Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. Alternatively you can visit https://api.opengwas.io/contribution/ and create a new dataset there by entering the meta data, and this will generate an `id` to be used here.
 
 For the purposes of this demonstration I'm going to create a random ID here
 
@@ -121,14 +119,6 @@ id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
 ```
 
 But just when you're uploading a dataset for real, don't do this, in most circumstances you can just leave the ID blank and the API will choose the next available one for you (then make a note of what it has chosen for you).
-
-Authenticate:
-
-```{r}
-ieugwasr::get_access_token()
-```
-
-Also make sure you are on the university network or connected to the VPN. e.g. you should be able to access this page: http://ieu-db-interface.epi.bris.ac.uk:8082/
 
 Now create a new instance of the `Dataset` object. 
 
@@ -351,64 +341,9 @@ x$gwasdata_upload_status %>% httr::content()
 
 ## 8. Wait for the API pipeline to convert to VCF format, annotate and create a report
 
-Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour.
+Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour. Please visit https://api.opengwas.io/contribution/ to check the status of the pipeline. Once the QC process has completed it will generate a report. View the report to check that everything looks as expected. Then go through the release process on the website.
 
-You can check the status of the pipeline by running:
-
-```{r, eval=FALSE}
-x$api_qc_status()
-```
-
-You can also check the status of the files being generated on the server side for this dataset:
-
-```{r, eval=FALSE}
-x$api_gwasdata_check() %>% httr::content()
-```
-
-Gradually more files will be added e.g. expect to see
-
-- `upload.txt.gz`
-- `<id>.vcf.gz`
-- `<id>.vcf.gz.tbi`
-- `clump.txt`
-- `ldsc.txt.log`
-- `<id>_report.html`
-
-## 9. Check report and release the dataset
-
-If you see a file called `<id>_report.html` then the pipeline is complete. To view the report, go to:
-
-<http://ieu-db-interface.epi.bris.ac.uk:8082/quality_control/check/<id>>
-
-Or run if you are in an interactive session with a browser:
-
-```{r, eval=FALSE}
-x$api_report()
-```
-
-If it hasn't been reported yet you'll get a message. But if it is there, it should open a browser and you can view the report. It has various QC and Manhattan plots, and other metrics comparing the data against reference data etc. 
-
-If you are happy with the dataset then you can next release the dataset using the following command:
-
-```{r, eval=FALSE}
-x$api_gwas_release(comments="Some comments here")
-```
-
-Alternatively, you can delete the data that has been uploaded:
-
-```{r, eval=FALSE}
-x$api_gwasdata_delete()
-```
-
-## 10. Check that it can be queried
-
-Now the GWAS data should be uploaded to the OpenGWAS database. It could take an hour or two for this to happen complete, which you can check again with 
-
-```{r}
-x$api_qc_status()
-```
-
-Once it's uploaded (i.e. the above command returns `Succeeded` for the elasticsearch pipeline) you should be able to query it. e.g. can you get its tophits:
+Once it's uploaded and released you should be able to query it. e.g. can you get its tophits:
 
 ```{r}
 ieugwasr::tophits(id)
