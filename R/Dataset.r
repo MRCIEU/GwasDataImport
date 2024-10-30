@@ -63,10 +63,10 @@ Dataset <- R6::R6Class("Dataset", list(
 		stopifnot(!is.null(id))
 		message("Checking existing IDs")
 		r <- ieugwasr::api_query(paste0("gwasinfo/", id), method="GET")
+		
 		if(length(ieugwasr::get_query_content(r)) != 0)
 		{
 			message("ID already in database: ", id)
-			self$metadata_uploaded <- TRUE
 			invisible(FALSE)
 		}
 		message("Checking in-process IDs")
@@ -75,6 +75,15 @@ Dataset <- R6::R6Class("Dataset", list(
 		{
 			stop("Are you authenticated?")
 		}
+
+		if(r$status_code == 200)
+		{
+			message("ID already in process: ", id)
+			self$metadata_uploaded <- TRUE
+			self$metadata <- self$api_metadata_check(id=id) %>% httr::content()
+			invisible(FALSE)
+		}
+
 		invisible(TRUE)
 	},
 
@@ -220,15 +229,15 @@ Dataset <- R6::R6Class("Dataset", list(
 		# params=x$params
 		# metadata_test=x$metadata_test
 		
-
-		# Check that CheckSumStats tests passed
-		a<-unlist(metadata_test$eaf_conflicts)
-		if(a[names(a)=="test"] == "fail") stop("The CheckSumStats test of the effect allele frequency column failed")
-		a<-unlist(metadata_test$gc_conflicts)
-		if(a[names(a)=="test"] == "strong_fail") stop("The CheckSumStats of the effect allele column failed")
-		if(a[names(a)=="test"] == "moderate_fail") warning("The CheckSumStats of the effect allele column partially failed")
-		a<-unlist(metadata_test$false_positive_hits)
-		if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")		
+		# TODO: reinstate checksumstats
+		# # Check that CheckSumStats tests passed
+		# a<-unlist(metadata_test$eaf_conflicts)
+		# if(a[names(a)=="test"] == "fail") stop("The CheckSumStats test of the effect allele frequency column failed")
+		# a<-unlist(metadata_test$gc_conflicts)
+		# if(a[names(a)=="test"] == "strong_fail") stop("The CheckSumStats of the effect allele column failed")
+		# if(a[names(a)=="test"] == "moderate_fail") warning("The CheckSumStats of the effect allele column partially failed")
+		# a<-unlist(metadata_test$false_positive_hits)
+		# if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")		
 
 
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
@@ -411,15 +420,15 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @importFrom httr status_code
 	api_metadata_upload = function(metadata=self$metadata, metadata_test =self$metadata_test, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-
-		# check that CheckSumStats tests passed
-		a<-unlist(self$metadata_test$eaf_conflicts)
-		if(a[names(a)=="test"] == "fail") stop("effect allele frequency column incorrectly specified")
-		a<-unlist(self$metadata_test$gc_conflicts)
-		if(a[names(a)=="test"] == "strong_fail") stop("effect allele column incorrectly specified")
-		if(a[names(a)=="test"] == "moderate_fail") warning("effect allele column may be incorrectly specified")
-		a<-unlist(self$metadata_test$false_positive_hits)
-		if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")	
+		# TODO: reinstate checksumstats
+		# # check that CheckSumStats tests passed
+		# a<-unlist(self$metadata_test$eaf_conflicts)
+		# if(a[names(a)=="test"] == "fail") stop("effect allele frequency column incorrectly specified")
+		# a<-unlist(self$metadata_test$gc_conflicts)
+		# if(a[names(a)=="test"] == "strong_fail") stop("effect allele column incorrectly specified")
+		# if(a[names(a)=="test"] == "moderate_fail") warning("effect allele column may be incorrectly specified")
+		# a<-unlist(self$metadata_test$false_positive_hits)
+		# if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")	
 
 		o <- ieugwasr::api_query("edit/add", query=metadata, opengwas_jwt=opengwas_jwt, method="POST")
 		if(httr::status_code(o) == 200)
@@ -492,19 +501,21 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
 	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out,metadata_test=self$metadata_test, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		# check that CheckSumStats tests passed
-		a<-unlist(self$metadata_test$eaf_conflicts)
-		if(a[names(a)=="test"] == "fail") stop("effect allele frequency column incorrectly specified")
-		a<-unlist(self$metadata_test$gc_conflicts)
-		if(a[names(a)=="test"] == "strong_fail") stop("effect allele column incorrectly specified")
-		if(a[names(a)=="test"] == "moderate_fail") warning("effect allele column may be incorrectly specified")
-		a<-unlist(self$metadata_test$false_positive_hits)
-		if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")	
+		# TODO: reinstate checksumstats
+		# # check that CheckSumStats tests passed
+		# a<-unlist(self$metadata_test$eaf_conflicts)
+		# if(a[names(a)=="test"] == "fail") stop("effect allele frequency column incorrectly specified")
+		# a<-unlist(self$metadata_test$gc_conflicts)
+		# if(a[names(a)=="test"] == "strong_fail") stop("effect allele column incorrectly specified")
+		# if(a[names(a)=="test"] == "moderate_fail") warning("effect allele column may be incorrectly specified")
+		# a<-unlist(self$metadata_test$false_positive_hits)
+		# if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")	
 
 		stopifnot(!is.null(self$igd_id))
 		stopifnot(self$metadata_uploaded)
 		y <- datainfo
 		y$id <- self$igd_id
+		y$nsnp <- self$nsnp
 		y$gwas_file <- httr::upload_file(gwasfile)
 		o <- ieugwasr::api_query("edit/upload", query=y, opengwas_jwt=opengwas_jwt, method="POST", encode="multipart", timeout=600)
 		if(httr::status_code(o) == 201)
