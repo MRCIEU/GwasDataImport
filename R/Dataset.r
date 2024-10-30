@@ -62,14 +62,15 @@ Dataset <- R6::R6Class("Dataset", list(
 	{
 		stopifnot(!is.null(id))
 		message("Checking existing IDs")
-		r <- ieugwasr::api_query(paste0("gwasinfo/", id), access_token=ieugwasr::check_access_token(), method="GET")
+		r <- ieugwasr::api_query(paste0("gwasinfo/", id), method="GET")
 		if(length(ieugwasr::get_query_content(r)) != 0)
 		{
 			message("ID already in database: ", id)
+			self$metadata_uploaded <- TRUE
 			invisible(FALSE)
 		}
 		message("Checking in-process IDs")
-		r <- ieugwasr::api_query(paste0("edit/check/", id), access_token=ieugwasr::check_access_token(), method="GET")
+		r <- ieugwasr::api_query(paste0("edit/check/", id), method="GET")
 		if(r$status_code == 404)
 		{
 			stop("Are you authenticated?")
@@ -406,9 +407,9 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' Upload meta data to API
 	#' @param metadata List of meta data fields and their values
 	#' @param metadata_test  List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
 	#' @importFrom httr status_code
-	api_metadata_upload = function(metadata=self$metadata, metadata_test =self$metadata_test, access_token=ieugwasr::check_access_token())
+	api_metadata_upload = function(metadata=self$metadata, metadata_test =self$metadata_test, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 
 		# check that CheckSumStats tests passed
@@ -420,7 +421,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		a<-unlist(self$metadata_test$false_positive_hits)
 		if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")	
 
-		o <- ieugwasr::api_query("edit/add", query=metadata, access_token=access_token, method="POST")
+		o <- ieugwasr::api_query("edit/add", query=metadata, opengwas_jwt=opengwas_jwt, method="POST")
 		if(httr::status_code(o) == 200)
 		{
 			self$igd_id <- httr::content(o)$id
@@ -438,11 +439,11 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @description
 	#' Upload meta data to API
 	#' @param metadata List of meta data fields and their values
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_metadata_edit = function(metadata=self$metadata, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_metadata_edit = function(metadata=self$metadata, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 		stopifnot(!is.null(metadata$id))
-		o <- ieugwasr::api_query("edit/edit", query=metadata, access_token=access_token, method="POST")
+		o <- ieugwasr::api_query("edit/edit", query=metadata, opengwas_jwt=opengwas_jwt, method="POST")
 		if(httr::status_code(o) == 200)
 		{
 			self$igd_id <- httr::content(o)$id
@@ -459,19 +460,19 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @description
 	#' View meta-data
 	#' @param id ID to check
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_metadata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_metadata_check = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		ieugwasr::api_query(paste0("edit/check/", id), access_token=access_token, method="GET")
+		ieugwasr::api_query(paste0("edit/check/", id), opengwas_jwt=opengwas_jwt, method="GET")
 	},
 
 	#' @description
 	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 	#' @param id ID to delete
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_metadata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_metadata_delete = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		o <- ieugwasr::api_query(paste0("edit/delete/", id), access_token=access_token, method="DELETE")
+		o <- ieugwasr::api_query(paste0("edit/delete/", id), opengwas_jwt=opengwas_jwt, method="DELETE")
 		if(httr::status_code(o) == 200)
 		{
 			message("Successfully deleted gwas data and metadata from API")
@@ -488,8 +489,8 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param datainfo List of data column parameters
 	#' @param gwasfile Path to processed gwasfile
 	#' @param metadata_test  List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out,metadata_test=self$metadata_test, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_gwasdata_upload = function(datainfo=self$datainfo, gwasfile=self$gwas_out,metadata_test=self$metadata_test, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 		# check that CheckSumStats tests passed
 		a<-unlist(self$metadata_test$eaf_conflicts)
@@ -505,7 +506,7 @@ Dataset <- R6::R6Class("Dataset", list(
 		y <- datainfo
 		y$id <- self$igd_id
 		y$gwas_file <- httr::upload_file(gwasfile)
-		o <- ieugwasr::api_query("edit/upload", query=y, access_token=access_token, method="POST", encode="multipart", timeout=600)
+		o <- ieugwasr::api_query("edit/upload", query=y, opengwas_jwt=opengwas_jwt, method="POST", encode="multipart", timeout=600)
 		if(httr::status_code(o) == 201)
 		{
 			message("Successfully uploaded GWAS data")
@@ -520,26 +521,26 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @description
 	#' Check status of API processing pipeline
 	#' @param id ID to check
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_gwasdata_check = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_gwasdata_check = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		ieugwasr::api_query(paste0("quality_control/check/", id), access_token=access_token)
+		ieugwasr::api_query(paste0("quality_control/check/", id), opengwas_jwt=opengwas_jwt)
 	},
 
 	#' @description
 	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
 	#' @param id ID to delete
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_gwasdata_delete = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_gwasdata_delete = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		self$api_metadata_delete(id=id, access_token=access_token)
+		self$api_metadata_delete(id=id, opengwas_jwt=opengwas_jwt)
 	},
 
 	#' @description
 	#' Check the status of the GWAS QC processing pipeline
 	#' @param id ID to delete
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_qc_status = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_qc_status = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 		readr::read_file(paste0(
 			options()$cromwell_api, "/api/workflows/v1/query?label=gwas_id:", self$igd_id)
@@ -549,8 +550,8 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @description
 	#' View the html report for a processed dataset
 	#' @param id ID of report to view
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_report = function(id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_report = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 		o <- httr::content(self$api_gwasdata_check())
 		if(!any(grepl("html", unlist(o))))
@@ -567,11 +568,11 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param comments Optional comments to provide when uploading
 	#' @param passed_qc True or False
 	#' @param id ID to release
-	#' @param access_token Google OAuth2.0 token. See ieugwasr documentation for more info
-	api_gwas_release = function(comments=NULL, passed_qc="True", id=self$igd_id, access_token=ieugwasr::check_access_token())
+	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
+	api_gwas_release = function(comments=NULL, passed_qc="True", id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
 		payload <- list(id=id, comments=comments, passed_qc=passed_qc)
-		ieugwasr::api_query("quality_control/release", query=payload, access_token=access_token, method="POST")
+		ieugwasr::api_query("quality_control/release", query=payload, opengwas_jwt=opengwas_jwt, method="POST")
 	}
 ))
 
