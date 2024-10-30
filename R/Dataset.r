@@ -168,8 +168,8 @@ Dataset <- R6::R6Class("Dataset", list(
 			stop("beta values appear to be z-scores")
 		}
 
-		index.beta<-!is.na(out$beta)
-		if(all(out$beta[index.beta]>0)){
+		index.beta <- !is.na(out$beta)
+		if(all(out$beta[index.beta] > 0)) {
 			warning("beta values appear to be odds ratios")
 		}
 
@@ -186,8 +186,19 @@ Dataset <- R6::R6Class("Dataset", list(
 				}
 			}
 		}
+
+		nas <- (is.na(out$chr) | is.na(out$pos) | is.na(out$ea) | is.na(out$oa) | is.na(out$beta) | is.na(out$se) | is.na(out$pval))
+		message("Removing ", sum(nas), " rows with missing values")
+
 		out <- out %>%
-			subset(., ! (is.na(chr) | is.na(pos) | is.na(ea) | is.na(oa) | is.na(beta) | is.na(se) | is.na(pval)))
+			subset(., ! nas)
+		stopifnot(nrow(out) > 0)
+
+		infs <- (is.infinite(out$chr) | is.infinite(out$pos) | is.infinite(out$beta) | is.infinite(out$se) | is.infinite(out$pval))
+		message("Removing ", sum(infs), " rows with infinite values")
+
+		out <- out %>%
+			subset(., ! infs)
 		stopifnot(nrow(out) > 0)
 
 		message("Checking alleles are in A/C/T/G/D/I")
@@ -222,7 +233,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param metadata_test  List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats
 	#' @param ... Further arguments to pass to data.table::fread in order to correctly read the dataset
 	
-	format_dataset = function(gwas_file=self$filename, gwas_out = file.path(self$wd, "format.txt.gz"), params=self$params,metadata_test=self$metadata_test, ...)
+	format_dataset = function(gwas_file=self$filename, gwas_out = file.path(self$wd, "format.txt.gz"), params=self$params, metadata_test=self$metadata_test, ...)
 	{
 		# gwas_file=x$filename
 		# gwas_out = file.path(x$wd, "format.txt.gz")
@@ -238,7 +249,6 @@ Dataset <- R6::R6Class("Dataset", list(
 		# if(a[names(a)=="test"] == "moderate_fail") warning("The CheckSumStats of the effect allele column partially failed")
 		# a<-unlist(metadata_test$false_positive_hits)
 		# if(a[names(a)=="test"] == "fail") warning("The CheckSumStats test of reported GWAS hits failed. The GWAS hits in the test dataset are not present in the GWAS catalog")		
-
 
 		out <- self$determine_columns(gwas_file=gwas_file, params=params, nrows=Inf, ...)
 		
@@ -343,7 +353,6 @@ Dataset <- R6::R6Class("Dataset", list(
 	#' @param gwas_file Filename to read
 	#' @param params column names from x$determine_columns(). Required columns are: c("snp_col", "ea_col", "oa_col", "eaf_col" ) 
 	#' @param metadata metadata from x$collect_metadata()
-
 	check_metadata = function(gwas_file = self$filename, params = self$params, metadata = self$metadata)
 	{
 		out <- data.table::fread(self$filename, nrows = Inf)
