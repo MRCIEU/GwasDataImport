@@ -4,5 +4,5 @@
 	options(cromwell_api="http://ieu-db-interface.epi.bris.ac.uk:8001")
 	# options(igd_api="http://ieu-db-interface.epi.bris.ac.uk:8082/")
 	# options(igd_api="http://127.0.0.1:5000/")
-	ieugwasr::select_api("private")
+	ieugwasr::select_api()
 }
