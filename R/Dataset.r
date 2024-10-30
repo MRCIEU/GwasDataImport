@@ -187,6 +187,14 @@ Dataset <- R6::R6Class("Dataset", list(
 			}
 		}
 
+		# Pvals inf or NA but beta and SE present
+		ind <- (is.na(out$pval) | is.infinite(out$pval)) & !is.na(out$beta) & !is.na(out$se)
+		if(sum(ind) > 0)
+		{
+			message("Deriving p-values for ", sum(ind), " out of ", length(ind), " entries")
+			out$pval[ind] <- 2 * pnorm(-abs(out$beta[ind] / out$se[ind]))
+		}
+
 		nas <- (is.na(out$chr) | is.na(out$pos) | is.na(out$ea) | is.na(out$oa) | is.na(out$beta) | is.na(out$se) | is.na(out$pval))
 		message("Removing ", sum(nas), " rows with missing values")
 
