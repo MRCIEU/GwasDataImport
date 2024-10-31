@@ -1,5 +1,5 @@
 pandoc: 2.19.2
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   ebi_workflow: ebi_workflow.html
@@ -8,7 +8,7 @@ articles:
   import_pipeline: import_pipeline.html
   liftover: liftover.html
   testrun: testrun.html
-last_built: 2023-04-29T22:27Z
+last_built: 2024-10-30T22:38Z
 urls:
   reference: https://mrcieu.github.io/GwasDataImport/reference
   article: https://mrcieu.github.io/GwasDataImport/articles
