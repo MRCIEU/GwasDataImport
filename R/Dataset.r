@@ -76,14 +76,21 @@ Dataset <- R6::R6Class("Dataset", list(
 			stop("Are you authenticated?")
 		}
 
-		if(r$status_code == 200)
-		{
-			message("ID already in process: ", id)
-			self$metadata_uploaded <- TRUE
-			self$metadata <- self$api_metadata_check(id=id) %>% httr::content()
-			invisible(FALSE)
-		}
+		o <- httr::content(r)
 
+		if(is.list(o))
+		{
+			if("id" %in% names(o))
+			{
+				if(o$id == igd_id)
+				{
+					message("ID already in process: ", id)
+					self$metadata_uploaded <- TRUE
+					self$metadata <- o
+					invisible(FALSE)
+				}
+			}
+		}
 		invisible(TRUE)
 	},
 

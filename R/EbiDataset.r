@@ -44,14 +44,16 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 	#' @param ftp_url Default=options()$ebi_ftp_url
 	#' @param outdir Default=self$wd
 	#' @importFrom glue glue
-	download_dataset = function(ftp_path=self$ftp_path, ftp_url=options()$ebi_ftp_url, outdir=self$wd)
+	download_dataset = function(ftp_path=self$ftp_path, outdir=self$wd, dl=TRUE)
 	{
-		dir.create(self$wd, recursive=TRUE, showWarnings=FALSE)
+		dir.create(outdir, recursive=TRUE, showWarnings=FALSE)
 		b <- basename(ftp_path)
 		filename <- file.path(outdir, b)
-		ftp <- file.path(ftp_url, ftp_path)
+		ftp <- file.path(ftp_path)
 		cmd <- glue::glue("wget -q -O {filename} {ftp}")
-		system(cmd)
+		if(dl) {
+			system(cmd)
+		}
 		self$filename <- filename
 	},
 
@@ -101,18 +103,21 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 	organise_metadata = function(ebi_id=self$ebi_id, or_flag=self$or_flag, igd_id=self$igd_id, units=NULL, sex="NA", category="NA", subcategory="NA", build="HG19/GRCh37", group_name="public", traitname=self$traitname)
 	{
 		l <- list()
-		j <- jsonlite::read_json(paste0(options()$ebi_api, ebi_id))
+		# j <- jsonlite::read_json(paste0(options()$ebi_api, ebi_id))
+		j <- gwasrapidd::get_studies(ebi_id)
 
 		l[["id"]] <- igd_id
 		if(is.null(traitname))
 		{
-			l[["trait"]] <- j[["diseaseTrait"]][["trait"]]
+			l[["trait"]] <- j@studies[["reported_trait"]]
 		} else {
 			l[["trait"]] <- traitname
 		}
 		l[["note"]] <- ""
 		if(or_flag) l[["note"]] <- paste0(l[["note"]], "beta+se converted from OR+CI; ")
-		if(!is.null(j[["studyDesignComment"]])) paste0(l[["note"]], j[["studyDesignComment"]], "; ")
+		if(!is.na(j@studies[["study_design_comment"]])) {
+			l[["note"]] <- paste0(l[["note"]], j@studies[["study_design_comment"]], "; ")
+		}
 		l[["pmid"]] <- j[["publicationInfo"]][["pubmedId"]]
 		l[["year"]] <- j[["publicationInfo"]][["publicationDate"]]
 		if(!is.null(l[["year"]])) l[["year"]] <- strsplit(l[["year"]], split="-")[[1]][1]

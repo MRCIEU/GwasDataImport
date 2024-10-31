@@ -324,8 +324,8 @@ liftover_gwas <- function(dat, build=c(37,38,36), to=37, chr_col="chr", pos_col=
 	d19 <- rtracklayer::liftOver(datg, ch) %>% unlist()
 	message("Organising again")
 	dat <- dat[d19$ind,]
-	dat[[chr_col]] <- d19@seqnames
-	dat[[pos_col]] <- d19@ranges@start
+	dat[[chr_col]] <- as.character(d19@seqnames)
+	dat[[pos_col]] <- as.numeric(d19@ranges@start)
 	dat[[chr_col]] <- gsub("chr", "", dat[[chr_col]])
 	message("Reordering")
 	dat <- dat[order(dat[[chr_col]], dat[[pos_col]]), ]
