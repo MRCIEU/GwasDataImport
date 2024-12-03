@@ -30,10 +30,6 @@ library(GwasDataImport)
 ```{r, eval=FALSE}
 # library(devtools)
 # load_all()
-# ieugwasr::select_api("dev2")
-
-# Authorise
-ieugwasr::get_access_token()
 
 # This is a small file, good for testing
 ebi_id <- "GCST005522"
@@ -77,7 +73,7 @@ x$api_gwasdata_delete()
 To get a list of datasets that need to be imported:
 
 ```{r, eval=FALSE}
-ignore_list <- scan(system.file(package="EbiDataImport", "extdata/ebi_ignore_list.txt"), character())
+ignore_list <- scan(system.file(package="GwasDataImport", "extdata/ebi_ignore_list.txt"), character())
 newdats <- determine_new_datasets(blacklist=ignore_list)
 newdats <- being_processed(newdats) %>% subset(., need)
 ```

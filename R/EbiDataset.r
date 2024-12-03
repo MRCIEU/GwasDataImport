@@ -118,13 +118,16 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		if(!is.na(j@studies[["study_design_comment"]])) {
 			l[["note"]] <- paste0(l[["note"]], j@studies[["study_design_comment"]], "; ")
 		}
-		l[["pmid"]] <- j[["publicationInfo"]][["pubmedId"]]
-		l[["year"]] <- j[["publicationInfo"]][["publicationDate"]]
-		if(!is.null(l[["year"]])) l[["year"]] <- strsplit(l[["year"]], split="-")[[1]][1]
-		l[["author"]] <- j[["publicationInfo"]][["author"]][["fullname"]]
+		l[["pmid"]] <- j@publications[["pubmed_id"]]
+		l[["year"]] <- j@publications[["publication_date"]]
+		if(!is.null(l[["year"]])) 
+		{
+			l[["year"]] <- strsplit(l[["year"]], split="-")[[1]][1]
+		}
+		l[["author"]] <- j@publications[["author_fullname"]]
 
-		anc <- j[["ancestries"]]
-		g <- j[["ancestries"]][[which(sapply(anc, function(x) x$type == "initial"))[1]]][["ancestralGroups"]]
+		anc <- j@ancestries
+		g <- j@ancestral_groups[["ancestral_group"]][anc$type == "initial"]
 		if(length(g) == 1)
 		{
 			l[["population"]] <- g[[1]]$ancestralGroup
@@ -132,19 +135,13 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 			l[["population"]] <- "Mixed"
 		}
 
-		l[["sample_size"]] <- j[["ancestries"]][[which(sapply(anc, function(x) x$type == "initial"))[1]]][["numberOfIndividuals"]]
+		l[["sample_size"]] <- sum(anc$number_of_individuals[anc$type == "initial"])
 
 		if(grepl("cases", j[["initialSampleSize"]]))
 		{
-			n <- j[["initialSampleSize"]] %>%
-			gsub(",", "", .) %>%
-			gsub("Up to ", "", .) %>%
-			strsplit(., " ") %>%
-			unlist() %>%
-			as.numeric() %>%
-			{.[!is.na(.)]}
-			l[["ncase"]] <- n[1]
-			l[["ncontrol"]] <- n[2]
+			n <- extract_ncase_control(j@studies[["initial_sample_size"]])
+			l[["ncase"]] <- n[[1]]
+			l[["ncontrol"]] <- n[[2]]
 			l[["unit"]] <- "logOR"
 		} else {
 			l[["ncase"]] <- NA
@@ -160,7 +157,7 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		l[["or_flag"]] <- or_flag
 		l[["build"]] <- build
 		l[["group_name"]] <- group_name
-		l[["nsnp_stated"]] <- j[["snpCount"]]
+		l[["nsnp_stated"]] <- j@studies[["snp_count"]]
 		l[["nsnp_read"]] <- self$nsnp_read
 		l[["nsnp"]] <- self$nsnp
 		l[["ontology"]] <- httr::GET(j[["_links"]][["efoTraits"]][["href"]]) %>% httr::content(., encoding="text") %>% 
@@ -239,3 +236,49 @@ EbiDataset <- R6::R6Class("EbiDataset", inherit = Dataset, list(
 		message("Completed successfully")
 	}
 ))
+
+
+
+
+extract_ncase_control <- function(x) {
+    # Remove commas from numbers
+    b <- gsub("(\\d+),(?=\\d+)", "\\1", x, perl = TRUE) %>%
+    # Split sample components based on ','
+        strsplit(", ") %>%
+        {.[[1]]}
+
+    # Keep components that contain the word 'cases'
+    b1 <- grep("cases", b, value = TRUE)
+    # If none, probably a continuous trait
+    if(length(b1) == 0) {
+        b1 <- b
+    }
+    # Now just extract the numbers from each 'cases' sample component and sum them
+ 
+    suppressWarnings({
+    ncase <- b1 %>%
+        sapply(., \(y) {
+            strsplit(y, " ") %>%
+            unlist() %>% as.numeric() %>% na.omit() %>% first() %>% as.numeric()
+        }) %>% sum(na.rm=TRUE)
+    })
+
+    # Keep components that contain the word 'cases'
+    b1 <- grep("controls", b, value = TRUE)
+    # If none, probably a continuous trait
+    if(length(b1) == 0) {
+        b1 <- b
+    }
+    # Now just extract the numbers from each 'controls' sample component and sum them
+ 
+    suppressWarnings({
+    ncontrol <- b1 %>%
+        sapply(., \(y) {
+            strsplit(y, " ") %>%
+            unlist() %>% as.numeric() %>% na.omit() %>% first() %>% as.numeric()
+        }) %>% sum(na.rm=TRUE)
+    })
+
+	return(list(ncase=ncase, ncontrol=ncontrol))
+
+}
