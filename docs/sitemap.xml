@@ -1,90 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/404.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/ebi_workflow.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/edit.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/get_positions.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/import_pipeline.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/liftover.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/articles/testrun.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/Dataset.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/EbiDataset.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/being_processed.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/create_build_reference.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/create_marts.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build_biomart.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build_position.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/determine_new_datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/ebi_datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/get_ftp_path.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/get_positions.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/liftover_gwas.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/listftp.html</loc>
-  </url>
-  <url>
-    <loc>https://mrcieu.github.io/GwasDataImport/reference/pipe.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mrcieu.github.io/GwasDataImport/404.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/LICENSE-text.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/LICENSE.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/ebi_workflow.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/edit.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/get_positions.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/import_pipeline.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/index.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/liftover.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/articles/testrun.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/authors.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/index.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/news/index.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/Dataset.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/EbiDataset.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/being_processed.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/create_build_reference.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/create_marts.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build_biomart.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/determine_build_position.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/determine_new_datasets.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/ebi_datasets.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/get_ftp_path.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/get_positions.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/index.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/liftover_gwas.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/listftp.html</loc></url>
+<url><loc>https://mrcieu.github.io/GwasDataImport/reference/pipe.html</loc></url>
 </urlset>
+
