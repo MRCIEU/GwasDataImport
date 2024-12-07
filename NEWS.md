@@ -1,3 +1,11 @@
+# GwasDataImport 0.2
+
+* Remove private API options
+* Update access_token to opengwas_jwt to fit https://api.opengwas.io
+* Update API endpoints to fit https://api.opengwas.io
+* Disable CheckSumStats
+* Check for infinite values and derive pval when necessary
+
 # GwasDataImport 0.1.2
 
 * Added integration with MRCIEU/CheckSumStats package
