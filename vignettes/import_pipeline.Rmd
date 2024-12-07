@@ -185,7 +185,7 @@ Specify the metadata. e.g. here is a minimal example:
 x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
 ```
 
-But more fields can be specified. You can see a detailed list of them here: http://gwas-api.mrcieu.ac.uk/docs or running this command:
+But more fields can be specified. You can see a detailed list of them here: https://api.opengwas.io/api/docs or running this command:
 
 ```{r}
 x$view_metadata_options()
