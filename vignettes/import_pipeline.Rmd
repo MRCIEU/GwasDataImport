@@ -191,6 +191,8 @@ But more fields can be specified. You can see a detailed list of them here: http
 x$view_metadata_options()
 ```
 
+Note that `nsnp` has been collected in the last step `x$determine_columns()` and should not be specified in `x$collect_metadata()`.
+
 To see a simplified version of this, see:
 
 ```{r}
