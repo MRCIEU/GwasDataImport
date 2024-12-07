@@ -221,7 +221,7 @@ Process dataset ready for uploading. Determins build and lifts over to hg19/b37 
 \if{html}{\out{<a id="method-Dataset-view_metadata_options"></a>}}
 \if{latex}{\out{\hypertarget{method-Dataset-view_metadata_options}{}}}
 \subsection{Method \code{view_metadata_options()}}{
-View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs
+View the specifications for available meta data fields, as taken from https://api.opengwas.io/api/docs
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$view_metadata_options()}\if{html}{\out{</div>}}
 }

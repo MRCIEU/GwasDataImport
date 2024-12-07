@@ -286,7 +286,7 @@ Dataset <- R6::R6Class("Dataset", list(
 
 
 	#' @description
-	#' View the specifications for available meta data fields, as taken from http://gwas-api.mrcieu.ac.uk/docs
+	#' View the specifications for available meta data fields, as taken from https://api.opengwas.io/api/docs
 	#' @importFrom jsonlite read_json
 	view_metadata_options = function()
 	{
