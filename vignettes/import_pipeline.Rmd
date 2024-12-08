@@ -37,8 +37,8 @@ This may look like a lot but it's only a few commands. e.g. here is the complete
 ```{r, eval=FALSE}
 library(GwasDataImport)
 
-# Authenticate
-ieugwasr::get_access_token()
+# Check if you are authenticated
+ieugwasr::user()
 
 # Initialise
 x <- Dataset$new(filename=filename, igd_id=id)
@@ -343,7 +343,7 @@ x$gwasdata_upload_status %>% httr::content()
 
 ## 8. Wait for the API pipeline to convert to VCF format, annotate and create a report
 
-Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this will take about 1 hour. Please visit https://api.opengwas.io/contribution/ to check the status of the pipeline. Once the QC process has completed it will generate a report. View the report to check that everything looks as expected. Then go through the release process on the website.
+Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this may take several hours. Please visit https://api.opengwas.io/contribution/ to check the status of the pipeline. Once the QC process has completed it will generate a report. View the report to check that everything looks as expected. Then go through the release (approval) process on the website.
 
 Once it's uploaded and released you should be able to query it. e.g. can you get its tophits:
 
