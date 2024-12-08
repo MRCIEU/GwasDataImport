@@ -7,11 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Importing datasets into OpenGWAS [NEW WORKFLOW]
-
-[[_TOC_]]
-
-## As a Contributor
+# As a Contributor
 
 This role enables you to contribute datasets (create metadata, upload file for QC, check QC report and submit dataset for approval) to OpenGWAS.
 
@@ -19,11 +15,51 @@ You may contact Admin (details TBC) and request to be added as a Contributor. Yo
 
 You also need R/GwasDataImport installed and your OpenGWAS JWT (token) set up in your R environment.
 
-## Setup
+# Prerequisites
+
+Each dataset will be a `.txt` or `.txt.gz` file. The content looks like this:
+
+```
+ID          ALT  REF  BETA     SE      PVALUE   AF       N       ZVALUE  INFO  CHROM  POS
+rs10399878  G    A    0.0118   0.016   0.4608   0.9569   124787  NA      NA    1      1239953
+rs1039063   G    T    0.0026   0.0036  0.4702   0.55     236102  NA      NA    1      2281978
+rs1039100   G    A    0.0033   0.0047  0.4826   NA       221290  NA      NA    1      2286947
+rs10158583  A    G    0.0099   0.0059  0.09446  0.075    321197  NA      NA    1      3144068
+rs10157420  C    T    -0.0038  0.0075  0.6124   0.05     234171  NA      NA    1      3146497
+```
+
+The header row is not required - you will need to specify the mappings in later steps. The header row (if any) will be ignored by the pipeline so it's okay to leave it as-is.
+
+These columns are required for each dataset:
+
+- chromosome
+- position
+- beta
+- se
+- effect allele
+- other allele
+- pval
+
+Note: you need to remove any leading `0` from the chromosome values, e.g. `07` -> `7`.
+
+Note: a row will be removed by the pipeline entirely if it has NA/Inf value in any required columns.
+
+These columns are optional:
+
+- rsid
+- effect allele frequency
+- other allele frequency
+- number of cases
+- number of controls (or total sample size if continuous trait)
+- imputation z-score
+- imputation info score
+
+
+# Setup
 
 You can track your contributions via the web interface, but you will need R/GwasDataImport anyway to upload the files.
 
-```{r}
+```{r, eval=FALSE}
 library(GwasDataImport)
 
 # Make sure you have switched to the "public" API base URL
@@ -33,15 +69,15 @@ ieugwasr::select_api()
 ieugwasr::user()
 ```
 
-## Metadata and dataset
+# Metadata and dataset
 
 For each dataset you will need to go through step 1 to 4. See also: [Import in bulk](#import-in-bulk).
 
-### 1. Create metadata and obtain GWAS ID (two methods)
+## 1. Create metadata and obtain GWAS ID (two methods)
 
 For each dataset to be uploaded, you can **either** use the web interface **or** the R/GwasDataImport package to create the metadata.
 
-#### 1a. Use the web interface
+### 1a. Use the web interface
 
 https://api.opengwas.io/contribution/ provides a webform with dropdowns and tooltips for each field. This is handy when you are new to this process and/or only have a few datasets to upload.
 
@@ -49,19 +85,20 @@ GWAS ID will be available on the web interface for each dataset. Assume it's `ie
 
 In R, specify the path (assume it's `~/bmi_test.txt.gz`) and GWAS ID, and then mark the metadata as uploaded.
 
-```{r}
+```{r, eval=FALSE}
 x <- Dataset$new(filename="~/bmi_test.txt.gz", igd_id='ieu-b-5137')
 
 x$metadata_uploaded <- TRUE
 ```
 
-#### 1b. Use R/GwasDataImport
+### 1b. Use R/GwasDataImport
 
-**Alternatively**, you can opt to use R if you have an array of candidate datasets since it's easier to upload metadata of multiple datasets in a programmable way.
+**Alternatively**, you can opt to use R if you have an array of candidate datasets since it's easier to upload metadata of multiple datasets in a programmable way. We recommend that you try the web interface in 1a first before you go down this more advanced route.
  
 Assume the full path to the file is `~/bmi_test.txt.gz`.
 
-```{r}
+```{r, eval=FALSE}
+# Don't provide the GWAS ID
 x <- Dataset$new(filename="~/bmi_test.txt.gz")
 
 x$collect_metadata(list(
@@ -84,27 +121,27 @@ x$api_metadata_upload()
 
 GWAS ID will be returned by the last command. Assume it's `ieu-b-5137`. At the same time a new record will show up on https://api.opengwas.io/contribution/.
 
-### 2. Modify the metadata (only when necessary)
+## 2. Modify the metadata (only when necessary)
 
 You can modify the metadata either via the web interface (recommended) or through R/GwasDataImport, regardless of how you created the metadata (i.e. metadata created via the R package can be modified on the web interface, or vice versa).
 
 Note that the metadata can only be modified when there is no QC pipeline associated, because at the last step when generating the QC report, the metadata will be hardcoded in the report. Metadata can only be modified when
 
-- (a) the file has not been uploaded for QC, or
-- (b) the QC pipeline had already finished and you decided to "delete uploaded files and QC products but keep the metadata", which effectly reverted the state to (a)
+- \(a) the file has not been uploaded for QC, or
+- \(b) the QC pipeline had already finished and you decided to "delete uploaded files and QC products but keep the metadata", which effectly reverted the state to (a)
 
-### 3. Format the file and upload for QC (R/GwasDataImport)
+## 3. Format the file and upload for QC (R/GwasDataImport)
 
 Always check that the GWAS ID and path information stored are accurate.
 
-```{r}
+```{r, eval=FALSE}
 x$igd_id
 x$filename
 ```
 
-Specify column mapping (1-indexed):
+Specify column mapping (1-indexed) (check [docs](https://mrcieu.github.io/GwasDataImport/reference/Dataset.html#method-Dataset-determine_columns) for parameter names):
 
-```{r}
+```{r, eval=FALSE}
 x$determine_columns(list(
   chr_col=11,
   pos_col=12,
@@ -121,7 +158,7 @@ x$determine_columns(list(
 
 Format the dataset (this may take a while):
 
-```{r}
+```{r, eval=FALSE}
 x$format_dataset()
 ```
 
@@ -129,19 +166,19 @@ Use the output to double-check the mapping. If necessary, run `x$determine_colum
 
 Upload the dataset (this may take a while):
 
-```{r}
+```{r, eval=FALSE}
 x$api_gwasdata_upload()
 ```
 
 You will see the "Dataset has been added to the pipeline" message if the upload was successful.
 
-And finally don't forget to clean up:
+And finally don't forget to clean up the working directory:
 
-```{r}
+```{r, eval=FALSE}
 x$delete_wd()
 ```
 
-### 4. Check QC pipeline state and report, and submit for approval
+## 4. Check QC pipeline state and report, and submit for approval
 
 On https://api.opengwas.io/contribution you can click the **2. QC** tab of the dataset popup and check pipeline state.
 
@@ -156,12 +193,16 @@ For each dataset, you should review the QC report when it's available and decide
 
 You may also use the checkboxes on the main screen to select datasets and submit for approval in bulk.
 
-## Import in bulk
+# Import in bulk
 
 If you have multiple datasets you may want to write an R snippet to semi-automate this process.
 
-[Set up](#setup) for only once, then for each dataset go through [1b](#1b-use-rgwasdataimport), [2](#2-modify-the-metadata-only-when-necessary) and [3](#3-format-the-file-and-upload-for-qc-rgwasdataimport). Finally visit the portal in [4](#4-check-qc-pipeline-state-and-report-and-submit-for-approval) and use the checkboxes to submit in bulk.
+[Set up](#setup) for only once, then for each dataset go through step 1b, 2 and 3. Finally visit the portal in step 4 and use the checkboxes to submit in bulk.
 
-## What's next
+# What's next
 
 Admins will review and approve/reject each datasets.
+
+# Known issues
+
+- GwasDataImport has the ability to liftover, but we recommend you to convert all records to **GRCh37** if possible.
