@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
 <li><a class="dropdown-item" href="../articles/index.html">List of vignettes</a></li>
+    <li><a class="dropdown-item" href="../articles/import_pipeline_new.html">Importing datasets into OpenGWAS [NEW]</a></li>
     <li><a class="dropdown-item" href="../articles/import_pipeline.html">Importing datasets into OpenGWAS</a></li>
     <li><a class="dropdown-item" href="../articles/edit.html">Edit existing GWAS meta data</a></li>
     <li><a class="dropdown-item" href="../articles/ebi_workflow.html">EBI upload pipeline</a></li>
@@ -91,8 +92,8 @@ the complete pipeline that we will use to demonstrate:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Authenticate</span></span>
-<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu">get_access_token</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># Check if you are authenticated</span></span>
+<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/user.html" class="external-link">user</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Initialise</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="va">filename</span>, igd_id<span class="op">=</span><span class="va">id</span><span class="op">)</span></span>
@@ -125,7 +126,7 @@ the complete pipeline that we will use to demonstrate:</p>
 <span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</span></span>
-<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span>
+<span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Delete wd</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -401,18 +402,19 @@ the data. You might get more information by running:</p>
 create a report<a class="anchor" aria-label="anchor" href="#wait-for-the-api-pipeline-to-convert-to-vcf-format-annotate-and-create-a-report"></a>
 </h2>
 <p>Once uploaded, the dataset will go through a processing pipeline on
-the server. For large datasets this will take about 1 hour. Please visit
+the server. For large datasets this may take several hours. Please visit
 <a href="https://api.opengwas.io/contribution/" class="external-link uri">https://api.opengwas.io/contribution/</a> to check the
 status of the pipeline. Once the QC process has completed it will
 generate a report. View the report to check that everything looks as
-expected. Then go through the release process on the website.</p>
+expected. Then go through the release (approval) process on the
+website.</p>
 <p>Once it’s uploaded and released you should be able to query it.
 e.g. can you get its tophits:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></code></pre></div>
 <p>Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu">tophits</span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/associations.html" class="external-link">associations</a></span><span class="op">(</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="st">'ieu-a-2'</span><span class="op">)</span><span class="op">$</span><span class="va">rsid</span>, <span class="va">id</span><span class="op">)</span></span></code></pre></div>
 <p>The dataset will appear on <a href="https://gwas.mrcieu.ac.uk/" class="external-link uri">https://gwas.mrcieu.ac.uk/</a> within a day or two, the
 synchronisation between API and website isn’t immediate.</p>
 </div>
