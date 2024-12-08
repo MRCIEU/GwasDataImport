@@ -9,6 +9,8 @@ navbar:
       menu:
         - text: List of vignettes
           href: articles/index.html
+        - text: Importing datasets into OpenGWAS [NEW]
+          href: articles/import_pipeline_new.html
         - text: Importing datasets into OpenGWAS
           href: articles/import_pipeline.html
         - text: Edit existing GWAS meta data
@@ -34,6 +36,7 @@ articles:
     desc: >
       The following vignettes provide detailed illustrations of the package. For most uses only the GWAS upload and metadata editing sections will be of interest
     contents:
+    - import_pipeline_new
     - import_pipeline
     - edit
     - ebi_workflow
