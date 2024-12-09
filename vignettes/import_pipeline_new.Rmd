@@ -81,12 +81,12 @@ For each dataset to be uploaded, you can **either** use the web interface **or**
 
 https://api.opengwas.io/contribution/ provides a webform with dropdowns and tooltips for each field. This is handy when you are new to this process and/or only have a few datasets to upload.
 
-GWAS ID will be available on the web interface for each dataset. Assume it's `ieu-b-5137`.
+GWAS ID will be available on the web interface for each dataset. Assume it's `ieu-b-9999`.
 
 In R, specify the path (assume it's `~/bmi_test.txt.gz`) and GWAS ID, and then mark the metadata as uploaded.
 
 ```{r, eval=FALSE}
-x <- Dataset$new(filename="~/bmi_test.txt.gz", igd_id='ieu-b-5137')
+x <- Dataset$new(filename="~/bmi_test.txt.gz", igd_id='ieu-b-9999')
 
 x$metadata_uploaded <- TRUE
 ```
@@ -119,7 +119,7 @@ x$collect_metadata(list(
 x$api_metadata_upload()
 ```
 
-GWAS ID will be returned by the last command. Assume it's `ieu-b-5137`. At the same time a new record will show up on https://api.opengwas.io/contribution/.
+GWAS ID will be returned by the last command. Assume it's `ieu-b-9999`. At the same time a new record will show up on https://api.opengwas.io/contribution/.
 
 ## 2. Modify the metadata (only when necessary)
 
@@ -156,17 +156,13 @@ x$determine_columns(list(
 ))
 ```
 
-Format the dataset (this may take a while):
+Use the output to double-check the mapping. If necessary, run `x$determine_columns(...)` again with the correct mapping.
+
+Format the dataset and then upload (both may take a while):
 
 ```{r, eval=FALSE}
 x$format_dataset()
-```
 
-Use the output to double-check the mapping. If necessary, run `x$determine_columns(...)` again with the correct mapping.
-
-Upload the dataset (this may take a while):
-
-```{r, eval=FALSE}
 x$api_gwasdata_upload()
 ```
 
@@ -201,7 +197,13 @@ If you have multiple datasets you may want to write an R snippet to semi-automat
 
 # What's next
 
-Admins will review and approve/reject each datasets.
+Admins will review and approve/reject each datasets. Approved datasets will go into the release pipeline which may take 0.5 - 4 hours. After that you may query the dataset via packages, e.g.:
+
+```
+ieugwasr::tophits("ieu-b-9999")
+```
+
+Note: currently https://gwas.mrcieu.ac.uk/ has a synchronisation issue so new datasets may not be displayed there, but you can always use the new datasets directly via the packages like above.
 
 # Known issues
 
