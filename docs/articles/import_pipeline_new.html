@@ -152,11 +152,11 @@ create the metadata.</p>
 with dropdowns and tooltips for each field. This is handy when you are
 new to this process and/or only have a few datasets to upload.</p>
 <p>GWAS ID will be available on the web interface for each dataset.
-Assume it’s <code>ieu-b-5137</code>.</p>
+Assume it’s <code>ieu-b-9999</code>.</p>
 <p>In R, specify the path (assume it’s <code>~/bmi_test.txt.gz</code>)
 and GWAS ID, and then mark the metadata as uploaded.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span>, igd_id<span class="op">=</span><span class="st">'ieu-b-5137'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span>, igd_id<span class="op">=</span><span class="st">'ieu-b-9999'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">metadata_uploaded</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
 </div>
@@ -191,7 +191,7 @@ route.</p>
 <span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>GWAS ID will be returned by the last command. Assume it’s
-<code>ieu-b-5137</code>. At the same time a new record will show up on
+<code>ieu-b-9999</code>. At the same time a new record will show up on
 <a href="https://api.opengwas.io/contribution/" class="external-link uri">https://api.opengwas.io/contribution/</a>.</p>
 </div>
 </div>
@@ -236,19 +236,18 @@ for parameter names):</p>
 <span>  eaf_col<span class="op">=</span><span class="fl">7</span>,</span>
 <span>  ncontrol_col<span class="op">=</span><span class="fl">8</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Format the dataset (this may take a while):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Use the output to double-check the mapping. If necessary, run
 <code>x$determine_columns(...)</code> again with the correct
 mapping.</p>
-<p>Upload the dataset (this may take a while):</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Format the dataset and then upload (both may take a while):</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You will see the “Dataset has been added to the pipeline” message if
 the upload was successful.</p>
 <p>And finally don’t forget to clean up the working directory:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -296,7 +295,13 @@ checkboxes to submit in bulk.</p>
 <div class="section level2">
 <h2 id="whats-next">What’s next<a class="anchor" aria-label="anchor" href="#whats-next"></a>
 </h2>
-<p>Admins will review and approve/reject each datasets.</p>
+<p>Admins will review and approve/reject each datasets. Approved
+datasets will go into the release pipeline which may take 0.5 - 4 hours.
+After that you may query the dataset via packages, e.g.:</p>
+<pre><code><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="st">"ieu-b-9999"</span><span class="op">)</span></span></code></pre>
+<p>Note: currently <a href="https://gwas.mrcieu.ac.uk/" class="external-link uri">https://gwas.mrcieu.ac.uk/</a> has a synchronisation issue
+so new datasets may not be displayed there, but you can always use the
+new datasets directly via the packages like above.</p>
 </div>
 <div class="section level2">
 <h2 id="known-issues">Known issues<a class="anchor" aria-label="anchor" href="#known-issues"></a>
