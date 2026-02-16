@@ -1,3 +1,7 @@
+# GwasDataImport 0.2.1
+
+* Improve behaviour of Dataset$api_metadata_delete()
+
 # GwasDataImport 0.2
 
 * Remove private API options

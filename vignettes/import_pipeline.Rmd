@@ -7,81 +7,49 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r include=FALSE}
-library(GwasDataImport)
+# As a Contributor
+
+This role allows you to contribute datasets to OpenGWAS. You will create metadata, upload file for QC, check QC report and submit dataset for approval. You will need to contact us and request to be added as a Contributor.
+
+| Actions \\ Tools | Web portal | R/GwasDataImport |
+| --- | --- | --- |
+| List all your draft datasets and check progress | Yes | Not supported yet |
+| Create metadata<br>Edit metadata | Yes | Yes |
+| Upload file for QC | Not supported | Yes |
+| Delete QC files but keep metadata<br>Delete QC files and metadata | Yes | Yes |
+| Check QC report | Yes | Not supported yet
+| Submit for approval | Yes | Not supported yet
+| List all your approved (released) datasets | Yes | Not supported yet
+
+# Prerequisites
+
+You will need:
+
+- **OpenGWAS Token (JWT)** from https://api.opengwas.io/profile/
+- **Web portal** - you should have been granted access to it and received its URL
+- **R/GwasDataImport** installed and your OpenGWAS Token [set up](https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication) in your R environment. It's the same token you would use in R/ieugwasr, R/TwoSampleMR etc.
+- Metadata of each dataset
+- Summary stats files of each dataset - see below
+- Optionally, the OpenGWAS ID of each dataset - see [below](#opengwas-id)
+
+## Summary stats file format
+
+Each dataset will be a `.txt` or `.txt.gz` file. The content looks like this:
+
+```
+ID          ALT  REF  BETA     SE      PVALUE   AF       N       ZVALUE  INFO  CHROM  POS
+rs10399878  G    A    0.0118   0.016   0.4608   0.9569   124787  NA      NA    1      1239953
+rs1039063   G    T    0.0026   0.0036  0.4702   0.55     236102  NA      NA    1      2281978
+rs1039100   G    A    0.0033   0.0047  0.4826   NA       221290  NA      NA    1      2286947
+rs10158583  A    G    0.0099   0.0059  0.09446  0.075    321197  NA      NA    1      3144068
+rs10157420  C    T    -0.0038  0.0075  0.6124   0.05     234171  NA      NA    1      3146497
 ```
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  eval = FALSE,
-  comment = "#>"
-)
-```
+The header row is not required - you will need to specify the mapping in later steps. The header row (if any) will be ignored by the pipeline so it's okay to leave it as-is.
 
-This package provides some simple tools to import a summary dataset into the OpenGWAS database. Here are the steps:
+The order of the columns doesn't matter now (e.g. you can have chromosome as the first column) - anyway you will need to specify the column mapping later in step 3.
 
-1. Download the summary dataset
-2. Initialise
-3. Input the meta-data
-4. Specify which columns in the summary dataset correspond to which fields
-5. Check that the meta-data are correct
-6. Process the summary dataset
-7. Upload meta-data and processed summary dataset
-8. Wait for the API pipeline to convert to VCF format, annotate and create a report
-9. Check report and release the dataset
-10. (Wait for the data to be uploaded to the OpenGWAS database) Check that it can be queried
-
-This may look like a lot but it's only a few commands. e.g. here is the complete pipeline that we will use to demonstrate:
-
-```{r, eval=FALSE}
-library(GwasDataImport)
-
-# Check if you are authenticated
-ieugwasr::user()
-
-# Initialise
-x <- Dataset$new(filename=filename, igd_id=id)
-
-# Specify columns
-x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
-# Input metadata
-x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd', ontology="EFO:1234;EFO:2345"))
-
-#Check the meta-data. This compares the provided effect allele column to the GWAS catalog and effect allele frequency column to the 1000 genomes super populations. Conflicts or test failures may indicate that the columns have been mis-specified in the collect_metadata function. The function also compares "GWAS hits" in the dataset (by convention we define this as 5e-8) to reported associations in the GWAS catalog. 
-
-x$check_meta_data(gwas_file=x$filename,params=x$params,metadata=x$metadata)
-
-# Process dataset
-x$format_dataset()
-
-# Upload metadata
-x$api_metadata_upload()
-
-# Upload summary data
-x$api_gwasdata_upload()
-
-# View report
-x$api_report()
-
-# Release dataset
-x$api_gwas_release()
-
-# Check that it's available on OpenGWAS e.g. can you get its tophits:
-ieugwasr::tophits(id)
-
-# Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)
-ieugwasr::associations(tophits('ieu-a-2')$rsid, id)
-
-# Delete wd
-x$delete_wd()
-```
-
-The steps are detailed below.
-
-## 1. Download the summary dataset
-
-Need to have a file that can be read into R. Make sure that you have at least the following columns:
+These columns are **required** for each dataset:
 
 - chromosome
 - position
@@ -91,327 +59,226 @@ Need to have a file that can be read into R. Make sure that you have at least th
 - other allele
 - pval
 
-Optional additional columns:
+Note: you need to remove any leading `0` from the chromosome values, e.g. `07` -> `7`.
+
+Note: a row will be removed by the pipeline entirely if it has NA/Inf value in **any** required columns.
+
+These columns are **optional**:
 
 - rsid
 - effect allele frequency
-- number of controls (or total sample size if continuous trait)
+- other allele frequency
 - number of cases
+- number of controls (or total sample size if continuous trait)
 - imputation z-score
 - imputation info score
 
-## 2. Initialise
+## OpenGWAS ID
 
-Need to specify a few things e.g. the dataset filename. Here we'll use a small example dataset that is bundled within the package
+An ID on OpenGWAS consists of three parts: `category`-`study`-`dataset`. E.g.
 
-```{r}
-filename <- system.file(package="GwasDataImport", "extdata/pos_0002.txt.gz")
-```
+- ebi-a-GCST90091033
+- ieu-b-2
+- finn-b-K11_FIBROCHIRLIV
 
-but you would define the `filename` object as just a path to your data file.
+The first two parts combined are also known as a "batch", e.g. `ieu-b` is a batch.
 
-Can also specify the `id` you want to use. If you don't specify this then it will just use the next available id for the `ieu-b` data batch. Alternatively you can visit https://api.opengwas.io/contribution/ and create a new dataset there by entering the meta data, and this will generate an `id` to be used here.
+**Auto-assign ID** If you are uploading a few datasets, you can usually let the system auto-assign IDs. The batch will be fixed to `ieu-b` and the sequence (dataset) number will be generated, so you may get ieu-b-6001, ieu-b-6002, etc. To go with this route, just leave the OpenGWAS ID (igd_id) field as blank.
 
-For the purposes of this demonstration I'm going to create a random ID here
+**Specify ID** If you are uploading hundreds or even thousands of datasets and/or if the datasets are from a study or consortium, please contact us and we may set up a new batch for you if necessary. In this case you will need to specify the full ID for each dataset when creating metadata. Assume you were advised to use the `met-e` batch, you should specify e.g. `met-e-LDL_C` (recommended) or  `met-e-1` (less meaningful) for a dataset. The system will not work out the sequence number, so you cannot just give `met-e` and let the system generate the last part. If you insist on numerical IDs you should generate them by yourself.
 
-```{r}
-id <- paste0("ieu-b-testing_", as.numeric(Sys.time())) %>% gsub("\\.", "_", .)
-```
+See a list of current batches at https://opengwas.io/datasets/
 
-But just when you're uploading a dataset for real, don't do this, in most circumstances you can just leave the ID blank and the API will choose the next available one for you (then make a note of what it has chosen for you).
+# Setup
 
-Now create a new instance of the `Dataset` object. 
-
-```{r}
-x <- Dataset$new(filename=filename, igd_id=id)
-```
-
-This has done the following things
-
-1. Checked if the ID exists
-2. Created a new temporary directory in which to store the processed data files. 
-
-NOTE: at the end of this process that temporary directory will be automatically deleted.
-
-NOTE: Just to reiterate - you can run `x <- Dataset$new(filename=filename)` without specifying the `igd_id` argument and it will choose the next `ieu-b-*` ID for you automatically - this is recommended.
-
-Let's look at the object:
-
-```{r}
-x
-```
-
-It is an `R6` object that contains some functions and some data objects. You can access any of these with the `$` operator. e.g. to find out the location of the temporary directory:
-
-```{r}
-x$wd
-```
-
-Or to check if the id is already present in the database (i.e. the function that is called when the object is being initialised)
-
-```{r}
-x$is_new_id()
-```
-
-You can now specify 
-
-## 3. Specify columns in dataset
-
-To read the data correctly, need to specify which column corresponds to which field. The data looks like this:
-
-```
-CHROM   RSID    POS     REF     ALT     MAF     BETA    SEBETA  PVAL
-1       rs2462492       54676   C       T       0.399665        -0.0036 0.0197  0.07
-1       rs3107975       55326   T       C       0.0089751       0.0234  0.1004  0.09
-1       rs74447903      57033   T       C       0.0018298       -0.182  0.2317  0.36
-1       rs114608975     86028   T       C       0.10448 -0.0372 0.0316  0.62
-1       rs6702460       91536   G       T       0.45422 0.0088  0.0193  0.19
-1       rs8179466       234313  C       T       0.074974        -0.017  0.0385  0.18
-```
-
-You can specify the columns either by numeric position or by the column name. e.g.
-
-```{r}
-x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
-```
-
-Having specified the columns, this function reads in the first 100 rows of the dataset and prints a summary of them so you can check they look right. Other options are 
-
-## 4. Input the meta-data
-
-Specify the metadata. e.g. here is a minimal example:
-
-```{r}
-x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
-```
-
-But more fields can be specified. You can see a detailed list of them here: https://api.opengwas.io/api/docs or running this command:
-
-```{r}
-x$view_metadata_options()
-```
-
-Note that `nsnp` has been collected in the last step `x$determine_columns()` and should not be specified in `x$collect_metadata()`.
-
-To see a simplified version of this, see:
-
-```{r}
-x$get_metadata_fields()
-x$collect_metadata(list(
-  trait="hello",
-  build="HG19/GRCh37",
-  category="NA",
-  subcategory="NA",
-  group_name="public",
-  population="European",
-  sex="Males",
-  note='asdasd',
-  year='2022',
-  ontology='EFO:1234',
-  sample_size=10000,
-  author="Anon",
-  unit="SD")
-)
-```
-
-## 5. Check that the meta-data are correct
-
-This does the following tests:
-
-1. Compares the reported effect allele frequency (eaf) column to the 1000 genomes super populations. Test failure indicates that the eaf column has been mis-specified. For example, the eaf column refers to the non-effect allele or minor allele.
-2. Compares the reported effect allele to the GWAS catalog. Test failure indicates that the effect allele column has been mis-specified. For example, that the provided effect allele column is actually the non-effect allele column.   
-3. Compares the GWAS hits in the dataset to reported associations in the GWAS catalog. Test failure indicates that a large number of GWAS hits in the dataset are absent from the GWAS catalog. This could be indicative of a dataset that has not been through post GWAS QC procedures (i.e. with unreliable genetic variants removed). An alternative explanation is that the new dataset is just much better powered than any previously conducted GWAS in the GWAS catalog. 
-
-```{r}
-x$check_meta_data(gwas_file=x$filename,params=x$params,metadata=x$metadata)
-x$metadata_test$eaf_conflicts
-x$metadata_test$eaf_conflicts_plot
-x$metadata_test$gc_conflicts
-x$metadata_test$gc_conflicts_plot
-x$metadata_test$false_positive_hits
-```
-
-## 6. Process the summary dataset
-
-Once you are happy with how the columns have been parsed (step 3) and are confident that the meta-data are correct (steps 4 & 5), the dataset can be processed. This involves
-
-1. Checking that none of the meta-data tests failed. Will stop if effect allele frequency or effect alleles columns look wrong. 
-2. Reading in the dataset
-3. Checking that the fields are as they should be (quite a light check)
-4. Removing any rows that have missing values in any required fields
-5. Updating build to hg19/b37 if necessary
-6. Writing processed dataset to file, ready for upload
-7. Calculate the md5 checksum
-
-This is achieved using:
-
-```{r}
-x$format_dataset()
-x$get_metadata_fields() %>% as.data.frame()
-```
-
-Please provide as much accurate metadata as possible
-
-## 6. Upload meta-data
-
-Once the meta-data is entered, it can be uploaded:
-
-```{r}
-x$api_metadata_upload()
-```
-
-You should see something like this printed to the screen:
-
-```
-Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/add]
-  Date: 2020-10-21 17:43
-  Status: 200
-  Content-Type: application/json
-  Size: 19 B
-{"id": "ieu-b-testing_1603302296_67257"}
-```
-
-Note that the `Status` is 200 - this indicates that the upload was successful. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
-
-Another thing to note is that the meta-data upload won't work if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong. 
-
-```{r}
-x$metadata_upload_status %>% httr::content()
-```
-
-Another thing to note is that you might want to edit the meta data after you have already uploaded it. Re-run the `collect_metadata` method with the updated metadata, and then to re-upload the data you must use the `api_metadata_edit` function. If you try to re-run the `api_metadata_upload` function it will give you an error saying that the ID already exists.
-
-If there was an error in your metadata perhaps the easiest thing to do is just delete it and re-upload
-
-e.g. 
-
-```{r}
-x$api_metadata_delete()
-```
-
-Then make edits to your metadata e.g. I'm going to change the author
-
-```{r}
-x$collect_metadata(list(
-  trait="hello",
-  build="HG19/GRCh37",
-  category="NA",
-  subcategory="NA",
-  group_name="public",
-  population="European",
-  sex="Males",
-  note='asdasd',
-  year='2022',
-  ontology='EFO:1234',
-  sample_size=10000,
-  author="Mous A",
-  unit="SD")
-)
-```
-
-And then reupload etc using `x$api_metadata_upload()`
-
-## 7. Upload processed summary dataset
-
-Similar to the step above, upload the actual GWAS data:
-
-```{r, eval=FALSE}
-x$api_gwasdata_upload()
-```
-
-This does a number of checks including verifying that the dataset received has the same md5 checksum as stated in the upload.
-
-Another thing to note is that the gwasdata upload will stop if the meta-data tests failed (you should get an error message if this happens). This only happens if the effect allele or effect allele frequency columns look wrong. 
-
-You should see something like this printed to the screen:
-
-```
-Successfully uploaded GWAS data
-Response [http://ieu-db-interface.epi.bris.ac.uk:8082/edit/upload]
-  Date: 2020-10-23 08:35
-  Status: 201
-  Content-Type: application/json
-  Size: 83 B
-{"message": "Upload successful", "job_id": "5db0e832-df20-4fb9-a1ce-d829af7a7...
-```
-
-Note again the `Status` here - it is `201` meaning a successful upload. If you receive a `4xx` or `5xx` number then something has gone wrong, and you should check your VPN connection, or if there are any formatting errors with the data. You might get more information by running:
-
-```{r, eval=FALSE}
-x$gwasdata_upload_status %>% httr::content()
-```
-
-## 8. Wait for the API pipeline to convert to VCF format, annotate and create a report
-
-Once uploaded, the dataset will go through a processing pipeline on the server. For large datasets this may take several hours. Please visit https://api.opengwas.io/contribution/ to check the status of the pipeline. Once the QC process has completed it will generate a report. View the report to check that everything looks as expected. Then go through the release (approval) process on the website.
-
-Once it's uploaded and released you should be able to query it. e.g. can you get its tophits:
-
-```{r}
-ieugwasr::tophits(id)
-```
-
-Can you extract other SNPs (e.g. 2015 GIANT BMI SNPs)
-
-```{r}
-ieugwasr::associations(tophits('ieu-a-2')$rsid, id)
-```
-
-The dataset will appear on https://gwas.mrcieu.ac.uk/ within a day or two, the synchronisation between API and website isn't immediate.
-
-## Summary
-
-Run pipeline:
-
-```{r, eval=FALSE}
-x <- Dataset$new(filename=fn, igd_id=id)
-x$determine_columns(list(chr_col=1, snp_col=2, pos_col=3, oa_col=4, ea_col=5, eaf_col=6, beta_col=7, se_col=8, pval_col=9))
-x$format_dataset()
-x$collect_metadata(list(trait="hello", build="HG19/GRCh37", category="NA", subcategory="NA", group_name="public", population="European", sex="Males", note='asdasd'))
-x$api_metadata_upload()
-x$api_gwasdata_upload()
-```
-
-## Example
+You can track your contributions via the web portal, but you will need R/GwasDataImport anyway to upload the files.
 
 ```{r, eval=FALSE}
 library(GwasDataImport)
-library(data.table)
-library(tidyr)
 
-fn <- "~/Downloads/1KG_CRP_GWAS_AJHG_2018.txt.gz"
-a <- fread(fn, he=T)
-a <- tidyr::separate(a, "MarkerName", sep=":", into=c("chr", "pos", "type"))
-a$pval <- pnorm(abs(a$Effect) / a$StdErr, lower.tail=FALSE) * 2
+# GwasDataImport depends on ieugwasr. Make sure you have switched to the "public" API base URL
+ieugwasr::select_api()
 
-# Note that if your dataset doesn't have chr/pos then you can look them up using
-# cp <- get_positions(a$MarkerName)
-# it's a bit slow though
+# Make sure you are authenticated and have got the "contributor" or "admin" role 
+ieugwasr::user()
+```
 
-a$Allele2[a$Allele1=="d"] <- "i"
-a$Allele2[a$Allele1=="i"] <- "d"
-table(a$Allele1)
-table(a$Allele2)
+# Upload a single dataset
 
-a <- dplyr::select(a, chr, pos, Allele1, Allele2, Effect, StdErr, pval)
-write.table(a, file="crp.txt", row=F, col=T, qu=F)
+**For each dataset you will need to go through step 1 to 4. See also: [Upload in bulk](#upload-in-bulk).**
 
-x <- Dataset$new(filename="crp.txt")
+## 1. Create metadata (two methods)
 
-# Specify columns
-x$determine_columns(list(chr_col=1, pos_col=2, oa_col=4, ea_col=3, beta_col=5, se_col=6, pval_col=7))
-# Process dataset
+In either ways you will need to create a new GwasDataImport instance in R. No parameter is required at this stage.
+
+```{r, eval=FALSE}
+x <- Dataset$new()
+```
+
+## 1a. Using the web portal
+
+*Create metadata (and specify ID when necessary) > Check OpenGWAS ID > Set the metadata flag*
+
+The portal provides a webform with dropdowns and tooltips for each field. **This is handy when you are new to this process and/or only have a few datasets to upload.**
+
+Click the `Add new metadata` button and provide metadata as instructed. You can hover on the input boxes to see the tips.
+
+> OpenGWAS ID:
+> Leave blank for an auto-assigned ID.
+> To specify an ID, give it in full e.g. `met-e-LDL_C`.
+
+When you click "Submit", a new dataset will be added, and you can see the OpenGWAS ID - assume it's `ieu-b-9999`.
+
+Locally the R package doesn't know anything about the dataset you just created on the portal yet, so we need to specify the ID and skip its test on metadata upload.
+
+```{r, eval=FALSE}
+# Let the instance know the ID it belongs to (replace with the auto-assigned or specified ID)
+x$igd_id <- 'ieu-b-9999'
+
+# Skip the test on metadata upload as we have added the metadata via the web portal
+x$metadata_uploaded <- TRUE
+```
+
+## 1b. Using R/GwasDataImport alone
+
+*Specify ID when necessary > Provide and upload metadata > Check OpenGWAS ID*
+
+**As an alternative to 1a**, you can opt to use R if you have an array of candidate datasets since it's easier to upload metadata of multiple datasets programmatically. We recommend that you try the web portal in 1a first before you go down this more advanced route.
+
+You may want to specify the OpenGWAS ID for this dataset. 
+
+> OpenGWAS ID:
+> You don't need to do this if you would like an auto-assigned ID (which starts with `ieu-b`). If you would like to specify an ID, give it in full, like -
+> ```{r, eval=FALSE}
+> # Only run this if you would like to specify OpenGWAS ID for this dataset
+> x$igd_id <- 'met-e-LDL_C'
+> ```
+
+Then populate the metadata fields and upload.
+
+```{r, eval=FALSE}
+
+# See the list of options, descriptions and whether they are required or not
+# For reference only - don't need to run this every time
+x$view_metadata_options()
+
+# Specify the metadata for this dataset
+x$collect_metadata(list(
+    # Required fields
+    trait="TEST - DO NOT USE",
+    build="HG19/GRCh37",
+    group_name="public",
+    category="Risk factor",
+    subcategory="Anthropometric",
+    population="Mixed",
+    sex="Males and Females",
+    author="Mendel GJ",
+    
+    # Optional fields (to name a few)
+    ontology="NA",
+    sample_size=339224,
+    year=2022,
+    unit="SD"
+))
+
+# Upload the metadata to the system, and look out for the OpenGWAS ID returned
+x$api_metadata_upload()
+```
+
+Look out for the OpenGWAS ID assigned by the system (if applicable) after the last command. At the same time a new record will show up on the web portal under Step 1.
+
+## 2. Modify the metadata (only when necessary)
+
+You can modify the metadata either via the web portal (recommended) or through R/GwasDataImport, regardless of how you created the metadata (i.e. metadata created via the R package can be modified on the web portal, or vice versa, as they are connected to the same database).
+
+Note that the metadata can only be modified when there is no QC pipeline associated, because at the last step when generating the QC report, the metadata will be hardcoded in the report. Metadata can only be modified when
+
+- \(a) the file has not been uploaded for QC, or
+- \(b) the QC pipeline had already finished and you decided to "delete uploaded files" (but keep the metadata), which will effectively revert the state to (a)
+
+## 3. Format the file and upload for QC
+
+Always check that the OpenGWAS ID held locally is accurate. Then let the instance know the full path to the file.
+
+```{r, eval=FALSE}
+# Is the ID correct?
+x$igd_id
+
+# Specify path to the file
+x$filename <- '/Users/ab12345/Desktop/bmi_test/bmi_test.txt.gz'
+```
+
+Specify column mapping (1-indexed) (check [docs](https://mrcieu.github.io/GwasDataImport/reference/Dataset.html#method-Dataset-determine_columns) for parameter names):
+
+```{r, eval=FALSE}
+
+x$determine_columns(list(
+  chr_col=11,
+  pos_col=12,
+  ea_col=2,
+  oa_col=3,
+  beta_col=4,
+  se_col=5,
+  pval_col=6,
+  snp_col=1,
+  eaf_col=7,
+  ncontrol_col=8
+))
+```
+
+Use the output to double-check the mapping. If necessary, run `x$determine_columns(...)` again to overwrite.
+
+Format the dataset and then upload (both may take a while):
+
+```{r, eval=FALSE}
+# Reorganise columns, check for invalid values, liftover, pack the dataset...
 x$format_dataset()
 
-# Input metadata
-x$collect_metadata(list(trait="C-reactive protein", build="HG19/GRCh37", category="Continuous", subcategory="NA", group_name="public", population="European", sex="Males and Females", ontology="EFO_0004458", pmid="30388399", sample_size=204402, priority=1))
-
-# Upload metadata
-x$api_metadata_upload()
-
-# Upload summary data
+# Upload the file
 x$api_gwasdata_upload()
+```
 
-# delete wd
+You will see a "Dataset has been added to the pipeline" message if the upload was successful.
+
+And finally don't forget to clean up the working directory for this dataset instance:
+
+```{r, eval=FALSE}
 x$delete_wd()
 ```
+
+## 4. Check QC pipeline state and report, and submit for approval
+
+On the web portal you can click the **2. QC** tab of the dataset popup and check pipeline state.
+
+For each dataset, you should review the QC report when it's available and decide whether to submit the dataset for approval or not. You will have the following options:
+
+- Submit the dataset for approval
+    - Go to the **3. Approval & Release** tab and submit
+- Re-upload the file for QC
+    - Go to the **1. Metadata** tab and "Delete all files"
+- Discard the dataset
+    - Go to the **1. Metadata** tab and "Delete all files and metadata(!)"
+
+You may also use the checkboxes on the main screen to select datasets and submit for approval in bulk.
+
+# Upload in bulk
+
+If you have multiple datasets you may want to write an R snippet to semi-automate this process.
+
+[Set up](#setup) for only once, then for each dataset go through step 1 (`x <- Dataset$new()`), 1b, 2 and 3. Finally visit the portal in step 4 and use the checkboxes to submit in bulk.
+
+# What's next
+
+We will review and approve/reject each dataset. Approved datasets will go into the release pipeline which may take another few hours. Usually within 24 hours after the approval, you or anyone who has access may query the dataset via packages, e.g.:
+
+```
+ieugwasr::tophits("ieu-b-9999")
+```
+
+And if it's uploaded under the `public` group, it will be listed on https://opengwas.io/datasets/ as well.
+
+**Thank you for your contribution!**
+
+# Known issues
+
+- GwasDataImport has the ability to liftover, but we recommend you to convert all records to **GRCh37** if possible.

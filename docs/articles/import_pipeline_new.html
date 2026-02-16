@@ -8,8 +8,8 @@
 <title>Importing datasets into OpenGWAS [NEW WORKFLOW] • GwasDataImport</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Importing datasets into OpenGWAS [NEW WORKFLOW]">
 </head>
@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GwasDataImport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,17 +73,84 @@
 <div class="section level2">
 <h2 id="as-a-contributor">As a Contributor<a class="anchor" aria-label="anchor" href="#as-a-contributor"></a>
 </h2>
-<p>This role enables you to contribute datasets (create metadata, upload
-file for QC, check QC report and submit dataset for approval) to
-OpenGWAS.</p>
-<p>You may contact Admin (details TBC) and request to be added as a
-Contributor. You will be granted access to <a href="https://api.opengwas.io/contribution" class="external-link uri">https://api.opengwas.io/contribution</a>.</p>
-<p>You also need R/GwasDataImport installed and your OpenGWAS JWT
-(token) set up in your R environment.</p>
+<p>This role allows you to contribute datasets to OpenGWAS. You will
+create metadata, upload file for QC, check QC report and submit dataset
+for approval. You will need to contact us and request to be added as a
+Contributor.</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Actions \ Tools</th>
+<th>Web portal</th>
+<th>R/GwasDataImport</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>List all your draft datasets and check progress</td>
+<td>Yes</td>
+<td>Not supported</td>
+</tr>
+<tr class="even">
+<td>Create metadata<br>Edit metadata</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>Upload file for QC</td>
+<td>Not supported</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Delete QC files but keep metadata<br>Delete QC files and
+metadata</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>Check QC report</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Submit for approval</td>
+<td>Yes</td>
+<td>Not supported</td>
+</tr>
+<tr class="odd">
+<td>List all your approved (released) datasets</td>
+<td>Yes</td>
+<td>Not supported</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
+<p>You will need:</p>
+<ul>
+<li>
+<strong>OpenGWAS JWT (token)</strong> from <a href="https://api.opengwas.io/profile/" class="external-link uri">https://api.opengwas.io/profile/</a>
+</li>
+<li>
+<strong>Web portal</strong> - you should have been granted access to
+it and received its URL</li>
+<li>
+<strong>R/GwasDataImport</strong> installed and your OpenGWAS JWT
+(token) set up in your R environment. It’s the same token you would use
+in R/ieugwasr, R/TwoSampleMR etc. - see <a href="https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication" class="external-link">this</a>
+on how to set up a token</li>
+<li>Metadata of each dataset</li>
+<li>Summary stats files of each dataset - see below</li>
+<li>Optionally, the OpenGWAS ID of each dataset - see below</li>
+</ul>
+<div class="section level3">
+<h3 id="summary-stats-file-format">Summary stats file format<a class="anchor" aria-label="anchor" href="#summary-stats-file-format"></a>
+</h3>
 <p>Each dataset will be a <code>.txt</code> or <code>.txt.gz</code>
 file. The content looks like this:</p>
 <pre><code>ID          ALT  REF  BETA     SE      PVALUE   AF       N       ZVALUE  INFO  CHROM  POS
@@ -95,7 +162,7 @@ rs10157420  C    T    -0.0038  0.0075  0.6124   0.05     234171  NA      NA    1
 <p>The header row is not required - you will need to specify the
 mappings in later steps. The header row (if any) will be ignored by the
 pipeline so it’s okay to leave it as-is.</p>
-<p>These columns are required for each dataset:</p>
+<p>These columns are <strong>required</strong> for each dataset:</p>
 <ul>
 <li>chromosome</li>
 <li>position</li>
@@ -108,8 +175,8 @@ pipeline so it’s okay to leave it as-is.</p>
 <p>Note: you need to remove any leading <code>0</code> from the
 chromosome values, e.g. <code>07</code> -&gt; <code>7</code>.</p>
 <p>Note: a row will be removed by the pipeline entirely if it has NA/Inf
-value in any required columns.</p>
-<p>These columns are optional:</p>
+value in <strong>any</strong> required columns.</p>
+<p>These columns are <strong>optional</strong>:</p>
 <ul>
 <li>rsid</li>
 <li>effect allele frequency</li>
@@ -120,88 +187,139 @@ value in any required columns.</p>
 <li>imputation info score</li>
 </ul>
 </div>
+<div class="section level3">
+<h3 id="opengwas-id">OpenGWAS ID<a class="anchor" aria-label="anchor" href="#opengwas-id"></a>
+</h3>
+<p>An ID on OpenGWAS consists of three parts:
+<code>category</code>-<code>study</code>-<code>dataset</code>. E.g.</p>
+<ul>
+<li>ebi-a-GCST90091033</li>
+<li>ieu-b-2</li>
+<li>finn-b-K11_FIBROCHIRLIV</li>
+</ul>
+<p>The first two parts combined are also known as a “batch”,
+e.g. <code>ieu-b</code> is a batch.</p>
+<p><strong>Auto-assign ID</strong> If you are uploading a few datasets,
+you can usually let the system auto-assign IDs. The batch will be fixed
+to <code>ieu-b</code> and the sequence (dataset) number will be
+generated, so you may get ieu-b-6001, ieu-b-6002, etc. To go with this
+route, just leave the OpenGWAS ID (igd_id) field as blank.</p>
+<p><strong>Specify ID</strong> If you are uploading hundreds or even
+thousands of datasets and/or if the datasets are from a study or
+consortium, please contact us and we may set up a new batch for you if
+necessary. In this case you will need to specify the full ID for each
+dataset. Assume you were given the <code>met-e</code> batch, you should
+specify e.g. <code>met-e-LDL_C</code> (recommended) or
+<code>met-e-1</code> (less meaningful) for each dataset. The system will
+not work out the sequence, so you cannot just give <code>met-e</code>
+and let the system generate the last part. If you insist on numerical
+IDs you should generate them by yourself.</p>
+<p>See a list of current batches at <a href="https://opengwas.io/datasets/" class="external-link uri">https://opengwas.io/datasets/</a></p>
+</div>
+</div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>You can track your contributions via the web interface, but you will
+<p>You can track your contributions via the web portal, but you will
 need R/GwasDataImport anyway to upload the files.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GwasDataImport</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mrcieu.github.io/GwasDataImport">GwasDataImport</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Make sure you have switched to the "public" API base URL</span></span>
+<span><span class="co"># GwasDataImport depends on ieugwasr. Make sure you have switched to the "public" API base URL</span></span>
 <span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/select_api.html" class="external-link">select_api</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Make sure you are authenticated and have got the "contributor" or "admin" role </span></span>
 <span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/user.html" class="external-link">user</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="metadata-and-dataset">Metadata and dataset<a class="anchor" aria-label="anchor" href="#metadata-and-dataset"></a>
+<h2 id="upload-a-single-dataset">Upload a single dataset<a class="anchor" aria-label="anchor" href="#upload-a-single-dataset"></a>
 </h2>
-<p>For each dataset you will need to go through step 1 to 4. See also:
-<a href="#import-in-bulk">Import in bulk</a>.</p>
+<p><strong>For each dataset you will need to go through step 1 to 4. See
+also: <a href="#upload-in-bulk">Upload in bulk</a>.</strong></p>
 <div class="section level3">
-<h3 id="create-metadata-and-obtain-gwas-id-two-methods">1. Create metadata and obtain GWAS ID (two methods)<a class="anchor" aria-label="anchor" href="#create-metadata-and-obtain-gwas-id-two-methods"></a>
+<h3 id="a--select-the-file-and-create-metadata-with-the-web-portal-and-then-rgwasdataimport">1a. Select the file and create metadata (with the web portal and
+then R/GwasDataImport)<a class="anchor" aria-label="anchor" href="#a--select-the-file-and-create-metadata-with-the-web-portal-and-then-rgwasdataimport"></a>
 </h3>
-<p>For each dataset to be uploaded, you can <strong>either</strong> use
-the web interface <strong>or</strong> the R/GwasDataImport package to
-create the metadata.</p>
-<div class="section level4">
-<h4 id="a--use-the-web-interface">1a. Use the web interface<a class="anchor" aria-label="anchor" href="#a--use-the-web-interface"></a>
-</h4>
-<p><a href="https://api.opengwas.io/contribution/" class="external-link uri">https://api.opengwas.io/contribution/</a> provides a webform
-with dropdowns and tooltips for each field. This is handy when you are
-new to this process and/or only have a few datasets to upload.</p>
-<p>GWAS ID will be available on the web interface for each dataset.
-Assume it’s <code>ieu-b-9999</code>.</p>
-<p>In R, specify the path (assume it’s <code>~/bmi_test.txt.gz</code>)
-and GWAS ID, and then mark the metadata as uploaded.</p>
+<p><em>Provide (upload) metadata (and specify ID when necessary) &gt;
+Check OpenGWAS ID &gt; Specify file location &gt; Set the metadata
+flag</em></p>
+<p>The portal provides a webform with dropdowns and tooltips for each
+field. <strong>This is handy when you are new to this process and/or
+only have a few datasets to upload.</strong></p>
+<p>Click the <code>Add new metadata</code> button and provide metadata
+as instructed. You can hover on an input box to see the tips.</p>
+<p>OpenGWAS ID: Leave blank for an auto-assigned ID. If you would like
+to specify an ID, give it in full e.g. <code>met-e-LDL_C</code>.</p>
+<p>When you click “Submit”, a new dataset will be added, and you can see
+the OpenGWAS ID.</p>
+<p>In R, specify the path to the file that will be uploaded for QC
+(assume it’s <code>~/bmi_test.txt.gz</code>) and OpenGWAS ID, and then
+mark the metadata as uploaded. Locally the R package doesn’t know
+anything about the dataset you just created on the portal yet, so we
+need to specify the ID and skip its test on metadata upload.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span>, igd_id<span class="op">=</span><span class="st">'ieu-b-9999'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Let the package know the location of the file and under which ID should the file be uploaded to</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span>, igd_id<span class="op">=</span><span class="st">'ieu-b-9999'</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Skip the test on metadata upload as we have added the metadata via the web portal</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">metadata_uploaded</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="b--use-rgwasdataimport">1b. Use R/GwasDataImport<a class="anchor" aria-label="anchor" href="#b--use-rgwasdataimport"></a>
-</h4>
-<p><strong>Alternatively</strong>, you can opt to use R if you have an
-array of candidate datasets since it’s easier to upload metadata of
-multiple datasets in a programmable way. We recommend that you try the
-web interface in 1a first before you go down this more advanced
-route.</p>
-<p>Assume the full path to the file is
+<div class="section level3">
+<h3 id="b--select-the-file-and-create-metadata-with-rgwasdataimport-alone">1b. Select the file and create metadata (with R/GwasDataImport
+alone)<a class="anchor" aria-label="anchor" href="#b--select-the-file-and-create-metadata-with-rgwasdataimport-alone"></a>
+</h3>
+<p><em>Specify file location (and specify ID when necessary) &gt;
+Provide (upload) metadata &gt; Check OpenGWAS ID</em></p>
+<p><strong>As an alternative to 1a</strong>, you can opt to use R if you
+have an array of candidate datasets since it’s easier to upload metadata
+of multiple datasets programmatically. We recommend that you try the web
+portal in 1a first before you go down this more advanced route.</p>
+<p>Assume the full path to the file of this dataset is
 <code>~/bmi_test.txt.gz</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Don't provide the GWAS ID</span></span>
+<code class="sourceCode R"><span><span class="co"># OpenGWAS ID, auto-assigned</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># - OR -</span></span>
+<span><span class="co"># OpenGWAS ID, specified</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Dataset.html">Dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>filename<span class="op">=</span><span class="st">"~/bmi_test.txt.gz"</span>, igd_id<span class="op">=</span><span class="st">'ieu-b-9999'</span><span class="op">)</span></span></code></pre></div>
+<p>Then populate other fields, and upload the metadata.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># See the list of options, descriptions and whether they are required or not. For info only - don't need to run this every time</span></span>
+<span><span class="va">x</span><span class="op">$</span><span class="fu">view_metadata_options</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Specify the metadata for this dataset</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">collect_metadata</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="co"># Required fields</span></span>
 <span>    trait<span class="op">=</span><span class="st">"TEST - DO NOT USE 2"</span>,</span>
-<span>    group_name<span class="op">=</span><span class="st">"public"</span>,</span>
 <span>    build<span class="op">=</span><span class="st">"HG19/GRCh37"</span>,</span>
+<span>    group_name<span class="op">=</span><span class="st">"public"</span>,</span>
 <span>    category<span class="op">=</span><span class="st">"Risk factor"</span>,</span>
 <span>    subcategory<span class="op">=</span><span class="st">"Anthropometric"</span>,</span>
-<span>    ontology<span class="op">=</span><span class="st">"NA"</span>,</span>
 <span>    population<span class="op">=</span><span class="st">"Mixed"</span>,</span>
 <span>    sex<span class="op">=</span><span class="st">"Males and Females"</span>,</span>
-<span>    sample_size<span class="op">=</span><span class="fl">339224</span>,</span>
 <span>    author<span class="op">=</span><span class="st">"Mendel GJ"</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Optional fields (to name a few)</span></span>
+<span>    ontology<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span>    sample_size<span class="op">=</span><span class="fl">339224</span>,</span>
 <span>    year<span class="op">=</span><span class="fl">2022</span>,</span>
 <span>    unit<span class="op">=</span><span class="st">"SD"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Upload the metadata to the system</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_metadata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>GWAS ID will be returned by the last command. Assume it’s
-<code>ieu-b-9999</code>. At the same time a new record will show up on
-<a href="https://api.opengwas.io/contribution/" class="external-link uri">https://api.opengwas.io/contribution/</a>.</p>
-</div>
+<p>GWAS ID will be returned by the last command. Look out for the ID
+assigned by the system (if applicable). At the same time a new record
+will show up on the web portal under Step 1.</p>
 </div>
 <div class="section level3">
 <h3 id="modify-the-metadata-only-when-necessary">2. Modify the metadata (only when necessary)<a class="anchor" aria-label="anchor" href="#modify-the-metadata-only-when-necessary"></a>
 </h3>
-<p>You can modify the metadata either via the web interface
-(recommended) or through R/GwasDataImport, regardless of how you created
-the metadata (i.e. metadata created via the R package can be modified on
-the web interface, or vice versa).</p>
+<p>You can modify the metadata either via the web portal (recommended)
+or through R/GwasDataImport, regardless of how you created the metadata
+(i.e. metadata created via the R package can be modified on the web
+portal, or vice versa, as they are connected to the same database).</p>
 <p>Note that the metadata can only be modified when there is no QC
 pipeline associated, because at the last step when generating the QC
 report, the metadata will be hardcoded in the report. Metadata can only
@@ -209,8 +327,8 @@ be modified when</p>
 <ul>
 <li>(a) the file has not been uploaded for QC, or</li>
 <li>(b) the QC pipeline had already finished and you decided to “delete
-uploaded files and QC products but keep the metadata”, which effectly
-reverted the state to (a)</li>
+uploaded files” (but keep the metadata), which will effectively revert
+the state to (a)</li>
 </ul>
 </div>
 <div class="section level3">
@@ -218,12 +336,12 @@ reverted the state to (a)</li>
 </h3>
 <p>Always check that the GWAS ID and path information stored are
 accurate.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">igd_id</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">filename</span></span></code></pre></div>
 <p>Specify column mapping (1-indexed) (check <a href="https://mrcieu.github.io/GwasDataImport/reference/Dataset.html#method-Dataset-determine_columns">docs</a>
 for parameter names):</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">determine_columns</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  chr_col<span class="op">=</span><span class="fl">11</span>,</span>
 <span>  pos_col<span class="op">=</span><span class="fl">12</span>,</span>
@@ -240,22 +358,21 @@ for parameter names):</p>
 <code>x$determine_columns(...)</code> again with the correct
 mapping.</p>
 <p>Format the dataset and then upload (both may take a while):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">format_dataset</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="fu">api_gwasdata_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You will see the “Dataset has been added to the pipeline” message if
 the upload was successful.</p>
 <p>And finally don’t forget to clean up the working directory:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="fu">delete_wd</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-qc-pipeline-state-and-report-and-submit-for-approval">4. Check QC pipeline state and report, and submit for approval<a class="anchor" aria-label="anchor" href="#check-qc-pipeline-state-and-report-and-submit-for-approval"></a>
 </h3>
-<p>On <a href="https://api.opengwas.io/contribution" class="external-link uri">https://api.opengwas.io/contribution</a> you can click the
-<strong>2. QC</strong> tab of the dataset popup and check pipeline
-state.</p>
+<p>On the web portal you can click the <strong>2. QC</strong> tab of the
+dataset popup and check pipeline state.</p>
 <p>For each dataset, you should review the QC report when it’s available
 and decide whether to submit the dataset for approval or not. You will
 have the following options:</p>
@@ -268,14 +385,14 @@ submit</li>
 </li>
 <li>Re-upload the file for QC
 <ul>
-<li>Go to the <strong>1. Metadata</strong> tab and “delete uploaded
-files and QC products”</li>
+<li>Go to the <strong>1. Metadata</strong> tab and “Delete all
+files”</li>
 </ul>
 </li>
 <li>Discard the dataset
 <ul>
-<li>Go to the <strong>1. Metadata</strong> tab and “delete
-everything”</li>
+<li>Go to the <strong>1. Metadata</strong> tab and “Delete all files and
+metadata(!)”</li>
 </ul>
 </li>
 </ul>
@@ -284,7 +401,7 @@ and submit for approval in bulk.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="import-in-bulk">Import in bulk<a class="anchor" aria-label="anchor" href="#import-in-bulk"></a>
+<h2 id="upload-in-bulk">Upload in bulk<a class="anchor" aria-label="anchor" href="#upload-in-bulk"></a>
 </h2>
 <p>If you have multiple datasets you may want to write an R snippet to
 semi-automate this process.</p>
@@ -295,13 +412,13 @@ checkboxes to submit in bulk.</p>
 <div class="section level2">
 <h2 id="whats-next">What’s next<a class="anchor" aria-label="anchor" href="#whats-next"></a>
 </h2>
-<p>Admins will review and approve/reject each datasets. Approved
-datasets will go into the release pipeline which may take 0.5 - 4 hours.
-After that you may query the dataset via packages, e.g.:</p>
+<p>We will review and approve/reject each dataset. Approved datasets
+will go into the release pipeline which may take another few hours.
+Usually within 24 hours, you or anyone who has access may query the
+dataset via packages, e.g.:</p>
 <pre><code><span><span class="fu">ieugwasr</span><span class="fu">::</span><span class="fu"><a href="https://mrcieu.github.io/ieugwasr/reference/tophits.html" class="external-link">tophits</a></span><span class="op">(</span><span class="st">"ieu-b-9999"</span><span class="op">)</span></span></code></pre>
-<p>Note: currently <a href="https://gwas.mrcieu.ac.uk/" class="external-link uri">https://gwas.mrcieu.ac.uk/</a> has a synchronisation issue
-so new datasets may not be displayed there, but you can always use the
-new datasets directly via the packages like above.</p>
+<p>And if it’s uploaded under the <code>public</code> group, it will be
+listed on <a href="https://opengwas.io/datasets/" class="external-link uri">https://opengwas.io/datasets/</a> as well.</p>
 </div>
 <div class="section level2">
 <h2 id="known-issues">Known issues<a class="anchor" aria-label="anchor" href="#known-issues"></a>

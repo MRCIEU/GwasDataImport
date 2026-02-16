@@ -5,8 +5,6 @@
 \title{Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database}
 \description{
 Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
-
-Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGWAS database
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -59,7 +57,7 @@ Object that downloads, develops and uploads GWAS summary datasets for IEU OpenGW
 \item \href{#method-Dataset-get_gwasdata_fields}{\code{Dataset$get_gwasdata_fields()}}
 \item \href{#method-Dataset-get_metadata_fields}{\code{Dataset$get_metadata_fields()}}
 \item \href{#method-Dataset-collect_metadata}{\code{Dataset$collect_metadata()}}
-\item \href{#method-Dataset-check_meta_data}{\code{Dataset$check_meta_data()}}
+\item \href{#method-Dataset-check_metadata}{\code{Dataset$check_metadata()}}
 \item \href{#method-Dataset-write_metadata}{\code{Dataset$write_metadata()}}
 \item \href{#method-Dataset-api_metadata_upload}{\code{Dataset$api_metadata_upload()}}
 \item \href{#method-Dataset-api_metadata_edit}{\code{Dataset$api_metadata_edit()}}
@@ -273,12 +271,12 @@ Input metadata
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Dataset-check_meta_data"></a>}}
-\if{latex}{\out{\hypertarget{method-Dataset-check_meta_data}{}}}
-\subsection{Method \code{check_meta_data()}}{
+\if{html}{\out{<a id="method-Dataset-check_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-Dataset-check_metadata}{}}}
+\subsection{Method \code{check_metadata()}}{
 Check that the reported effect allele and effect allele frequency columns are correct.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_meta_data(
+\if{html}{\out{<div class="r">}}\preformatted{Dataset$check_metadata(
   gwas_file = self$filename,
   params = self$params,
   metadata = self$metadata
@@ -331,7 +329,7 @@ Upload meta data to API
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_upload(
   metadata = self$metadata,
   metadata_test = self$metadata_test,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -342,7 +340,7 @@ Upload meta data to API
 
 \item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -355,7 +353,7 @@ Upload meta data to API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_edit(
   metadata = self$metadata,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -364,7 +362,7 @@ Upload meta data to API
 \describe{
 \item{\code{metadata}}{List of meta data fields and their values}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -377,7 +375,7 @@ View meta-data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_check(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -386,7 +384,7 @@ View meta-data
 \describe{
 \item{\code{id}}{ID to check}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -395,11 +393,12 @@ View meta-data
 \if{html}{\out{<a id="method-Dataset-api_metadata_delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Dataset-api_metadata_delete}{}}}
 \subsection{Method \code{api_metadata_delete()}}{
-Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+Delete a draft dataset. Available until the dataset is submitted for approval. This will force the QC pipeline (if any) to fail, delete uploaded files and QC product etc., and when required, delete the metadata
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_metadata_delete(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  delete_metadata = FALSE,
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -408,7 +407,9 @@ Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and rela
 \describe{
 \item{\code{id}}{ID to delete}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{delete_metadata}}{If TRUE, also delete metadata, otherwise just only fail existing QC pipeline and uploaded files but keep the metadata}
+
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -423,7 +424,7 @@ Upload gwas dataset
   datainfo = self$datainfo,
   gwasfile = self$gwas_out,
   metadata_test = self$metadata_test,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -436,7 +437,7 @@ Upload gwas dataset
 
 \item{\code{metadata_test}}{List of outputs from tests of the effect allele, effect allele frequency columns and summary data using CheckSumStats}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -449,7 +450,7 @@ Check status of API processing pipeline
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_check(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -458,7 +459,7 @@ Check status of API processing pipeline
 \describe{
 \item{\code{id}}{ID to check}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -467,11 +468,11 @@ Check status of API processing pipeline
 \if{html}{\out{<a id="method-Dataset-api_gwasdata_delete"></a>}}
 \if{latex}{\out{\hypertarget{method-Dataset-api_gwasdata_delete}{}}}
 \subsection{Method \code{api_gwasdata_delete()}}{
-Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files). This is a replicate of api_metadata_delete()
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_gwasdata_delete(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -480,7 +481,7 @@ Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and rela
 \describe{
 \item{\code{id}}{ID to delete}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -493,7 +494,7 @@ Check the status of the GWAS QC processing pipeline
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_qc_status(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -502,7 +503,7 @@ Check the status of the GWAS QC processing pipeline
 \describe{
 \item{\code{id}}{ID to delete}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -515,7 +516,7 @@ View the html report for a processed dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Dataset$api_report(
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -524,7 +525,7 @@ View the html report for a processed dataset
 \describe{
 \item{\code{id}}{ID of report to view}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }
@@ -539,7 +540,7 @@ Release a dataset
   comments = NULL,
   passed_qc = "True",
   id = self$igd_id,
-  access_token = ieugwasr::check_access_token()
+  opengwas_jwt = ieugwasr::get_opengwas_jwt()
 )}\if{html}{\out{</div>}}
 }
 
@@ -552,7 +553,7 @@ Release a dataset
 
 \item{\code{id}}{ID to release}
 
-\item{\code{access_token}}{Google OAuth2.0 token. See ieugwasr documentation for more info}
+\item{\code{opengwas_jwt}}{OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication}
 }
 \if{html}{\out{</div>}}
 }

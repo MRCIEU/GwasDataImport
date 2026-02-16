@@ -50,7 +50,7 @@ Object that downloads, develops and uploads EBI dataset
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_metadata_upload"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_metadata_upload'><code>GwasDataImport::Dataset$api_metadata_upload()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_qc_status"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_qc_status'><code>GwasDataImport::Dataset$api_qc_status()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="api_report"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-api_report'><code>GwasDataImport::Dataset$api_report()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="check_meta_data"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-check_meta_data'><code>GwasDataImport::Dataset$check_meta_data()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="check_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-check_metadata'><code>GwasDataImport::Dataset$check_metadata()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="collect_metadata"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-collect_metadata'><code>GwasDataImport::Dataset$collect_metadata()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="delete_wd"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-delete_wd'><code>GwasDataImport::Dataset$delete_wd()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="GwasDataImport" data-topic="Dataset" data-id="determine_columns"><a href='../../GwasDataImport/html/Dataset.html#method-Dataset-determine_columns'><code>GwasDataImport::Dataset$determine_columns()</code></a></span></li>
@@ -107,8 +107,8 @@ Download
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EbiDataset$download_dataset(
   ftp_path = self$ftp_path,
-  ftp_url = options()$ebi_ftp_url,
-  outdir = self$wd
+  outdir = self$wd,
+  dl = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -117,9 +117,9 @@ Download
 \describe{
 \item{\code{ftp_path}}{Pre-specified path to data. Default=self$ftp_path}
 
-\item{\code{ftp_url}}{Default=options()$ebi_ftp_url}
-
 \item{\code{outdir}}{Default=self$wd}
+
+\item{\code{ftp_url}}{Default=options()$ebi_ftp_url}
 }
 \if{html}{\out{</div>}}
 }

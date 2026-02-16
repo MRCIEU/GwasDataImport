@@ -61,14 +61,14 @@ Dataset <- R6::R6Class("Dataset", list(
 	is_new_id = function(id=self$igd_id)
 	{
 		stopifnot(!is.null(id))
-		message("Checking existing IDs")
-		r <- ieugwasr::api_query(paste0("gwasinfo/", id), method="GET")
+		# message("Checking existing IDs")
+		# r <- ieugwasr::api_query(paste0("gwasinfo/", id), method="POST")
 		
-		if(length(ieugwasr::get_query_content(r)) != 0)
-		{
-			message("ID already in database: ", id)
-			invisible(FALSE)
-		}
+		# if(length(ieugwasr::get_query_content(r)) != 0)
+		# {
+		# 	message("ID already in database: ", id)
+		# 	invisible(FALSE)
+		# }
 		message("Checking in-process IDs")
 		r <- ieugwasr::api_query(paste0("edit/check/", id), method="GET")
 		if(r$status_code == 404)
@@ -494,17 +494,25 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
-	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+	#' Delete a draft dataset. Available until the dataset is submitted for approval. This will force the QC pipeline (if any) to fail, delete uploaded files and QC product etc., and when required, delete the metadata
 	#' @param id ID to delete
+	#' @param delete_metadata If TRUE, also delete metadata, otherwise just only fail existing QC pipeline and uploaded files but keep the metadata
 	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
-	api_metadata_delete = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
+	api_metadata_delete = function(id=self$igd_id, delete_metadata=FALSE, opengwas_jwt=ieugwasr::get_opengwas_jwt())
 	{
-		o <- ieugwasr::api_query(paste0("edit/delete/", id), opengwas_jwt=opengwas_jwt, method="DELETE")
+		payload <- if (isTRUE(delete_metadata)) list(delete_metadata=1) else list()
+		o <- ieugwasr::api_query(paste0("edit/delete/draft/", id), query=payload, opengwas_jwt=opengwas_jwt, method="DELETE")
 		if(httr::status_code(o) == 200)
 		{
-			message("Successfully deleted gwas data and metadata from API")
-			self$gwasdata_uploaded <- FALSE
-			self$metadata_uploaded <- FALSE
+			if (isTRUE(delete_metadata))
+			{
+				message("Successfully deleted gwas data and metadata")
+				self$gwasdata_uploaded <- FALSE
+				self$metadata_uploaded <- FALSE
+			} else {
+				message("Successfully deleted gwas data")
+				self$gwasdata_uploaded <- FALSE
+			}
 		} else {
 			message("Failed to delete gwas / meta data")
 		}
@@ -557,7 +565,7 @@ Dataset <- R6::R6Class("Dataset", list(
 	},
 
 	#' @description
-	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files)
+	#' Delete a dataset. This deletes the metadata AND any uploaded GWAS data (and related processing files). This is a replicate of api_metadata_delete()
 	#' @param id ID to delete
 	#' @param opengwas_jwt OpenGWAS JWT. See https://mrcieu.github.io/ieugwasr/articles/guide.html#authentication
 	api_gwasdata_delete = function(id=self$igd_id, opengwas_jwt=ieugwasr::get_opengwas_jwt())
