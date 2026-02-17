@@ -45,9 +45,7 @@ rs10158583  A    G    0.0099   0.0059  0.09446  0.075    321197  NA      NA    1
 rs10157420  C    T    -0.0038  0.0075  0.6124   0.05     234171  NA      NA    1      3146497
 ```
 
-The header row is not required - you will need to specify the mapping in later steps. The header row (if any) will be ignored by the pipeline so it's okay to leave it as-is.
-
-The order of the columns doesn't matter now (e.g. you can have chromosome as the first column) - anyway you will need to specify the column mapping later in step 3.
+The header row is not required - the header row (if any) will be ignored by the pipeline so it's okay to leave it as-is. Also the order of the columns doesn't matter now (e.g. you can have chromosome as the first column). Anyway you will need to specify the column mapping later in step 3.
 
 These columns are **required** for each dataset:
 
